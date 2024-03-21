@@ -26,24 +26,27 @@ class ScreenAllowLocation extends StatelessWidget {
                     style: TextStyle(fontFamily: "UrbanistBold ",fontSize: 22.sp,fontWeight: FontWeight.w600,color: Colors.black),
                   ),
                   TextSpan(
-                    text: "${"Careno App"}",
+                    text: '"Careno App"',
                     style: TextStyle(fontFamily: "UrbanistBold",fontSize: 22.sp,fontWeight: FontWeight.w600,color: primaryColor),
                   ),
                   TextSpan(
-                    text: "to use",
-                    style: TextStyle(fontFamily: "UrbanistBold ",fontSize: 22.sp,fontWeight: FontWeight.w600,color: Colors.black),
-                  ),
-                  TextSpan(
-                    text: " your Location",
+                    text: " to use",
                     style: TextStyle(fontFamily: "UrbanistBold ",fontSize: 22.sp,fontWeight: FontWeight.w600,color: Colors.black),
                   ),
 
                 ]
               )),
             ),
-            CustomButton(title: "Allow", onPressed: (){},color: primaryColor,),
-            Button("Allow While Using App", () { }).marginSymmetric(vertical: 18.h),
-            Button("Don't Allow", () { }).marginSymmetric(vertical: 18.h)
+            Center(child: Text("your Location", style: TextStyle(fontFamily: "UrbanistBold ",fontSize: 22.sp,fontWeight: FontWeight.w600,color: Colors.black),)),
+            Text("Your precise location is used to show",style: TextStyle(color: Color(0xff393939),fontFamily: "Urbanist",fontSize: 18.sp),).marginSymmetric(horizontal: 10.w),
+            Text("your position on the map, get",style: TextStyle(color: Color(0xff393939),fontFamily: "Urbanist",fontSize: 18.sp),).marginSymmetric(horizontal: 10.w),
+            Text("  directions, estimate travel times, and ",style: TextStyle(color: Color(0xff393939),fontFamily: "Urbanist",fontSize: 18.sp),).marginSymmetric(horizontal: 10.w),
+            Text("improve search results! ",style: TextStyle(color: Color(0xff393939),fontFamily: "Urbanist",fontSize: 18.sp),).marginSymmetric(horizontal: 10.w),
+            CustomButton(title: "Allow", onPressed: (){},color: primaryColor,).marginSymmetric(vertical: 10.h),
+            Button("Allow While Using App", () { }).marginSymmetric(vertical: 14.h),
+            Button("Don't Allow", () {
+              Get.back();
+            }).marginSymmetric(vertical: 14.h)
           ],
         ),
       ),
