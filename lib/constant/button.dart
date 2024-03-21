@@ -23,7 +23,7 @@ Widget Button(String title,VoidCallback onpress){
       child: Padding(
         padding: const EdgeInsets.all(12.0),
         child: Text(
-          'Register',
+          title,
           style:  TextStyle(fontSize: 18.sp,fontFamily: "UrbanistBold", fontWeight: FontWeight.bold,color: primaryColor),
         ),
       ),
