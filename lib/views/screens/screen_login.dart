@@ -25,7 +25,7 @@ class ScreenLogin extends StatelessWidget {
             children: [
               Image.asset("assets/images/careno.png").marginSymmetric(
                   vertical: 60.h),
-              Center(child: Text("Sign in to your Account ", style: TextStyle(
+              Center(child: Text("Let’s Get It Started! ", style: TextStyle(
                   fontFamily: "UrbanistBold",
                   fontWeight: FontWeight.w700,
                   fontSize: 18.sp,

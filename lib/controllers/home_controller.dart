@@ -10,6 +10,12 @@ RxBool isPasswordVisible = false.obs;
 RxBool checkBox = false.obs;
 Rx<File> images = Rx<File>(File(''));
 RxString selectedGender = ''.obs;
+RxString fullName = ''.obs;
+RxString email = ''.obs;
+RxInt selectIndex = 0.obs;
+RxString profileDescription = ''.obs;
+RxString userType = ''.obs;
+
 // DateTime? dateTime;
 Rx<DateTime?> dateTime = Rx<DateTime?>(null);
 var countryCode = "92".obs;

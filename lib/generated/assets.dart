@@ -2,17 +2,23 @@
 class Assets {
   Assets._();
 
+  static const String assetsImagesProfile = 'assets/images/profile.svg';
+  static const String fontsQuicksandRegular = 'assets/fonts/Quicksand-Regular.ttf';
   static const String fontsUrbanistBold = 'assets/fonts/Urbanist-Bold.ttf';
   static const String fontsUrbanistRegular = 'assets/fonts/Urbanist-Regular.ttf';
   static const String imagesBack = 'assets/images/back.png';
   static const String imagesBlurWhireColor = 'assets/images/blur_whire_color.png';
+  static const String imagesBooking = 'assets/images/booking.svg';
+  static const String imagesCar = 'assets/images/car.svg';
   static const String imagesCareno = 'assets/images/careno.png';
   static const String imagesCurrentLocation = 'assets/images/current_location.png';
+  static const String imagesExport = 'assets/images/export.svg';
   static const String imagesLocation = 'assets/images/location.svg';
   static const String imagesLoginImage = 'assets/images/login_image.png';
   static const String imagesLogo = 'assets/images/logo.png';
   static const String imagesLogoGoogle = 'assets/images/logo_google.png';
   static const String imagesLogosFacebook = 'assets/images/logos_facebook.png';
+  static const String imagesMessages = 'assets/images/messages.svg';
   static const String imagesPicker = 'assets/images/picker.svg';
   static const String imagesProfile = 'assets/images/profile.png';
   static const String imagesSplash = 'assets/images/splash.png';

@@ -51,7 +51,7 @@ dependencies:
   google_maps_flutter: ^2.5.0
   permission_handler: ^11.0.0
   geocoding: ^2.1.0
-  custom_utils: ^0.0.34
+#  custom_utils: ^0.0.34
 
 
 dev_dependencies:
@@ -119,6 +119,10 @@ flutter:
     - family: UrbanistBold
       fonts:
         - asset: assets/fonts/Urbanist-Bold.ttf
+    - family: QuickSand
+      fonts:
+        - asset: assets/fonts/Quicksand-Regular.ttf
+
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro
