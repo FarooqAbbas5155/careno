@@ -13,6 +13,8 @@ class Assets {
   static const String imagesCareno = 'assets/images/careno.png';
   static const String imagesCurrentLocation = 'assets/images/current_location.png';
   static const String imagesExport = 'assets/images/export.svg';
+  static const String imagesGroup = 'assets/images/Group.svg';
+  static const String imagesGroup (1) = 'assets/images/Group (1).svg';
   static const String imagesLocation = 'assets/images/location.svg';
   static const String imagesLoginImage = 'assets/images/login_image.png';
   static const String imagesLogo = 'assets/images/logo.png';

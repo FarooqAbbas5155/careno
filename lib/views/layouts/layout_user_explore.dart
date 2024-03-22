@@ -17,6 +17,7 @@ class LayoutUserExplore extends StatelessWidget {
              height: 156.h,
              width: Get.width,
              color: primaryColor,
+             padding: EdgeInsets.symmetric(horizontal: 15.w,),
              child: Column(
                children: [
                  Row(
@@ -72,11 +73,38 @@ class LayoutUserExplore extends StatelessWidget {
                        ],
                      )
                    ],
-                 ).marginSymmetric(horizontal: 15.w,vertical: 8.h)
-
+                 ).marginSymmetric(vertical: 8.h),
+                 Row(
+                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                   children: [
+                     Container(
+                       height: 45.h,
+                       width: 294.w,
+                       decoration: BoxDecoration(
+                         color: Colors.white,
+                         borderRadius: BorderRadius.circular(6.r)
+                       ),
+                       child: TextField(
+                         decoration: InputDecoration(
+                           hintText: ""
+                         ),
+                       ),
+                     ),
+                     Container(
+                       height: 40.h,
+                       width: 40.w,
+                       padding: EdgeInsets.all(4),
+                       decoration: BoxDecoration(
+                           color: Colors.white,
+                           borderRadius: BorderRadius.circular(6.r)
+                       ),
+                       child: SvgPicture.asset("assets/images/Group.svg",),
+                     ),
+                   ],
+                 ).marginSymmetric(vertical: 16.h)
                ],
              ),
-            ),
+            )
 
          ],
        ),
