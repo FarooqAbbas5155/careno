@@ -12,12 +12,15 @@ class LayoutUserExplore extends StatelessWidget {
     return SafeArea(
       child:Scaffold(
        body: Column(
+         mainAxisAlignment: MainAxisAlignment.start,
+         crossAxisAlignment: CrossAxisAlignment.start,
          children: [
            Container(
              height: 156.h,
              width: Get.width,
              color: primaryColor,
-             padding: EdgeInsets.symmetric(horizontal: 15.w,),
+             padding: EdgeInsets.symmetric(horizontal: 15
+                 .w,),
              child: Column(
                children: [
                  Row(
@@ -73,7 +76,7 @@ class LayoutUserExplore extends StatelessWidget {
                        ],
                      )
                    ],
-                 ).marginSymmetric(vertical: 8.h),
+                 ).marginSymmetric(vertical: 16.h),
                  Row(
                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                    children: [
@@ -86,14 +89,18 @@ class LayoutUserExplore extends StatelessWidget {
                        ),
                        child: TextField(
                          decoration: InputDecoration(
-                           hintText: ""
+                           hintText: "Search for City, airport, or a hotel...",
+                           hintStyle: TextStyle(color: Color(0xffABABAB),fontSize: 14.sp,fontFamily: "Urbanist"),
+                           prefixIcon: Icon(Icons.search,color: Color(0xffABABAB),),
+                           contentPadding: EdgeInsets.symmetric(vertical: 4),
+                           border: InputBorder.none,
                          ),
                        ),
                      ),
                      Container(
-                       height: 40.h,
-                       width: 40.w,
-                       padding: EdgeInsets.all(4),
+                       height: 42.h,
+                       width: 42.w,
+                       padding: EdgeInsets.all(6),
                        decoration: BoxDecoration(
                            color: Colors.white,
                            borderRadius: BorderRadius.circular(6.r)
@@ -104,8 +111,32 @@ class LayoutUserExplore extends StatelessWidget {
                  ).marginSymmetric(vertical: 16.h)
                ],
              ),
-            )
+            ),
+           Column(
+             mainAxisAlignment: MainAxisAlignment.start,
+             crossAxisAlignment: CrossAxisAlignment.start,
+             children: [
+               Container(
+                 alignment: Alignment.center,
+                 height: 177.h,
+                 width: 345.w,
+                 decoration: BoxDecoration(
+                   color: Colors.red,
+                   borderRadius: BorderRadius.circular(5.r),
+                   image: DecorationImage(
+                       image: AssetImage("assets/images/car.png"),
+                     fit: BoxFit.fill
 
+                   )
+                 ),
+               ).marginOnly(left: 5.h,right: 5.h,top: 16.h,bottom: 12.h),
+               Padding(
+                 padding:  EdgeInsets.only(bottom: 12.h),
+                 child: Text("Explore Categories?",style: TextStyle(fontFamily: "UrbanistBold",fontSize: 24.sp,fontWeight: FontWeight.w700),),
+               ),
+
+             ],
+           ).marginSymmetric(horizontal: 14.w),
          ],
        ),
       ),

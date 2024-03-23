@@ -2,6 +2,7 @@
 class Assets {
   Assets._();
 
+  static const String assetsImagesCar = 'assets/images/car.svg';
   static const String assetsImagesProfile = 'assets/images/profile.svg';
   static const String fontsQuicksandRegular = 'assets/fonts/Quicksand-Regular.ttf';
   static const String fontsUrbanistBold = 'assets/fonts/Urbanist-Bold.ttf';
@@ -9,10 +10,12 @@ class Assets {
   static const String imagesBack = 'assets/images/back.png';
   static const String imagesBlurWhireColor = 'assets/images/blur_whire_color.png';
   static const String imagesBooking = 'assets/images/booking.svg';
-  static const String imagesCar = 'assets/images/car.svg';
+  static const String imagesCar = 'assets/images/car.png';
   static const String imagesCareno = 'assets/images/careno.png';
+  static const String imagesCibApple = 'assets/images/cib_apple.svg';
   static const String imagesCurrentLocation = 'assets/images/current_location.png';
   static const String imagesExport = 'assets/images/export.svg';
+  static const String imagesGoogle = 'assets/images/google.svg';
   static const String imagesGroup = 'assets/images/Group.svg';
   static const String imagesGroup (1) = 'assets/images/Group (1).svg';
   static const String imagesLocation = 'assets/images/location.svg';

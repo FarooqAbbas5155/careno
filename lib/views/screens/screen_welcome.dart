@@ -83,11 +83,11 @@ class ScreenWelcome extends StatelessWidget {
                     }),
                     Obx(() {
                       return RadioListTile(
-                          title: Text("As a Vehicle Company",
+                          title: Text("As a Vehicle Host",
                             style: TextStyle(color: Colors.black,fontFamily: "UrbanistBold",fontWeight: FontWeight.w700,fontSize: 18.sp),),
                           controlAffinity: ListTileControlAffinity.trailing,
                           activeColor: primaryColor,
-                          value: "driver",
+                          value: "host",
                           groupValue: controller.userType.value,
                           onChanged: (String? value) {
                             controller.userType.value = value!;

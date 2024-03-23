@@ -14,7 +14,7 @@ RxString fullName = ''.obs;
 RxString email = ''.obs;
 RxInt selectIndex = 0.obs;
 RxString profileDescription = ''.obs;
-RxString userType = ''.obs;
+RxString userType = 'user'.obs;
 
 // DateTime? dateTime;
 Rx<DateTime?> dateTime = Rx<DateTime?>(null);
