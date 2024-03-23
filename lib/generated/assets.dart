@@ -11,9 +11,11 @@ class Assets {
   static const String imagesBlurWhireColor = 'assets/images/blur_whire_color.png';
   static const String imagesBooking = 'assets/images/booking.svg';
   static const String imagesCar = 'assets/images/car.png';
+  static const String imagesCar2 = 'assets/images/car2.png';
   static const String imagesCareno = 'assets/images/careno.png';
   static const String imagesCibApple = 'assets/images/cib_apple.svg';
   static const String imagesCurrentLocation = 'assets/images/current_location.png';
+  static const String imagesExploreCar = 'assets/images/explore_car.png';
   static const String imagesExport = 'assets/images/export.svg';
   static const String imagesGoogle = 'assets/images/google.svg';
   static const String imagesGroup = 'assets/images/Group.svg';
@@ -26,6 +28,7 @@ class Assets {
   static const String imagesMessages = 'assets/images/messages.svg';
   static const String imagesPicker = 'assets/images/picker.svg';
   static const String imagesProfile = 'assets/images/profile.png';
+  static const String imagesSeeAll = 'assets/images/see_all.svg';
   static const String imagesSplash = 'assets/images/splash.png';
   static const String imagesSplashIcon = 'assets/images/splash_icon.png';
   static const String imagesStickerSent = 'assets/images/sticker_sent.png';

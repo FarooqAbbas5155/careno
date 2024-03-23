@@ -51,8 +51,7 @@ dependencies:
   google_maps_flutter: ^2.5.0
   permission_handler: ^11.0.0
   geocoding: ^2.1.0
-#  custom_utils: ^0.0.34
-
+  auto_size_text: ^3.0.0
 
 dev_dependencies:
   flutter_test:
