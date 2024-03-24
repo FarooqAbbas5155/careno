@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "246128826023",
+    "project_id": "careno-app",
+    "storage_bucket": "careno-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:246128826023:android:ed51aa90b48a47610ded82",
+        "android_client_info": {
+          "package_name": "com.layyahdevs.careno"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCRPyUbcziYBpG4hJKXBy9F9CcC8n4RDYA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
