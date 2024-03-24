@@ -1,3 +1,4 @@
+import 'package:careno/views/screens/screen_user_home.dart';
 import 'package:careno/views/screens/screen_welcome.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -28,7 +29,7 @@ class MyApp extends StatelessWidget {
           home: child,
         );
       },
-      child:  ScreenWelcome(),
+      child:  ScreenUserHome(),
     );
   }
 }

@@ -130,7 +130,7 @@ class _ScreenLocationState extends State<ScreenLocation> {
                 return Stack(
                   children: [
                     GoogleMap(
-                      myLocationButtonEnabled: true,
+                      // myLocationButtonEnabled: true,
                       myLocationEnabled: true,
                       onMapCreated: (GoogleMapController controller) {
                         _mapController = controller;

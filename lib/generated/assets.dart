@@ -20,11 +20,14 @@ class Assets {
   static const String imagesGoogle = 'assets/images/google.svg';
   static const String imagesGroup = 'assets/images/Group.svg';
   static const String imagesGroup (1) = 'assets/images/Group (1).svg';
+  static const String imagesHome Grur = 'assets/images/home Grur.png';
+  static const String imagesImageCarDetails = 'assets/images/image_car_details.png';
   static const String imagesLocation = 'assets/images/location.svg';
   static const String imagesLoginImage = 'assets/images/login_image.png';
   static const String imagesLogo = 'assets/images/logo.png';
   static const String imagesLogoGoogle = 'assets/images/logo_google.png';
   static const String imagesLogosFacebook = 'assets/images/logos_facebook.png';
+  static const String imagesMarker = 'assets/images/marker.png';
   static const String imagesMessages = 'assets/images/messages.svg';
   static const String imagesPicker = 'assets/images/picker.svg';
   static const String imagesProfile = 'assets/images/profile.png';
