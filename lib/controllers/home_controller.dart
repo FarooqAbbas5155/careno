@@ -14,8 +14,16 @@ RxString fullName = ''.obs;
 RxString email = ''.obs;
 RxInt selectIndex = 0.obs;
 RxString profileDescription = ''.obs;
+var carList = ["Sedan","Electric Car","Trucks","SUVS"].obs;
 RxString userType = 'user'.obs;
-
+Rx<String> popularVehicle  = 'popularVehicle'.obs;
+Rx<String> Cartype  = 'Toyota'.obs;
+Rx<String> CarBrand = 'Toyota'.obs;
+Rx<String> CarModel = '2019'.obs;
+Rx<String> CarTransmission = 'Automatic'.obs;
+Rx<String> CarFuelType     = 'Gasoline'.obs;
+Rx<String> CarSeatsCapacity = '04'.obs;
+Rx<String> CarLocation     = 'Central park New York'.obs;
 // DateTime? dateTime;
 Rx<DateTime?> dateTime = Rx<DateTime?>(null);
 var countryCode = "92".obs;

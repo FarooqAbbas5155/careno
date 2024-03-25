@@ -1,4 +1,3 @@
-
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -22,5 +21,9 @@ static MaterialColor appPrimaryColor = MaterialColor(
 );
 static Color greyColor=Color(0xFF505050);
 static Color blackLightColor=Color(0xFF303030);
+static Color starColor=Color(0xffFBC017);
+static Color dividerColor=Color(0xff999999);
+static Color dividerColor2=Color(0xffEDEEEE);
+
 
 }

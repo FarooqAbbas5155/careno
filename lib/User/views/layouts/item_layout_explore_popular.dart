@@ -1,3 +1,4 @@
+import 'package:careno/constant/colors.dart';
 import 'package:careno/constant/helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,7 +10,7 @@ class ItemLayoutExplorePopular extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 81.h,
+      // height: 81.h,
       width: 345.w,
       padding: EdgeInsets.symmetric(horizontal: 4.w,vertical:6.h),
       margin: EdgeInsets.symmetric(vertical: 4.h),
@@ -51,7 +52,7 @@ class ItemLayoutExplorePopular extends StatelessWidget {
                    Text("Electric Car",style: TextStyle(color: Color(0xffAAAAAA),fontSize: 13.sp,fontFamily:"Urbanist" ,fontWeight: FontWeight.w600),).marginOnly(bottom: 2.h),
                    Row(
                      children: [
-                       Icon(Icons.star,color: Color(0xffFBC017),),
+                       Icon(Icons.star,color: AppColors.starColor,),
                        Text("5.0",style: TextStyle(color: Colors.black,fontSize: 16.sp,fontFamily:"UrbanistBold" ,fontWeight: FontWeight.w700),),
                        Text("(528)",style: TextStyle(color: Color(0xffAAAAAA),fontSize: 11.sp,fontFamily:"Urbanist" ,fontWeight: FontWeight.w600),).marginOnly(left: 4.w),
                      ],

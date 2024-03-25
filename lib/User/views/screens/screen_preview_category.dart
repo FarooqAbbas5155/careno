@@ -16,7 +16,7 @@ class ScreenPreviewCategory extends StatelessWidget {
           onPressed: () {
             Get.back();
           }, icon: Icon(Icons.arrow_back,color: Colors.black),),
-        title: Text("Luxary Cars ",style: TextStyle(color: Colors.black,fontSize:20.sp ,fontWeight:FontWeight.w700 ,fontFamily: "Urbanist"),),
+        title: Text("Luxary Cars ",style: TextStyle(color: Colors.black,fontSize:24.sp ,fontWeight:FontWeight.w700 ,fontFamily: "UrbanistBold"),),
         centerTitle: true,
         actions: [
           Icon(Icons.search,color: Colors.black,).marginOnly(right: 20.w)

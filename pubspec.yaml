@@ -61,7 +61,14 @@ dependencies:
   firebase_storage: ^11.6.7
   flutter_local_notifications: ^16.3.2
   file_picker: ^6.2.0
-
+  percent_indicator: ^4.2.3
+  custom_rating_bar: ^2.0.5
+  custom_date_range_picker: ^1.0.10
+  tuna_flutter_range_slider: ^1.0.0
+  calendar_date_picker2: ^0.5.5
+  intl: any
+  country_list_pick: ^1.0.1+6
+  circle_flags: ^4.0.2
 dev_dependencies:
   flutter_test:
     sdk: flutter

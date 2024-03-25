@@ -1,3 +1,4 @@
+import 'package:careno/User/views/screens/screen_user_home.dart';
 import 'package:careno/widgets/custom_error.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -164,7 +165,7 @@ class _MyAppState extends State<MyApp> {
         builder: (_, child) {
           return GetMaterialApp(
             // home: ScreenAthleteHomePage(),
-            home: ScreenWelcome(),
+            home: ScreenUserHome(),
             locale: Locale('en', 'US'),
             debugShowCheckedModeBanner: false,
             defaultTransition: Transition.fade,
