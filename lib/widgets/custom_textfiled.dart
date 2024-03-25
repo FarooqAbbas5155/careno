@@ -1,8 +1,8 @@
 import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 
 class CustomTextField extends StatefulWidget {
   final String? hint;
@@ -40,37 +40,37 @@ class CustomTextField extends StatefulWidget {
 
   CustomTextField(
       {this.hint,
-        this.isPasswordField,
-        this.obsercureText,
-        this.onChange,
-        this.padding,
-        this.keyboardType,
-        this.prefix,
-        this.limit,
-        this.controller,
-        this.onTap,
-        this.readOnly,
-        this.fillColor,
-        this.maxLines,
-        this.text,
-        this.showCounter,
-        this.counterColor,
-        this.showBorder,
-        this.minLines,
-        this.margin,
-        this.suffix,
-        this.validator,
-        this.isDense,
-        this.onFieldSubmitted,
-        this.asyncValidator,
-        this.label,
-        this.key,
-        this.textStyle,
-        this.border,
-        this.enabledBorder,
-        this.hintColor,
-        this.borderType,
-        this.focusNode})
+      this.isPasswordField,
+      this.obsercureText,
+      this.onChange,
+      this.padding,
+      this.keyboardType,
+      this.prefix,
+      this.limit,
+      this.controller,
+      this.onTap,
+      this.readOnly,
+      this.fillColor,
+      this.maxLines,
+      this.text,
+      this.showCounter,
+      this.counterColor,
+      this.showBorder,
+      this.minLines,
+      this.margin,
+      this.suffix,
+      this.validator,
+      this.isDense,
+      this.onFieldSubmitted,
+      this.asyncValidator,
+      this.label,
+      this.key,
+      this.textStyle,
+      this.border,
+      this.enabledBorder,
+      this.hintColor,
+      this.borderType,
+      this.focusNode})
       : super(key: key);
 
   final _state = _CustomTextFieldState();
@@ -121,31 +121,30 @@ class _CustomTextFieldState extends State<CustomTextField> {
       // padding: EdgeInsets.only(top: 2.sp),
       height: 55.h,
       decoration: BoxDecoration(
-        color: Color(0xffB0B0B0).withOpacity(.1),
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: Colors.grey.withOpacity(.3),width: 1)
-      ),
+          color: Color(0xffB0B0B0).withOpacity(.1),
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color: Colors.grey.withOpacity(.3), width: 1)),
       child: TextFormField(
         maxLength: widget.limit,
         key: widget.key,
         onChanged: widget.asyncValidator == null
             ? widget.onChange
             : (value) {
-          text = value.toString();
-          validateValue(text);
-          if (widget.onChange != null) {
-            widget.onChange!(text);
-          }
-        },
+                text = value.toString();
+                validateValue(text);
+                if (widget.onChange != null) {
+                  widget.onChange!(text);
+                }
+              },
         style: widget.textStyle,
-        obscureText: widget.obsercureText?? false,
+        obscureText: widget.obsercureText ?? false,
         onTap: widget.onTap,
         validator: widget.validator ??
             (widget.asyncValidator != null
                 ? (value) {
-              text = value.toString();
-              return errorMessage;
-            }
+                    text = value.toString();
+                    return errorMessage;
+                  }
                 : null),
         maxLines: widget.maxLines ?? 1,
         minLines: widget.minLines,
@@ -157,7 +156,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
         focusNode: widget.focusNode,
         enabled: widget.keyboardType != TextInputType.none,
         autovalidateMode: AutovalidateMode.onUserInteraction,
-        buildCounter: (_, {required currentLength, maxLength, required isFocused}) {
+        buildCounter: (_,
+            {required currentLength, maxLength, required isFocused}) {
           return Visibility(
             visible: widget.showCounter ?? false,
             child: Padding(
@@ -165,7 +165,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
               child: Container(
                 alignment: Alignment.centerRight,
                 child: Text(
-                  currentLength.toString() + (widget.limit != null ? "/" + maxLength.toString() : ""),
+                  currentLength.toString() +
+                      (widget.limit != null ? "/" + maxLength.toString() : ""),
                   style: TextStyle(color: widget.counterColor),
                 ),
               ),
@@ -184,31 +185,47 @@ class _CustomTextFieldState extends State<CustomTextField> {
             suffixIcon: widget.suffix ??
                 (isPasswordField
                     ? IconButton(
-                  onPressed: () {
-                    if (isPasswordField) {
-                      if (mounted) {
-                        setState(() {
-                          _isHidden = !_isHidden;
-                        });
-                      }
-                    }
-                  },
-                  icon: Visibility(
-                    visible: isPasswordField,
-                    child: Icon(
-                      isPasswordField ? (_isHidden ? Icons.visibility : Icons.visibility_off) : null,
-                      color: Colors.grey,
-                    ),
-                  ),
-                )
-                    : (widget.asyncValidator != null ? _getSuffixIcon() : null)),
-            hintStyle: TextStyle(color:widget.hintColor?? Color(0xff94979F).withOpacity(.7),fontFamily: "Urbanist"),
-            contentPadding:widget.padding?? EdgeInsets.only(left: 15, right: 15, top: (widget.maxLines != null) ? 15 : 5, bottom: (widget.maxLines != null) ? 15 : 5),
+                        onPressed: () {
+                          if (isPasswordField) {
+                            if (mounted) {
+                              setState(() {
+                                _isHidden = !_isHidden;
+                              });
+                            }
+                          }
+                        },
+                        icon: Visibility(
+                          visible: isPasswordField,
+                          child: Icon(
+                            isPasswordField
+                                ? (_isHidden
+                                    ? Icons.visibility
+                                    : Icons.visibility_off)
+                                : null,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      )
+                    : (widget.asyncValidator != null
+                        ? _getSuffixIcon()
+                        : null)),
+            hintStyle: TextStyle(
+                color: widget.hintColor ?? Color(0xff94979F),
+                fontFamily: "Urbanist",
+
+            fontSize: 15.sp,
+            fontWeight: FontWeight.w400),
+            contentPadding: widget.padding ??
+                EdgeInsets.only(
+                    left: 15,
+                    right: 15,
+                    top: (widget.maxLines != null) ? 15 : 5,
+                    bottom: (widget.maxLines != null) ? 15 : 5),
             border: InputBorder.none
 
-          // filled: true,
-          // fillColor: Color(0xF0BBBBBB),
-        ),
+            // filled: true,
+            // fillColor: Color(0xF0BBBBBB),
+            ),
       ),
     );
   }

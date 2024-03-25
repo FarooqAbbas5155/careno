@@ -133,17 +133,12 @@ class BottomBarItem extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.max,
         children: [
-          Expanded(
-            flex: 3,
-              child: SvgPicture.asset(icon, color: color,)),
+          SvgPicture.asset(icon, color: color,),
           // (isSelected) ? SizedBox(height: 5.h) :
           // SizedBox(height: 2.h,),
-          Expanded(
-            flex: 2,
-            child: Text(
-              title,
-              style: TextStyle(color: color, fontSize: 11.sp,fontFamily: "QuickSand",fontWeight: FontWeight.w600),
-            ),
+          Text(
+            title,
+            style: TextStyle(color: color, fontSize: 11.sp,fontFamily: "QuickSand",fontWeight: FontWeight.w600),
           ),
         ],
       ),

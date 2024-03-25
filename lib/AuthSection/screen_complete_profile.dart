@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:careno/AuthSection/screen_allow_location.dart';
+import 'package:careno/Host/Views/Screens/screen_host_add_ident_identity_proof.dart';
 import 'package:careno/User/views/screens/screen_user_home.dart';
 import 'package:careno/widgets/custom_textfiled.dart';
 import 'package:careno/constant/helpers.dart';
@@ -206,7 +207,12 @@ class _ScreenCompleteProfileState extends State<ScreenCompleteProfile> {
                   child: CustomButton(
                     width: 310.w,
                       title: "Save", onPressed: (){
-                      Get.to(ScreenUserHome());
+                      if (controller.userType.value=="user") {
+                        Get.to(ScreenUserHome());
+                      }
+                      else{
+                        Get.to(ScreenHostAddIdentIdentityProof());
+                      }
                   }).marginOnly(top: 8.h),
                 )
               ],

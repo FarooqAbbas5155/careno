@@ -1,3 +1,4 @@
+import 'package:careno/Host/Views/Layouts/item_host_booking.dart';
 import 'package:flutter/material.dart';
 
 class LayoutHostPendingBooking extends StatelessWidget {
@@ -5,6 +6,12 @@ class LayoutHostPendingBooking extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Column(
+      children: [
+        ItemHostBooking(status: 'Pending',),
+        ItemHostBooking(status: 'Pending',),
+        ItemHostBooking(status: 'Pending',),
+      ],
+    );
   }
 }

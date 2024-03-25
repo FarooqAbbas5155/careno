@@ -27,7 +27,7 @@ class CustomButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: width?? 331.w,
-      height: height??56.h,
+      height: height??50.h,
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
@@ -42,7 +42,7 @@ class CustomButton extends StatelessWidget {
           padding: const EdgeInsets.all(4.0),
           child: Text(
             title ?? 'Button',
-            style: textStyle ?? TextStyle(fontSize: 18.sp,fontFamily: "UrbanistBold", fontWeight: FontWeight.bold,color: textColor??Colors.white),
+            style: textStyle ?? TextStyle(fontSize: 18.sp,fontFamily: "UrbanistBold", fontWeight: FontWeight.w700,color: textColor??Colors.white),
           ),
         ),
       ),
