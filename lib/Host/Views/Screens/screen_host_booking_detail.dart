@@ -217,7 +217,8 @@ class ScreenHostBookingDetail extends StatelessWidget {
                 child: CustomButton(title: "Decline", onPressed: (){},
                   textStyle: TextStyle(
                     fontSize: 15.sp,
-                    fontWeight: FontWeight.w700
+                    fontWeight: FontWeight.w700,color: Colors.white
+
                   ),
                 color: Color(0xFFFF2021),
 
@@ -230,7 +231,8 @@ class ScreenHostBookingDetail extends StatelessWidget {
                 color: Color(0xFF0F9D58),
                   textStyle: TextStyle(
                       fontSize: 15.sp,
-                      fontWeight: FontWeight.w700
+                      fontWeight: FontWeight.w700,
+                    color: Colors.white
                   ),
                 ),
               )
@@ -242,7 +244,8 @@ class ScreenHostBookingDetail extends StatelessWidget {
               ,
               textStyle: TextStyle(
                   fontSize: 15.sp,
-                  fontWeight: FontWeight.w700
+                  fontWeight: FontWeight.w700,color: Colors.white
+
               ),
               title: "Message", onPressed: (){}),
         )

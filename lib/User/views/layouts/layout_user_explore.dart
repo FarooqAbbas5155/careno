@@ -189,29 +189,30 @@ class _LayoutUserExploreState extends State<LayoutUserExplore> {
                                 fontWeight: FontWeight.w700),
                           ),
                         ),
-                        Container(
-                            color: Colors.white,
-                            height: 140.h,
-                            child: GridView.builder(
-                              scrollDirection: Axis.horizontal,
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                // Adjust the number of items per row
-                                crossAxisSpacing: 2.0,
-                                // Adjust spacing between items horizontally
-                                mainAxisSpacing:
-                                    2.0, // Adjust spacing between items vertically
-                              ),
-                              itemCount: 20,
-                              itemBuilder: (BuildContext context, int index) {
-                                return InkWell(
-                                    onTap: () {
-                                      Get.to(ScreenPreviewCategory());
-                                    },
-                                    child: ItemLayoutExploreImage());
-                              },
-                            )).marginOnly(bottom: 4.h),
+                        SizedBox(
+                          height: 164.h,
+                          child: GridView.builder(
+                            padding: EdgeInsets.zero,
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            scrollDirection: Axis.horizontal,
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              crossAxisSpacing: 0,
+                              mainAxisSpacing: 0,
+                                  childAspectRatio: 1.1
+                            ),
+                            itemCount: 20,
+                            itemBuilder: (BuildContext context, int index) {
+                              return InkWell(
+                                  onTap: () {
+                                    Get.to(ScreenPreviewCategory());
+                                  },
+                                  child: ItemLayoutExploreImage());
+                            },
+                          ).marginOnly(bottom: 4.h),
+                        ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [

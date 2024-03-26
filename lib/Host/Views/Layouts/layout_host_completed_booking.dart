@@ -11,7 +11,7 @@ class LayoutHostCompletedBooking extends StatelessWidget {
       child: Column(
         children: [
           ItemHostBooking(status: 'Completed',),
-          ItemHostBooking(status: 'Canceled',),
+          ItemHostBooking(status: 'Canceled', ),
           ItemHostBooking(status: 'Completed',),
           ItemHostBooking(status: 'Completed',),
         ],

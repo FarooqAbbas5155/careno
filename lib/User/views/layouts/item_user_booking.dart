@@ -1,18 +1,17 @@
-import 'package:careno/Host/Views/Screens/screen_host_booking_detail.dart';
 import 'package:careno/User/views/screens/screen_booking_details.dart';
-import 'package:careno/constant/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-class ItemHostBooking extends StatelessWidget {
-  String status;
+import '../../../constant/colors.dart';
 
+class ItemUserBooking extends StatelessWidget {
+String status;
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return  GestureDetector(
       onTap: (){
-        Get.to(ScreenHostBookingDetail(status: status,));
+        Get.to(ScreenBookingDetails(status: status,));
       },
       child: Container(
         padding: EdgeInsets.all(10.r),
@@ -81,10 +80,10 @@ class ItemHostBooking extends StatelessWidget {
                                   color: status == "Pending"
                                       ? Color(0xFFFB9701)
                                       : status == "In progress"
-                                          ? Color(0xFF00A651)
-                                          : status == "Completed"
-                                              ? Color(0xFF0F9D58)
-                                              : Color(0xFFFF2021),
+                                      ? Color(0xFF00A651)
+                                      : status == "Completed"
+                                      ? Color(0xFF0F9D58)
+                                      : Color(0xFFFF2021),
                                   fontSize: 12.sp),
                             ),
                             Text(
@@ -120,7 +119,7 @@ class ItemHostBooking extends StatelessWidget {
                       Text(
                         "March 15 - 18, 2024",
                         style:
-                            TextStyle(fontWeight: FontWeight.w500, fontSize: 11.sp,color: Colors.black),
+                        TextStyle(fontWeight: FontWeight.w500, fontSize: 11.sp,color: Colors.black),
                       )
                     ],
                   ),
@@ -139,7 +138,7 @@ class ItemHostBooking extends StatelessWidget {
                       Text(
                         "10:00 AM - 11:00 AM",
                         style:
-                            TextStyle(fontWeight: FontWeight.w500, fontSize: 11.sp,color: Colors.black),
+                        TextStyle(fontWeight: FontWeight.w500, fontSize: 11.sp,color: Colors.black),
                       )
                     ],
                   ),
@@ -149,10 +148,10 @@ class ItemHostBooking extends StatelessWidget {
           ],
         ),
       ),
-    );
+    );;
   }
 
-  ItemHostBooking({
+ItemUserBooking({
     required this.status,
   });
 }

@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class LayoutHostBooking extends StatelessWidget {
-  const LayoutHostBooking({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -76,4 +75,5 @@ class LayoutHostBooking extends StatelessWidget {
       ),
     );
   }
+
 }
