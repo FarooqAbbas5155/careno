@@ -10,6 +10,7 @@ RxBool isPasswordVisible = false.obs;
 RxBool checkBox = false.obs;
 Rx<File> images = Rx<File>(File(''));
 RxString selectedGender = ''.obs;
+var selectedRange=RangeValues(10, 60).obs;
 RxString fullName = ''.obs;
 RxString email = ''.obs;
 RxInt selectIndex = 0.obs;

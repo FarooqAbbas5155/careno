@@ -38,6 +38,22 @@ class ScreenBookingDetails extends StatelessWidget {
                               fit: BoxFit.cover)),
                     ),
                     Positioned(
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        child: Container(
+                          height: 145.h,
+                          decoration: BoxDecoration(
+                      gradient: LinearGradient(colors: [
+                       Colors.black.withOpacity(.0),
+                        Colors.black
+                      ]
+                      ,
+                        begin: Alignment.topCenter,
+                        end: FractionalOffset.bottomCenter,
+                      )
+                    ),)),
+                    Positioned(
                       left: 10.w,
                       top: 20.h,
                       child: GestureDetector(
@@ -153,7 +169,7 @@ class ScreenBookingDetails extends StatelessWidget {
                                     color: status == "Pending"
                                         ? Color(0xFFFB9701)
                                         : status == "In progress"
-                                        ? Color(0xFF00A651)
+                                        ? Color(0xFF3C79E6)
                                         : status == "Completed"
                                         ? Color(0xFF0F9D58)
                                         : Color(0xFFFF2021),
@@ -167,7 +183,7 @@ class ScreenBookingDetails extends StatelessWidget {
                                     color: status == "Pending"
                                         ? Color(0xFFFB9701)
                                         : status == "In progress"
-                                        ? Color(0xFF00A651)
+                                        ? Color(0xFF3C79E6)
                                         : status == "Completed"
                                         ? Color(0xFF0F9D58)
                                         : Color(0xFFFF2021),
@@ -184,23 +200,27 @@ class ScreenBookingDetails extends StatelessWidget {
                             style: TextStyle(
                                 color: Color(0xff616161),
                                 fontFamily: "UrbanistBold",
-                                fontWeight: FontWeight.w600,
-                                fontSize: 15.sp),
+                                fontWeight: FontWeight.w700,
+                                fontSize: 13.sp),
                           ),
-                          Text(
-                            "Street 2, City, New York, United State",
-                            style: TextStyle(
-                                color: primaryColor,
-                                fontFamily: "Urbanist",
-                                fontSize: 15.sp,
-                                decoration: TextDecoration.underline),
+                          Expanded(
+                            child: Text(
+                              "Street 2, City, New York, United State",
+                              style: TextStyle(
+                                  color: primaryColor,
+                                  fontFamily: "Urbanist",
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w600,
+                                  decoration: TextDecoration.underline),
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           )
                         ],
                       ).marginOnly(bottom: 8.h),
                       TextWidget("Year", "2022", "Type", "Sedon"),
                       TextWidget("Color", "Black", "Seats", "05"),
                       TextWidget(
-                          "Transmisssion", "Automatic", "Fuel Type",
+                          "Transmission", "Automatic", "Fuel Type",
                           "Gasoline"),
                       Text(
                         "Description",
@@ -316,13 +336,16 @@ class ScreenBookingDetails extends StatelessWidget {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return AlertDialog(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(14.r),
+                                    ),
                                     backgroundColor: Colors.white,
                                     title: Center(
                                       child: Text(
                                         'Cancel Booking',
                                         style: TextStyle(
                                           color: primaryColor,
-                                          fontSize: 22.sp,
+                                          fontSize: 20.sp,
                                           fontWeight: FontWeight.w700,
                                         ),
                                       ),
@@ -345,10 +368,13 @@ class ScreenBookingDetails extends StatelessWidget {
                                             ),
                                             filled: true,
                                             hintStyle: TextStyle(
-                                                color: Colors.grey[800]),
+                                                color: Color(0xFF7D7D7D),
+                                            fontSize: 12.sp,
+                                              fontWeight: FontWeight.w500
+                                            ),
                                             hintText: "Explain Cancel Reason",
                                             contentPadding: EdgeInsets.only(
-                                                left: 12, bottom: 5),
+                                                left: 12,top: 10.h, bottom: 5),
                                             fillColor: Colors.white,
                                           ),
                                         ).paddingSymmetric(horizontal: 20.w),
@@ -381,36 +407,23 @@ class ScreenBookingDetails extends StatelessWidget {
                                 builder: (BuildContext context) {
                                   return AlertDialog(
                                     backgroundColor: Colors.white,
-                                    title: Column(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                    title: Row(
                                       children: [
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              'Please Rate your experience',
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 16.sp,
-                                                fontWeight: FontWeight.w700,
-                                              ),
+                                        Expanded(
+                                          child: Text(
+                                            'Please Rate your experience with this Vehicle',
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 15.sp,
+                                              fontWeight: FontWeight.w700,
                                             ),
-                                            IconButton(
-                                              onPressed: () {
-                                                Get.back();
-                                              },
-                                              icon: Icon(Icons.close),
-                                            ),
-                                          ],
-                                        ),
-                                        Text(
-                                          'with this Vehicle',
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 16.sp,
-                                            fontWeight: FontWeight.w700,
                                           ),
+                                        ),
+                                        InkWell(
+                                          onTap: () {
+                                            Get.back();
+                                          },
+                                          child: Icon(Icons.close),
                                         ),
                                       ],
                                     ),
@@ -437,6 +450,7 @@ class ScreenBookingDetails extends StatelessWidget {
                                               margin: EdgeInsets.symmetric(horizontal: 50.w),
                                               child: RatingBar(
                                                 filledIcon: Icons.star,
+                                                filledColor: AppColors.appPrimaryColor,
                                                 emptyIcon: Icons.star_border,
                                                 onRatingChanged: (value) => debugPrint('$value'),
                                                 initialRating: 3,
@@ -448,14 +462,19 @@ class ScreenBookingDetails extends StatelessWidget {
                                               maxLines: 6,
                                               decoration: InputDecoration(
                                                 border: OutlineInputBorder(
-                                                  borderRadius: BorderRadius.circular(12.0),
+                                                  borderRadius: BorderRadius.circular(10.r),
                                                   borderSide: BorderSide(
                                                       width: 1, color: Color(0xffEEEEEE)),
                                                 ),
                                                 filled: true,
-                                                hintStyle: TextStyle(color: Colors.grey[800]),
+                                                hintStyle: TextStyle(color: Colors.black.withOpacity(.2),
+                                                fontWeight: FontWeight.w500,
+                                                  fontSize: 16.sp
+
+                                                ),
                                                 hintText: "Write Review",
-                                                contentPadding: EdgeInsets.only(left: 12, bottom: 5),
+                                                contentPadding: EdgeInsets.only(left: 12, bottom: 5,top: 10.h
+                                                ),
                                                 fillColor: Colors.white,
                                               ),
                                             ).paddingSymmetric(horizontal: 20.w),
@@ -479,7 +498,7 @@ class ScreenBookingDetails extends StatelessWidget {
                               );
                             },
                             "Give Review",
-                            Color(0xffAAAAAA),
+                            Color(0xffAFAFAF).withOpacity(.6),
                           ),
 
                           Button(() {
@@ -564,54 +583,97 @@ class ScreenBookingDetails extends StatelessWidget {
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
             backgroundColor: buttonColor ?? primaryColor,
-            foregroundColor: Colors.grey,
+            // foregroundColor: Colors.grey,
             elevation: 5,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(50),
             )
         ),
-        child: Padding(
-          padding: const EdgeInsets.all(4.0),
-          child: Text(
-            title ?? 'Button',
-            style: TextStyle(fontSize: 14.sp,
-                fontFamily: "UrbanistBold",
-                fontWeight: FontWeight.w700,
-                color: Colors.white),
-          ),
+        child: Text(
+          title ?? 'Button',
+          style: TextStyle(fontSize: 14.sp,
+              fontFamily: "UrbanistBold",
+              fontWeight: FontWeight.w700,
+              color: Colors.white),
         ),
       ),
     );
   }
+  buildReview() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Divider(color: Colors.black.withOpacity(.1), thickness: .5,),
+        Text("Customer Review",style: TextStyle(
+            fontWeight: FontWeight.w700,
+            fontSize: 18.sp
+        ),),
+        ListTile(
+          leading: CircleAvatar(
+            backgroundImage: AssetImage("assets/images/user-image.png"),
+          ),
+          title: Text("Kristin Watson",style: TextStyle(
+              fontSize: 15.sp,
+              fontWeight: FontWeight.w600,
+              color: Color(0xFF1B1B1B)
+          ),),
+          subtitle: Text("21 June, 2021",style: TextStyle(
+              fontWeight: FontWeight.w400,
+              fontSize: 8.sp,
+              color: Color(0xFF999999)
+          ),),
+          trailing: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Icon(Icons.star, color: Color(0xFFFBC017),),
+              Text("4.5", style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 13.sp
+              ),)
+            ],
+          ),
+        ),
+        Text('Review text popular belief, Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsu...',style: TextStyle(
+            fontSize: 12.sp,
+            fontWeight: FontWeight.w500,
+            color: Color(0xFF414141)
+        ),)
 
+      ],).marginSymmetric(vertical: 10.h);
+  }
   Widget TextWidget(String title, description, String title2,
       String description2) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "${title}: ",
-              style: TextStyle(
-                  color: Color(0xff616161),
-                  fontFamily: "UrbanistBold",
-                  fontWeight: FontWeight.w600,
-                  fontSize: 15.sp),
-            ),
-            Text(
-              "${description}",
-              style: TextStyle(
-                  color: Color(0xff616161).withOpacity(.8),
-                  fontFamily: "Urbanist",
-                  fontSize: 13.sp),
-            )
-          ],
+        Expanded(
+          flex: 3,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "${title}: ",
+                style: TextStyle(
+                    color: Color(0xff616161),
+                    fontFamily: "UrbanistBold",
+                    fontWeight: FontWeight.w700,
+                    fontSize: 13.sp),
+              ),
+              Text(
+                "${description}",
+                style: TextStyle(
+                    color: Color(0xff616161).withOpacity(.8),
+                    fontFamily: "Urbanist",
+                    fontSize: 14.sp,
+
+                fontWeight: FontWeight.w600),
+              )
+            ],
+          ),
         ),
-        SizedBox(
-          width: 140.w,
+        Expanded(
+          flex: 2,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -621,15 +683,17 @@ class ScreenBookingDetails extends StatelessWidget {
                 style: TextStyle(
                     color: Color(0xff616161),
                     fontFamily: "UrbanistBold",
-                    fontWeight: FontWeight.w600,
-                    fontSize: 15.sp),
+                    fontWeight: FontWeight.w700,
+                    fontSize: 13.sp),
               ),
               Text(
                 "${description2}",
                 style: TextStyle(
                     color: Color(0xff616161).withOpacity(.8),
                     fontFamily: "Urbanist",
-                    fontSize: 15.sp),
+                    fontSize: 14.sp,
+                fontWeight: FontWeight.w600
+                ),
               )
             ],
           ),

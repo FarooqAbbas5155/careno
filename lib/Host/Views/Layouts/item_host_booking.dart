@@ -73,19 +73,37 @@ class ItemHostBooking extends StatelessWidget {
                         Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              status,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  fontStyle: FontStyle.italic,
-                                  color: status == "Pending"
-                                      ? Color(0xFFFB9701)
-                                      : status == "In progress"
-                                          ? Color(0xFF00A651)
+                            Row(
+                              children: [
+                                Container(
+                                  margin: EdgeInsets.symmetric(horizontal: 4.w),
+                                  height: 8.h,
+                                  width: 8.h,
+                                  decoration: BoxDecoration(
+                                      color: status == "Pending"
+                                          ? Color(0xFFFB9701)
+                                          : status == "In progress"
+                                          ? Color(0xFF3C79E6)
                                           : status == "Completed"
-                                              ? Color(0xFF0F9D58)
-                                              : Color(0xFFFF2021),
-                                  fontSize: 12.sp),
+                                          ? Color(0xFF0F9D58)
+                                          : Color(0xFFFF2021),
+                                      shape: BoxShape.circle),
+                                ),
+                                Text(
+                                  status,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontStyle: FontStyle.italic,
+                                      color: status == "Pending"
+                                          ? Color(0xFFFB9701)
+                                          : status == "In progress"
+                                          ? Color(0xFF3C79E6)
+                                          : status == "Completed"
+                                          ? Color(0xFF0F9D58)
+                                          : Color(0xFFFF2021),
+                                      fontSize: 12.sp),
+                                ).marginOnly(bottom: 4.h, top: 4.h),
+                              ],
                             ),
                             Text(
                               "\$ 350",

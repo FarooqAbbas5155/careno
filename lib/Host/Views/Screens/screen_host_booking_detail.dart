@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../../constant/colors.dart';
+import '../../../constant/helpers.dart';
 
 class ScreenHostBookingDetail extends StatelessWidget {
   String status;
@@ -519,19 +520,37 @@ class ScreenHostBookingDetail extends StatelessWidget {
                       ],
                     ).marginOnly(left: 8.w, right: 15.w),
                   ),
-                  Text(
-                    status,
-                    style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontStyle: FontStyle.italic,
-                        color: status == "Pending"
-                            ? Color(0xFFFB9701)
-                            : status == "In progress"
-                                ? Color(0xFF00A651)
+                  Row(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.symmetric(horizontal: 4.w),
+                        height: 8.h,
+                        width: 8.h,
+                        decoration: BoxDecoration(
+                            color: status == "Pending"
+                                ? Color(0xFFFB9701)
+                                : status == "In progress"
+                                ? Color(0xFF3C79E6)
                                 : status == "Completed"
-                                    ? Color(0xFF0F9D58)
-                                    : Color(0xFFFF2021),
-                        fontSize: 12.sp),
+                                ? Color(0xFF0F9D58)
+                                : Color(0xFFFF2021),
+                            shape: BoxShape.circle),
+                      ),
+                      Text(
+                        status,
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontStyle: FontStyle.italic,
+                            color: status == "Pending"
+                                ? Color(0xFFFB9701)
+                                : status == "In progress"
+                                ? Color(0xFF3C79E6)
+                                : status == "Completed"
+                                ? Color(0xFF0F9D58)
+                                : Color(0xFFFF2021),
+                            fontSize: 12.sp),
+                      ).marginOnly(bottom: 4.h, top: 4.h),
+                    ],
                   ),
                 ],
               ),
@@ -558,7 +577,65 @@ class ScreenHostBookingDetail extends StatelessWidget {
           ),
 
             color: AppColors.appPrimaryColor,
-            onPressed: () {},
+            onPressed: () {
+              showDialog(
+                context: Get.context!,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(14.r),
+                    ),
+                    backgroundColor: Colors.white,
+                    title: Center(
+                      child: Text(
+                        'Cancel Booking',
+                        style: TextStyle(
+                          color: primaryColor,
+                          fontSize: 20.sp,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                    contentPadding: EdgeInsets.symmetric(
+                        vertical: 20.h), // Decrease height here
+                    content: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        TextField(
+                          maxLines: 8,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius
+                                  .circular(12.0),
+                              borderSide: const BorderSide(
+                                width: 1,
+                                style: BorderStyle.none,
+                              ),
+                            ),
+                            filled: true,
+                            hintStyle: TextStyle(
+                                color: Color(0xFF7D7D7D),
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.w500
+                            ),
+                            hintText: "Explain Cancel Reason",
+                            contentPadding: EdgeInsets.only(
+                                left: 12,top: 10.h, bottom: 5),
+                            fillColor: Colors.white,
+                          ),
+                        ).paddingSymmetric(horizontal: 20.w),
+                        SizedBox(height: 20.h),
+                        CustomButton(
+                            title: 'Submit', onPressed: () {
+                          Get.back();
+                        }).paddingSymmetric(horizontal: 20.w),
+
+                      ],
+                    ),
+                  );
+                },
+              );
+            },
           ),
         ),
         SizedBox(width: 10.w,),

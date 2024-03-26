@@ -7,8 +7,6 @@ import 'layout_completed_booking.dart';
 import 'layout_pending_booking.dart';
 
 class LayoutUserBooking extends StatelessWidget {
-  const LayoutUserBooking({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -32,7 +30,6 @@ class LayoutUserBooking extends StatelessWidget {
                   )
               ),
               child: TabBar(
-
                 indicatorSize: TabBarIndicatorSize.tab,
                 indicatorWeight: 2,
                 indicatorPadding: EdgeInsets.zero,

@@ -72,7 +72,6 @@ class _ScreenBookingState extends State<ScreenBooking> {
                       onChanged: (String? value) {
                         print("Radio button changed to: $value");
                         controller.BookingSelection.value = value!;
-                        _showDateRangePicker(context);
                       },
                     ),
                     Text(
@@ -131,7 +130,7 @@ class _ScreenBookingState extends State<ScreenBooking> {
             "Select Date or Day",
             style: TextStyle(
               color: Colors.black,
-              fontSize: 24.sp,
+              fontSize: 20.sp,
               fontWeight: FontWeight.w700,
               fontFamily: "UrbanistBold",
             ),
@@ -146,6 +145,17 @@ class _ScreenBookingState extends State<ScreenBooking> {
               fontWeight: FontWeight.w700,
               fontFamily: "UrbanistBold",
             ),
+          ),
+          Obx(() => controller.BookingSelection.value == "Per day"?
+          CalendarDatePicker2(
+            config: CalendarDatePicker2Config(
+              calendarType: CalendarDatePicker2Type.range,
+            ),
+            value: controller.dates,
+            onValueChanged: (dates) => controller.dates = dates,
+          ):CalendarDatePicker(initialDate: DateTime.now(), firstDate: DateTime.now(), lastDate: DateTime(2050), onDateChanged: (date){
+
+          })
           ),
           CustomButton(
               title: "Next",

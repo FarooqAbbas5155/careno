@@ -1,5 +1,6 @@
 import 'package:careno/User/views/screens/screen_all_reviews.dart';
 import 'package:careno/User/views/screens/screen_booking.dart';
+import 'package:careno/User/views/screens/screen_user_chat.dart';
 import 'package:careno/widgets/custom_button.dart';
 import 'package:careno/constant/helpers.dart';
 import 'package:flutter/cupertino.dart';
@@ -126,8 +127,8 @@ class ScreenCarDetails extends StatelessWidget {
                       Text("Toyota Camry",style: TextStyle(fontSize: 20.sp,fontWeight: FontWeight.w700,fontFamily: "UrbanistBold"),).marginOnly(bottom: 4.h,top: 4.h),
                       Row(
                         children: [
-                          Text("Location: ",style: TextStyle(color: Color(0xff616161),fontFamily: "UrbanistBold",fontWeight: FontWeight.w600,fontSize: 15.sp),),
-                          Text("Street 2, City, New York, United State",style: TextStyle(color: primaryColor,fontFamily: "Urbanist",fontSize: 15.sp,decoration: TextDecoration.underline),)
+                          Text("Location: ",style: TextStyle(color: Color(0xff616161),fontFamily: "UrbanistBold",fontWeight: FontWeight.w700,fontSize: 13.sp),),
+                          Expanded(child: Text("Street 2, City, New York, United State",style: TextStyle(color: primaryColor,fontFamily: "Urbanist",fontSize: 13.sp,decoration: TextDecoration.underline,fontWeight: FontWeight.w600),))
                         ],
                       ).marginOnly(bottom: 8.h),
                       TextWidget("Year", "2022", "Type", "Sedon"),
@@ -145,7 +146,9 @@ class ScreenCarDetails extends StatelessWidget {
                           }),
                           CustomButton(
                             width: 150.w,
-                              title: "Message", onPressed: (){}).marginSymmetric(vertical: 5.h),
+                              title: "Message", onPressed: (){
+                              Get.to(ScreenUserChat());
+                          }).marginSymmetric(vertical: 5.h),
                         ],
                       ).marginSymmetric(vertical: 4.h),
                     ],
@@ -210,26 +213,60 @@ class ScreenCarDetails extends StatelessWidget {
         ));
   }
 }
-Widget TextWidget(String title,description,String title2,String description2){
-  return       Row(
+Widget TextWidget(String title, description, String title2,
+    String description2) {
+  return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
-      Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text("${title}: ",style: TextStyle(color: Color(0xff616161),fontFamily: "UrbanistBold",fontWeight: FontWeight.w600,fontSize: 15.sp),),
-          Text("${description}",style: TextStyle(color: Color(0xff616161).withOpacity(.8),fontFamily: "Urbanist",fontSize: 13.sp),)
-        ],
-      ),
-      SizedBox(
-        width: 140.w,
+      Expanded(
+        flex: 3,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("${title2}: ",style: TextStyle(color: Color(0xff616161),fontFamily: "UrbanistBold",fontWeight: FontWeight.w600,fontSize: 15.sp),),
-            Text("${description2}",style: TextStyle(color: Color(0xff616161).withOpacity(.8),fontFamily: "Urbanist",fontSize: 15.sp),)
+            Text(
+              "${title}: ",
+              style: TextStyle(
+                  color: Color(0xff616161),
+                  fontFamily: "UrbanistBold",
+                  fontWeight: FontWeight.w700,
+                  fontSize: 13.sp),
+            ),
+            Text(
+              "${description}",
+              style: TextStyle(
+                  color: Color(0xff616161).withOpacity(.8),
+                  fontFamily: "Urbanist",
+                  fontSize: 14.sp,
+
+                  fontWeight: FontWeight.w600),
+            )
+          ],
+        ),
+      ),
+      Expanded(
+        flex: 2,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "${title2}: ",
+              style: TextStyle(
+                  color: Color(0xff616161),
+                  fontFamily: "UrbanistBold",
+                  fontWeight: FontWeight.w700,
+                  fontSize: 13.sp),
+            ),
+            Text(
+              "${description2}",
+              style: TextStyle(
+                  color: Color(0xff616161).withOpacity(.8),
+                  fontFamily: "Urbanist",
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w600
+              ),
+            )
           ],
         ),
       )

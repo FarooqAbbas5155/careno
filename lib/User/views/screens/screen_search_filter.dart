@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:careno/User/views/screens/screen_filter.dart';
 import 'package:careno/constant/colors.dart';
 import 'package:careno/constant/helpers.dart';
@@ -18,34 +20,15 @@ class _ScreenSearchFilterState extends State<ScreenSearchFilter> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 1,
-          leading: IconButton(
-            onPressed: () {
-              Get.back();
-            },
-            icon: Icon(
-              Icons.arrow_back,
-              color: Colors.black,
-            ),
-          ),
-          title: Text(
-            "Filter Results",
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 24.sp,
-              fontWeight: FontWeight.w700,
-              fontFamily: "UrbanistBold",
-            ),
-          ),
-          centerTitle: true,
+    return Scaffold(
+      body: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(40.0)),
+
         ),
-        body: SingleChildScrollView(
+        child: SingleChildScrollView(
           child:Column(
+            mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -68,8 +51,8 @@ class _ScreenSearchFilterState extends State<ScreenSearchFilter> {
                     style: TextStyle(
                         color: Colors.black,
                         fontFamily: "UrbanistBold",
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.w700),
+                        fontSize: 15.sp,
+                        fontWeight: FontWeight.w600),
                   ),
                   Row(children: [
                     Text(
@@ -78,7 +61,7 @@ class _ScreenSearchFilterState extends State<ScreenSearchFilter> {
                           color: Colors.black,
                           fontFamily: "Urbanist",
                           fontSize: 15.sp,
-                          fontWeight: FontWeight.w700),
+                          fontWeight: FontWeight.w500),
                     ),
                     PopupMenuButton(
                       icon: Icon(Icons.expand_more),
@@ -110,10 +93,9 @@ class _ScreenSearchFilterState extends State<ScreenSearchFilter> {
                 ],
               ),
               Divider(
-                indent: 1,
-                endIndent: 1,
-                color: Color(0xffEDEEEE),
-
+                height: 0,
+                thickness: .5,
+                color: Color(0xffD8D8D8),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -123,8 +105,8 @@ class _ScreenSearchFilterState extends State<ScreenSearchFilter> {
                     style: TextStyle(
                         color: Colors.black,
                         fontFamily: "UrbanistBold",
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.w700),
+                        fontSize: 15.sp,
+                        fontWeight: FontWeight.w600),
                   ),
                   Row(children: [
                     Text(
@@ -133,7 +115,7 @@ class _ScreenSearchFilterState extends State<ScreenSearchFilter> {
                           color: Colors.black,
                           fontFamily: "Urbanist",
                           fontSize: 15.sp,
-                          fontWeight: FontWeight.w700),
+                          fontWeight: FontWeight.w500),
                     ),
                     PopupMenuButton(
                       icon: Icon(Icons.expand_more),
@@ -165,10 +147,9 @@ class _ScreenSearchFilterState extends State<ScreenSearchFilter> {
                 ],
               ),
               Divider(
-                indent: 1,
-                endIndent: 1,
-                color: Color(0xffEDEEEE),
-
+                height: 0,
+                thickness: .5,
+                color: Color(0xffD8D8D8),
               ),
 
               Row(
@@ -179,8 +160,8 @@ class _ScreenSearchFilterState extends State<ScreenSearchFilter> {
                     style: TextStyle(
                         color: Colors.black,
                         fontFamily: "UrbanistBold",
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.w700),
+                        fontSize: 15.sp,
+                        fontWeight: FontWeight.w600),
                   ),
                   Row(children: [
                     Text(
@@ -189,7 +170,7 @@ class _ScreenSearchFilterState extends State<ScreenSearchFilter> {
                           color: Colors.black,
                           fontFamily: "Urbanist",
                           fontSize: 15.sp,
-                          fontWeight: FontWeight.w700),
+                          fontWeight: FontWeight.w500),
                     ),
                     PopupMenuButton(
                       icon: Icon(Icons.expand_more),
@@ -221,10 +202,9 @@ class _ScreenSearchFilterState extends State<ScreenSearchFilter> {
                 ],
               ),
               Divider(
-                indent: 1,
-                endIndent: 1,
-                color: Color(0xffEDEEEE),
-
+                height: 0,
+                thickness: .5,
+                color: Color(0xffD8D8D8),
               ),
 
               Row(
@@ -235,8 +215,8 @@ class _ScreenSearchFilterState extends State<ScreenSearchFilter> {
                     style: TextStyle(
                         color: Colors.black,
                         fontFamily: "UrbanistBold",
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.w700),
+                        fontSize: 15.sp,
+                        fontWeight: FontWeight.w600),
                   ),
                   Row(children: [
                     Text(
@@ -245,7 +225,7 @@ class _ScreenSearchFilterState extends State<ScreenSearchFilter> {
                           color: Colors.black,
                           fontFamily: "Urbanist",
                           fontSize: 15.sp,
-                          fontWeight: FontWeight.w700),
+                          fontWeight: FontWeight.w500),
                     ),
                     PopupMenuButton(
                       icon: Icon(Icons.expand_more),
@@ -277,10 +257,9 @@ class _ScreenSearchFilterState extends State<ScreenSearchFilter> {
                 ],
               ),
               Divider(
-                indent: 1,
-                endIndent: 1,
-                color: Color(0xffEDEEEE),
-
+                height: 0,
+                thickness: .5,
+                color: Color(0xffD8D8D8),
               ),
 
               Row(
@@ -291,8 +270,8 @@ class _ScreenSearchFilterState extends State<ScreenSearchFilter> {
                     style: TextStyle(
                         color: Colors.black,
                         fontFamily: "UrbanistBold",
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.w700),
+                        fontSize: 15.sp,
+                        fontWeight: FontWeight.w600),
                   ),
                   Row(children: [
                     Text(
@@ -301,7 +280,7 @@ class _ScreenSearchFilterState extends State<ScreenSearchFilter> {
                           color: Colors.black,
                           fontFamily: "Urbanist",
                           fontSize: 15.sp,
-                          fontWeight: FontWeight.w700),
+                          fontWeight: FontWeight.w500),
                     ),
                     PopupMenuButton(
                       icon: Icon(Icons.expand_more),
@@ -333,10 +312,9 @@ class _ScreenSearchFilterState extends State<ScreenSearchFilter> {
                 ],
               ),
               Divider(
-                indent: 1,
-                endIndent: 1,
-                color: Color(0xffEDEEEE),
-
+                height: 0,
+                thickness: .5,
+                color: Color(0xffD8D8D8),
               ),
 
               Row(
@@ -347,8 +325,8 @@ class _ScreenSearchFilterState extends State<ScreenSearchFilter> {
                     style: TextStyle(
                         color: Colors.black,
                         fontFamily: "UrbanistBold",
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.w700),
+                        fontSize: 15.sp,
+                        fontWeight: FontWeight.w600),
                   ),
                   Row(children: [
                     Text(
@@ -357,7 +335,7 @@ class _ScreenSearchFilterState extends State<ScreenSearchFilter> {
                           color: Colors.black,
                           fontFamily: "Urbanist",
                           fontSize: 15.sp,
-                          fontWeight: FontWeight.w700),
+                          fontWeight: FontWeight.w500),
                     ),
                     PopupMenuButton(
                       icon: Icon(Icons.expand_more),
@@ -389,10 +367,9 @@ class _ScreenSearchFilterState extends State<ScreenSearchFilter> {
                 ],
               ),
               Divider(
-                indent: 1,
-                endIndent: 1,
-                color: Color(0xffEDEEEE),
-
+                height: 0,
+                thickness: .5,
+                color: Color(0xffD8D8D8),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -402,8 +379,8 @@ class _ScreenSearchFilterState extends State<ScreenSearchFilter> {
                     style: TextStyle(
                         color: Colors.black,
                         fontFamily: "UrbanistBold",
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.w700),
+                        fontSize: 15.sp,
+                        fontWeight: FontWeight.w600),
                   ),
                   RatingBar(
                     filledIcon: Icons.star,
@@ -415,36 +392,81 @@ class _ScreenSearchFilterState extends State<ScreenSearchFilter> {
                     size: 24,
                   )
                 ],
-              ),
+              ).marginSymmetric(vertical: 8.h),
               Divider(
-                indent: 1,
-                endIndent: 1,
-                color: Color(0xffEDEEEE),
-
+                height: 0,
+                thickness: .5,
+                color: Color(0xffD8D8D8),
               ),
               Text(
                 "Price Range",
                 style: TextStyle(
                     color: Colors.black,
                     fontFamily: "UrbanistBold",
-                    fontSize: 18.sp,
-                    fontWeight: FontWeight.w700),
+                    fontSize: 15.sp,
+                    fontWeight: FontWeight.w600),
               ),
-              Image.asset("assets/images/Line 39.png").marginSymmetric(horizontal: 20.w,vertical: 20.h),
+              SizedBox(
+                width: Get.width,
+                child: Obx(() {
+                  final startLabel = "\$${controller.selectedRange.value.start.toStringAsFixed(0)}";
+                  final endLabel = "\$${controller.selectedRange.value.end.toStringAsFixed(0)}";
+
+                  return SliderTheme(
+                    data: SliderThemeData(
+                      thumbShape: SliderComponentShape.noOverlay,
+                      overlayColor: AppColors.appPrimaryColor,
+                      valueIndicatorColor: Color(0xFF2F97D1),
+                      // Change the overlay color
+                      valueIndicatorTextStyle: TextStyle(
+                        color: Colors.white, // Change the label text color here
+                      ),
+                    ),
+                    child: RangeSlider(
+                      min: 0,
+                      max: 100,
+                      divisions: 99,
+                      labels: RangeLabels(startLabel, endLabel),
+                      values: controller.selectedRange.value,
+                      onChanged: (value) {
+                        controller.selectedRange.value = value;
+                        log(controller.selectedRange.value.start.toString());
+                        log(controller.selectedRange.value.end.toString());
+                      },
+                    ),
+                  );
+                }),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text("\$ 0",style: TextStyle(
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w600
+                  ),),
+                  Text("\$ 100",style: TextStyle(
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w600
+                  ),),
+                ],
+              ).marginSymmetric(horizontal: 25.w
+              ),
+              Image.asset("assets/images/Line 39.png").marginSymmetric(horizontal: 40.w,vertical: 20.h),
               Center(
                 child: Text(
                   "Sort by",
                   style: TextStyle(
                     color: AppColors.appPrimaryColor,
-                    fontSize: 18.sp,
-                    fontWeight: FontWeight.w700,
-                    fontFamily: "UrbanistBold",
+                    fontSize: 15.sp,
+                    fontWeight: FontWeight.w600
+                    ,fontFamily: "UrbanistBold",
                   ),
                 ),
               ),
               RadioListTile(
                   title: Text("Popular Vehicle",
-                    style: TextStyle(color: Colors.black,fontFamily: "UrbanistBold",fontWeight: FontWeight.w700,fontSize: 18.sp),),
+                    style: TextStyle(color: Colors.black,fontFamily: "UrbanistBold",fontSize: 15.sp,
+                        fontWeight: FontWeight.w600),),
                   controlAffinity: ListTileControlAffinity.trailing,
                   activeColor: primaryColor,
                   value: "popularVehicle",
@@ -455,9 +477,15 @@ class _ScreenSearchFilterState extends State<ScreenSearchFilter> {
 
                     });
                   }),
+              Divider(
+                height: 0,
+                thickness: .5,
+                color: Color(0xffD8D8D8),
+              ),
               RadioListTile(
                   title: Text("Price Low to Heigh",
-                    style: TextStyle(color: Colors.black,fontFamily: "UrbanistBold",fontWeight: FontWeight.w700,fontSize: 18.sp),),
+                    style: TextStyle(color: Colors.black,fontFamily: "UrbanistBold",fontSize: 15.sp,
+                        fontWeight: FontWeight.w600),),
                   controlAffinity: ListTileControlAffinity.trailing,
                   activeColor: primaryColor,
                   value: "pricelowtoheigh",
@@ -468,9 +496,15 @@ class _ScreenSearchFilterState extends State<ScreenSearchFilter> {
 
                     });
                   }),
+              Divider(
+                height: 0,
+                thickness: .5,
+                color: Color(0xffD8D8D8),
+              ),
               RadioListTile(
                   title: Text("Price Heigh To Low",
-                    style: TextStyle(color: Colors.black,fontFamily: "UrbanistBold",fontWeight: FontWeight.w700,fontSize: 18.sp),),
+                    style: TextStyle(color: Colors.black,fontFamily: "UrbanistBold",fontSize: 15.sp,
+                        fontWeight: FontWeight.w600),),
                   controlAffinity: ListTileControlAffinity.trailing,
                   activeColor: primaryColor,
                   value: "priceheightolow",
@@ -481,25 +515,36 @@ class _ScreenSearchFilterState extends State<ScreenSearchFilter> {
 
                     });
                   }),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children:[
-                  CustomButton(
-                    width: 164.w,
-                    color: Color(0xffC7C7C7),
-                      title: "Clear", onPressed: (){}),
-                  CustomButton(
-                      width: 164.w,
 
-                      title: "Apply", onPressed: (){
-                        Get.to(ScreenFilter());
-                  }),
-                ]
+              Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children:[
+                    CustomButton(
+                        width: 164.w,
+                        color: Color(0xffC7C7C7),
+                        textStyle: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 18.sp
+                            ,color: Colors.black
+                        ),
+                        title: "Clear", onPressed: (){}),
+                    CustomButton(
+                        width: 164.w,
+                        textStyle: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 18.sp
+                            ,color: Colors.white
+                        ),
+                        title: "Apply", onPressed: (){
+                      Get.to(ScreenFilter());
+                    }),
+                  ]
               )
 
             ],
-          ).marginSymmetric(horizontal: 12.w,vertical: 15.h),
-        )
+          ).marginSymmetric(horizontal: 15.w,vertical: 15.h),
+
+        ),
       ),
     );
   }

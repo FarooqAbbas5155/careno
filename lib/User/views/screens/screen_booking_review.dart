@@ -189,7 +189,7 @@ Widget BookingSummary(
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
-      Text(title,style: TextStyle(color: Color(0xff484848),fontSize: 15.sp,fontWeight: FontWeight.w600,),),
+      Text(title,style: TextStyle(color: Color(0xff484848).withOpacity(.7),fontSize: 15.sp,fontWeight: FontWeight.w500,),),
       Text(description,style: TextStyle(color: Colors.black,fontSize: 16.sp,fontWeight: FontWeight.w600,fontFamily: "UrbanistBold"),),
     ],
   ).marginSymmetric(horizontal:12.w,vertical: 4.h);

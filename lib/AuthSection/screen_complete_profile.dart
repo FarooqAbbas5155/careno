@@ -141,8 +141,9 @@ class _ScreenCompleteProfileState extends State<ScreenCompleteProfile> {
                   return CustomTextField(
                     padding: EdgeInsets.only(left: 18.w, top: 18.h),
                     readOnly: true,
-                    hint: controller.selectedGender.value.isEmpty ? "Gender" : controller.selectedGender.value,
                     hintColor:controller.selectedGender.value.isEmpty?Color(0xff94979F).withOpacity(.7):Colors.black,
+
+                    hint: controller.selectedGender.value.isEmpty ? "Gender" : controller.selectedGender.value,
                     suffix: PopupMenuButton(
                       icon: Icon(Icons.expand_more),
                       color: Theme.of(context).primaryColor,

@@ -38,12 +38,9 @@ class CustomButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(50),
           )
         ),
-        child: Padding(
-          padding: const EdgeInsets.all(4.0),
-          child: Text(
-            title ?? 'Button',
-            style: textStyle ?? TextStyle(fontSize: 18.sp,fontFamily: "UrbanistBold", fontWeight: FontWeight.w700,color: textColor??Colors.white),
-          ),
+        child: Text(
+          title ?? 'Button',
+          style: textStyle ?? TextStyle(fontSize: 18.sp,fontFamily: "UrbanistBold", fontWeight: FontWeight.w700,color: textColor??Colors.white),
         ),
       ),
     );

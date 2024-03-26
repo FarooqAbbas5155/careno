@@ -25,9 +25,11 @@ class ScreenUserChat extends StatelessWidget {
               SizedBox(width: 10.w,),
               CustomSvg(name: "arrow",),
 
-              CircleAvatar(
-                radius: 20.r,
-                backgroundImage: AssetImage("assets/images/user-image.png"),
+              Expanded(
+                child: CircleAvatar(
+                  radius: 20.r,
+                  backgroundImage: AssetImage("assets/images/user-image.png"),
+                ),
               ),
 
             ],

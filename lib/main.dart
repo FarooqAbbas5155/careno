@@ -12,6 +12,8 @@ import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
 
 import 'AuthSection/screen_welcome.dart';
+import 'Host/Views/Layouts/layout_host_profile.dart';
+import 'Host/Views/Screens/screen_host_notification.dart';
 import 'constant/colors.dart';
 import 'firebase_options.dart';
 
@@ -166,12 +168,13 @@ class _MyAppState extends State<MyApp> {
         builder: (_, child) {
           return GetMaterialApp(
             // home: ScreenAthleteHomePage(),
-            home: ScreenUserHome(),
+            home: ScreenWelcome(),
             locale: Locale('en', 'US'),
             debugShowCheckedModeBanner: false,
             defaultTransition: Transition.fade,
             title: "Careno",
             theme: ThemeData(
+
               fontFamily: 'Urbanist',
               primarySwatch: AppColors.appPrimaryColor,
               radioTheme: RadioThemeData(
@@ -195,21 +198,29 @@ class _MyAppState extends State<MyApp> {
                 side: BorderSide(color: Color(0xff585858), width: 1),
               ),
               appBarTheme: AppBarTheme(
-                color: Colors.white,
-                elevation: 0,
+                // color: Colors.white,
+                backgroundColor: Colors.white,
+                foregroundColor: Colors.white,
+                elevation: 2,
                 titleTextStyle: TextStyle(
                     color: Colors.black,
-                    fontWeight: FontWeight.bold,
+                    fontSize: 20.sp,
+                    fontWeight: FontWeight.w700,
                     fontFamily: "Urbanist"),
-                centerTitle: false,
+                centerTitle: true,
                 systemOverlayStyle:
                 SystemUiOverlayStyle(statusBarColor: Colors.transparent),
                 iconTheme: IconThemeData(color: Colors.black),
               ),
+
               dividerColor: Colors.transparent,
               scaffoldBackgroundColor: Colors.white,
-              backgroundColor: Color(0xFFFAFBFF),
+              backgroundColor: Colors.white,
+              useMaterial3: false,
+
+
             ),
+
             builder: (context, widget) {
               ErrorWidget.builder = (FlutterErrorDetails errorDetails) {
                 return CustomError(errorDetails: errorDetails);

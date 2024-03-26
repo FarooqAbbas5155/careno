@@ -132,7 +132,7 @@ class BottomBarItem extends StatelessWidget {
         overlayColor: MaterialStateProperty.all(Colors.transparent),
       ),
       child: Column(
-        mainAxisSize: MainAxisSize.max,
+        mainAxisSize: MainAxisSize.min,
         children: [
           SvgPicture.asset(icon, color: color,),
           // (isSelected) ? SizedBox(height: 5.h) :

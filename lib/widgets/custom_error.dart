@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart' hide Badge;
+import 'package:flutter/material.dart';
 
 class CustomError extends StatelessWidget {
   final FlutterErrorDetails errorDetails;
@@ -9,22 +9,12 @@ class CustomError extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     print(errorDetails);
-
-    return Card(
-      child: Padding(
-        child: Text(
-          "Something is not right here...",
-          style: const TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        padding: const EdgeInsets.all(8.0),
+    return Center(
+      child: Text(
+        'Error occurred: ${errorDetails.exception}',
+        style: TextStyle(color: Colors.red),
       ),
-      color: Colors.red,
-      margin: EdgeInsets.zero,
     );
   }
 }
