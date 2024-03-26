@@ -201,7 +201,7 @@ class _MyAppState extends State<MyApp> {
                 // color: Colors.white,
                 backgroundColor: Colors.white,
                 foregroundColor: Colors.white,
-                elevation: 2,
+                elevation: 4,
                 titleTextStyle: TextStyle(
                     color: Colors.black,
                     fontSize: 20.sp,

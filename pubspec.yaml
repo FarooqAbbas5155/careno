@@ -69,6 +69,7 @@ dependencies:
   calendar_date_picker2: ^0.5.5
   intl: any
   country_list_pick: ^1.0.1+6
+  dotted_line: ^3.2.2
   circle_flags: ^4.0.2
 dev_dependencies:
   flutter_test:
