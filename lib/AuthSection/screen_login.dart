@@ -47,7 +47,7 @@ class ScreenLogin extends StatelessWidget {
                         fontWeight: FontWeight.w700),).marginOnly(top: 30.h, bottom: 8.h),
                     Obx(() {
                       return CustomTextField(
-                        padding: EdgeInsets.only(left: 10.w, top: 18.h),
+                        padding: EdgeInsets.only(left: 10.w, top: 24.h),
                         hint: "Phone Number",
                         keyboardType: TextInputType.number,
                         hintColor:controller.countryCode.value==null?Color(0xff94979F).withOpacity(.7):Colors.black,

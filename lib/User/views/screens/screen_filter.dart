@@ -1,4 +1,6 @@
+import 'package:careno/User/views/screens/screen_search.dart';
 import 'package:careno/User/views/screens/screen_search_filter.dart';
+import 'package:careno/User/views/screens/screen_search_result.dart';
 import 'package:careno/constant/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -38,7 +40,6 @@ class ScreenFilter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-
         child:Scaffold(
           floatingActionButton: FloatingActionButton(
             backgroundColor: AppColors.appPrimaryColor,
@@ -71,6 +72,11 @@ class ScreenFilter extends StatelessWidget {
                   fontWeight: FontWeight.w700,
                   fontFamily: "UrbanistBold"),
             ),
+            actions: [
+              IconButton(onPressed: (){
+                Get.to(ScreenSearch());
+              }, icon: Icon(Icons.search,color: Colors.black,))
+            ],
             centerTitle: true,
           ),
           body: Container(

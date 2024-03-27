@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../../constant/helpers.dart';
+import '../../../widgets/custom_button.dart';
 import '../../../widgets/custom_svg.dart';
 
 class ScreenHostSetting extends StatelessWidget {
@@ -88,6 +90,68 @@ class ScreenHostSetting extends StatelessWidget {
           ),
           ListTile(
             onTap: (){
+              Get.defaultDialog(
+                  title: '',
+                  content: GestureDetector(
+                    onTap: () {
+                      Get.back();
+                    },
+                    child: Align(
+                      alignment: Alignment.topRight,
+                      child: Container(
+                          padding: EdgeInsets.all(12.sp),
+                          margin: EdgeInsets.symmetric(horizontal:12.sp),
+                          decoration: BoxDecoration(
+                              color: Color(0xFFF0F0F0),
+                              shape: BoxShape.circle
+                          ),
+                          child: Icon(Icons.clear,color: Colors.black,)),
+                    ),
+                  ),
+                  actions: [
+                    Column(
+                      children: [
+                        Container(
+                          height: 55.h,
+                          width: 55.w,
+                          padding: EdgeInsets.all(12.sp),
+                          decoration: BoxDecoration(
+                              color: Color(0xFFF0F0F0),
+                              borderRadius: BorderRadius.circular(20.r)),
+                          child: CustomSvg(
+                            name: "block",
+                            color: Color(0xffeb141b),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10.sp,
+                        ),
+                        Text(
+                          "Delete",
+                          style: TextStyle(color: Colors.black, fontSize: 22.sp, fontWeight: FontWeight.w700,fontFamily: "UrbanistBold",),
+                        ),
+                        SizedBox(
+                          height: 13.sp,
+                        ),
+                        SizedBox(
+                          height: 36.h,
+                          width: 230.w,
+                          child: Text(
+                            textAlign: TextAlign.center,
+                            "Are you sure you want to Delete Account?",
+                            style: TextStyle(color: Colors.black, fontSize: 15.sp, fontWeight: FontWeight.w600,fontFamily: "UrbanistBold",),
+                          ),
+                        ),
+                        CustomButton(
+                          color: Color(0xffeb141b),
+                            width: 193.w,
+                            title: "Yes, Delete",
+                            onPressed: () {
+                              Get.back();
+                            }).marginSymmetric(vertical: 20.h)
+                      ],
+                    )
+                  ]);
             },
             leading: Container(
               height: 36.h,
