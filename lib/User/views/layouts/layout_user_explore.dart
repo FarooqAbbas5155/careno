@@ -50,7 +50,7 @@ class _LayoutUserExploreState extends State<LayoutUserExplore> {
                           "CARENO HOME",
                           style: TextStyle(
                               color: Colors.white,
-                              fontFamily: "UrbanistBold",
+                              fontFamily: "Urbanist",
                               fontSize: 20.sp,
                               fontWeight: FontWeight.w800),
                         ),
@@ -136,6 +136,7 @@ class _LayoutUserExploreState extends State<LayoutUserExplore> {
                               hintStyle: TextStyle(
                                   color: Color(0xffABABAB),
                                   fontSize: 14.sp,
+                                  fontWeight: FontWeight.w400,
                                   fontFamily: "Urbanist"),
                               prefixIcon: Icon(
                                 Icons.search,
@@ -190,8 +191,8 @@ class _LayoutUserExploreState extends State<LayoutUserExplore> {
                           child: Text(
                             "Explore Categories",
                             style: TextStyle(
-                                fontFamily: "UrbanistBold",
-                                fontSize: 24.sp,
+                                fontFamily: "Urbanist",
+                                fontSize: 20.sp,
                                 fontWeight: FontWeight.w700),
                           ),
                         ),
@@ -226,7 +227,7 @@ class _LayoutUserExploreState extends State<LayoutUserExplore> {
                               "Popular Vehicles",
                               style: TextStyle(
                                   fontFamily: "UrbanistBold",
-                                  fontSize: 24.sp,
+                                  fontSize: 20.sp,
                                   fontWeight: FontWeight.w700),
                             ),
                             Row(
@@ -235,8 +236,8 @@ class _LayoutUserExploreState extends State<LayoutUserExplore> {
                                   "See all ",
                                   style: TextStyle(
                                       fontFamily: "Urbanist",
-                                      fontSize: 14.sp,
-                                      fontWeight: FontWeight.w700,
+                                      fontSize: 13.sp,
+                                      fontWeight: FontWeight.w600,
                                       color: primaryColor),
                                 ).marginSymmetric(horizontal: 2.w),
                                 SvgPicture.asset("assets/images/see_all.svg")

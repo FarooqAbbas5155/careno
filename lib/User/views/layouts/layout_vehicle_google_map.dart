@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 import '../../../widgets/custom_button.dart';
 import '../../../constant/helpers.dart';
 import '../screens/screen_car_details.dart';
+import '../screens/screen_user_chat.dart';
 
 class LayoutVehicleGoogleMap extends StatefulWidget {
   @override
@@ -101,8 +102,8 @@ class _LayoutVehicleGoogleMapState extends State<LayoutVehicleGoogleMap> {
                               Row(
                                 children: [
                                   Container(
-                                    height: 110.h,
-                                    width: 88.w,
+                                    height: 100.h,
+                                    width: 83.w,
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(5.r),
                                         image: DecorationImage(
@@ -115,13 +116,13 @@ class _LayoutVehicleGoogleMapState extends State<LayoutVehicleGoogleMap> {
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Text("Tesla Model 3",style: TextStyle(color: Colors.black,fontSize: 20.sp,fontFamily:"UrbanistBold" ,fontWeight: FontWeight.w700),),
-                                      Text("Electric Car",style: TextStyle(color: Color(0xffAAAAAA),fontSize: 15.sp,fontFamily:"Urbanist" ,fontWeight: FontWeight.w600),).marginOnly(bottom: 2.h),
+                                      Text("Tesla Model 3",style: TextStyle(color: Colors.black,fontSize: 14.sp,fontFamily:"Urbanist" ,fontWeight: FontWeight.w700),),
+                                      Text("Electric Car",style: TextStyle(color: Color(0xffAAAAAA),fontSize: 11.sp,fontFamily:"Urbanist" ,fontWeight: FontWeight.w500),).marginOnly(bottom: 2.h),
                                       Row(
                                         children: [
                                           Icon(Icons.star,color: Color(0xffFBC017),),
-                                          Text("5.0",style: TextStyle(color: Colors.black,fontSize: 16.sp,fontFamily:"UrbanistBold" ,fontWeight: FontWeight.w700),),
-                                          Text("(528)",style: TextStyle(color: Color(0xffAAAAAA),fontSize: 11.sp,fontFamily:"Urbanist" ,fontWeight: FontWeight.w600),).marginOnly(left: 4.w),
+                                          Text("5.0",style: TextStyle(color: Colors.black,fontSize: 13.sp,fontFamily:"Urbanist" ,fontWeight: FontWeight.w600),),
+                                          Text("(528)",style: TextStyle(color: Color(0xffAAAAAA),fontSize: 11.sp,fontFamily:"Urbanist" ,fontWeight: FontWeight.w500),).marginOnly(left: 4.w),
                                         ],
                                       ).marginOnly(bottom: 8.h),
                                       Text(
@@ -130,7 +131,7 @@ class _LayoutVehicleGoogleMapState extends State<LayoutVehicleGoogleMap> {
                                           color: primaryColor,
                                           fontSize: 11.sp,
                                           fontFamily: "Urbanist",
-                                          fontWeight: FontWeight.w600,
+                                          fontWeight: FontWeight.w500,
                                           decoration: TextDecoration.underline,
                                         ),
                                       ),
@@ -161,11 +162,13 @@ class _LayoutVehicleGoogleMapState extends State<LayoutVehicleGoogleMap> {
                             CustomButton(
                               width: 180.w,
                               title: 'View Details', onPressed: () {
-                                Get.to(ScreenCarDetails());
+                                Get.offAll(ScreenCarDetails());
                             },).marginOnly(left: 10.w),
                             CustomButton(
                               width: 160.w,
-                              title: 'Message', onPressed: () {  },).marginOnly(left: 10.w),
+                              title: 'Message', onPressed: () {
+                                Get.offAll(ScreenUserChat());
+                            },).marginOnly(left: 10.w),
                           ],
                         ).marginOnly(top: 20.h),
                       )

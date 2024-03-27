@@ -53,7 +53,7 @@ class _ScreenCompleteProfileState extends State<ScreenCompleteProfile> {
                 Text(
                   "Let’s Complete Profile",
                   style: TextStyle(
-                    fontFamily: "UrbanistBold",
+                    fontFamily: "Urbanist",
                     fontSize: 24.sp,
                     fontWeight: FontWeight.w700,
                   ),
@@ -106,8 +106,8 @@ class _ScreenCompleteProfileState extends State<ScreenCompleteProfile> {
                     )
                 ),
                 Center(child: Text("Add Profile Image",
-                  style: TextStyle(fontFamily: "Urbanist", fontSize: 13.sp,color: Colors.black),)),
-                Text("Add Details", style: TextStyle(fontFamily: "UrbanistBold",
+                  style: TextStyle(fontFamily: "Urbanist", fontSize: 13.sp,color: Colors.black,fontWeight: FontWeight.w500),)),
+                Text("Add Details", style: TextStyle(fontFamily: "Urbanist",
                     fontSize: 16.sp,
                     fontWeight: FontWeight.w700),).marginOnly(
                     top: 15.h,),

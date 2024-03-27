@@ -53,12 +53,12 @@ class ItemLayoutExplorePopular extends StatelessWidget {
                    mainAxisAlignment: MainAxisAlignment.start,
                    crossAxisAlignment: CrossAxisAlignment.start,
                    children: [
-                     Text("Tesla Model 3",style: TextStyle(color: Colors.black,fontSize: 16.sp,fontFamily:"UrbanistBold" ,fontWeight: FontWeight.w700),),
-                     Text("Electric Car",style: TextStyle(color: Color(0xffAAAAAA),fontSize: 13.sp,fontFamily:"Urbanist" ,fontWeight: FontWeight.w600),).marginOnly(bottom: 2.h),
+                     Text("Tesla Model 3",style: TextStyle(color: Colors.black,fontSize: 14.sp,fontFamily:"Urbanist" ,fontWeight: FontWeight.w700),),
+                     Text("Electric Car",style: TextStyle(color: Color(0xffAAAAAA),fontSize: 10.sp,fontFamily:"Urbanist" ,fontWeight: FontWeight.w500),).marginOnly(bottom: 2.h),
                      Row(
                        children: [
                          Icon(Icons.star,color: AppColors.starColor,),
-                         Text("5.0",style: TextStyle(color: Colors.black,fontSize: 16.sp,fontFamily:"UrbanistBold" ,fontWeight: FontWeight.w700),),
+                         Text("5.0",style: TextStyle(color: Colors.black,fontSize: 11.sp,fontFamily:"UrbanistBold" ,fontWeight: FontWeight.w600),),
                          Text("(528)",style: TextStyle(color: Color(0xffAAAAAA),fontSize: 11.sp,fontFamily:"Urbanist" ,fontWeight: FontWeight.w600),).marginOnly(left: 4.w),
                        ],
                      ),
@@ -85,16 +85,16 @@ class ItemLayoutExplorePopular extends StatelessWidget {
                 RichText(
                   text: TextSpan(
                     text: '\$ 50',
-                    style: TextStyle(color: primaryColor,fontFamily: "UrbanistBold",fontWeight: FontWeight.w800,fontSize: 16.sp),
+                    style: TextStyle(color: primaryColor,fontFamily: "Urbanist",fontWeight: FontWeight.w700,fontSize: 14.sp),
                     children: <TextSpan>[
                       TextSpan(
                         text: '/per day',
-                        style: TextStyle(color: primaryColor,fontFamily: "Urbanist",fontWeight: FontWeight.w500,fontSize: 14.sp),
+                        style: TextStyle(color: primaryColor,fontFamily: "Urbanist",fontWeight: FontWeight.w500,fontSize: 12.sp),
 
                       ),
                     ],
                   ),
-                ).marginOnly(bottom: 5.h)
+                ).marginOnly(bottom: 2.h)
 
               ],
             )

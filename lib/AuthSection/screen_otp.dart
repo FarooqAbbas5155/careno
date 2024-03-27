@@ -43,9 +43,9 @@ class ScreenOtp extends StatelessWidget {
             children: [
               Padding(
                 padding:  EdgeInsets.only(left: 25.w,top: 20.h),
-                child: Text("OTP Verification",style: TextStyle(fontFamily: "UrbanistBold",fontSize: 24.sp,fontWeight: FontWeight.w700),),
+                child: Text("OTP Verification",style: TextStyle(fontFamily: "Urbanist",fontSize: 24.sp,fontWeight: FontWeight.w700),),
               ),
-              Text("Enter the verification code we just sent on your email address.",style:TextStyle(color: Color(0xff8391A1),fontFamily: "Urbanist" ,)).marginSymmetric(horizontal: 25.w),
+              Text("Enter the verification code we just sent on your Phone Number +1230******722.",style:TextStyle(color: Color(0xff838BA1),fontFamily: "Urbanist" ,fontSize: 16.sp)).marginSymmetric(horizontal: 25.w),
 
               Container(
                 margin: EdgeInsets.symmetric(horizontal: 35.w,vertical: 20.h),
@@ -64,7 +64,7 @@ class ScreenOtp extends StatelessWidget {
                   eachFieldHeight: 60.h,
                   cursorHeight: 20.h,
                   fieldsCount: 4,
-                    textStyle: TextStyle(color: primaryColor,fontFamily: "UrbanistBold",fontSize: 22.sp) ,
+                    textStyle: TextStyle(color: primaryColor,fontFamily: "Urbanist",fontSize: 22.sp,fontWeight: FontWeight.w700) ,
                   inputDecoration: InputDecoration(
                   //  filled: true,
 
@@ -102,11 +102,11 @@ class ScreenOtp extends StatelessWidget {
                       TextSpan(
 
                         text: "Don't received code? ",
-                        style: TextStyle(color: Colors.black,fontFamily: "Urbanist",fontSize: 15.sp),
+                        style: TextStyle(color: Colors.black,fontFamily: "Urbanist",fontSize: 15.sp,fontWeight: FontWeight.w500),
                       ),
                       TextSpan(
                           text: "Resend",
-                          style: TextStyle(color: primaryColor,fontFamily: "UrbanistBold",fontSize: 16.sp), // Use primary color
+                          style: TextStyle(color: primaryColor,fontFamily: "Urbanist",fontSize: 15.sp,fontWeight: FontWeight.w500), // Use primary color
                           // recognizer: TapGestureRecognizer()..onTap = (){
                           //   Navigator.of(context).push(MaterialPageRoute(
                           //     builder: (context) => ScreenSignup(),

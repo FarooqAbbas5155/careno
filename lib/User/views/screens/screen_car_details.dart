@@ -78,8 +78,8 @@ class ScreenCarDetails extends StatelessWidget {
             
                             children: [
                               Icon(Icons.star,color: Color(0xffFBC017),),
-                              Text("5.0",style: TextStyle(color: Colors.white,fontSize: 16.sp,fontFamily:"UrbanistBold" ,fontWeight: FontWeight.w700),),
-                              Text("(528)",style: TextStyle(color: Colors.white.withOpacity(.8),fontSize: 11.sp,fontFamily:"Urbanist" ,fontWeight: FontWeight.w600),).marginOnly(left: 4.w),
+                              Text("5.0",style: TextStyle(color: Colors.white,fontSize: 15.sp,fontFamily:"UrbanistBold" ,fontWeight: FontWeight.w600),),
+                              Text("(528)",style: TextStyle(color: Colors.white.withOpacity(.8),fontSize: 13.sp,fontFamily:"Urbanist" ,fontWeight: FontWeight.w600),).marginOnly(left: 4.w),
                             ],
                           ),
             
@@ -93,11 +93,11 @@ class ScreenCarDetails extends StatelessWidget {
                       child: RichText(
                         text: TextSpan(
                           text: '\$ 50',
-                          style: TextStyle(color: Colors.white,fontFamily: "UrbanistBold",fontWeight: FontWeight.w800,fontSize: 18.sp),
+                          style: TextStyle(color: Colors.white,fontFamily: "UrbanistBold",fontWeight: FontWeight.w700,fontSize: 22.sp),
                           children: <TextSpan>[
                             TextSpan(
                               text: '/per day',
-                              style: TextStyle(color: Colors.white,fontFamily: "Urbanist",fontWeight: FontWeight.w500,fontSize: 16.sp),
+                              style: TextStyle(color: Colors.white,fontFamily: "Urbanist",fontWeight: FontWeight.w500,fontSize: 18.sp),
             
                             ),
                           ],
@@ -127,15 +127,15 @@ class ScreenCarDetails extends StatelessWidget {
                       Text("Toyota Camry",style: TextStyle(fontSize: 20.sp,fontWeight: FontWeight.w700,fontFamily: "UrbanistBold"),).marginOnly(bottom: 4.h,top: 4.h),
                       Row(
                         children: [
-                          Text("Location: ",style: TextStyle(color: Color(0xff616161),fontFamily: "UrbanistBold",fontWeight: FontWeight.w700,fontSize: 13.sp),),
+                          Text("Location: ",style: TextStyle(color: Color(0xff616161),fontFamily: "Urbanist",fontWeight: FontWeight.w700,fontSize: 13.sp),),
                           Expanded(child: Text("Street 2, City, New York, United State",style: TextStyle(color: primaryColor,fontFamily: "Urbanist",fontSize: 13.sp,decoration: TextDecoration.underline,fontWeight: FontWeight.w600),))
                         ],
                       ).marginOnly(bottom: 8.h),
                       TextWidget("Year", "2022", "Type", "Sedon"),
                       TextWidget("Color", "Black", "Seats", "05"),
                       TextWidget("Transmisssion", "Automatic", "Fuel Type", "Gasoline"),
-                      Text("Description",style: TextStyle(fontSize: 18.sp,fontWeight: FontWeight.w700,fontFamily: "UrbanistBold"),).marginOnly(bottom: 4.h,top: 4.h),
-                      Text("The Toyota Camry is a stylish and reliable sedan that offers a comfortable and enjoyable driving experience. With its sleek design and advanced features, the Camry is perfect for both city commuting and long road trips.",style: TextStyle(color: Color(0xff616161).withOpacity(.8),fontFamily: "Urbanist",fontSize: 13.sp),),
+                      Text("Description",style: TextStyle(fontSize: 13.sp,fontWeight: FontWeight.w700,fontFamily: "Urbanist"),).marginOnly(bottom: 4.h,top: 4.h),
+                      Text("The Toyota Camry is a stylish and reliable sedan that offers a comfortable and enjoyable driving experience. With its sleek design and advanced features, the Camry is perfect for both city commuting and long road trips.",style: TextStyle(color: Color(0xff616161).withOpacity(.8),fontFamily: "Urbanist",fontSize: 11.sp,fontWeight: FontWeight.w500),),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -227,17 +227,17 @@ Widget TextWidget(String title, description, String title2,
             Text(
               "${title}: ",
               style: TextStyle(
-                  color: Color(0xff616161),
-                  fontFamily: "UrbanistBold",
+                  color: Color(0xff828282),
+                  fontFamily: "Urbanist",
                   fontWeight: FontWeight.w700,
-                  fontSize: 13.sp),
+                  fontSize: 14.sp),
             ),
             Text(
               "${description}",
               style: TextStyle(
                   color: Color(0xff616161).withOpacity(.8),
                   fontFamily: "Urbanist",
-                  fontSize: 14.sp,
+                  fontSize: 13.sp,
 
                   fontWeight: FontWeight.w600),
             )
@@ -253,8 +253,8 @@ Widget TextWidget(String title, description, String title2,
             Text(
               "${title2}: ",
               style: TextStyle(
-                  color: Color(0xff616161),
-                  fontFamily: "UrbanistBold",
+                  color: Color(0xff828282),
+                  fontFamily: "Urbanist",
                   fontWeight: FontWeight.w700,
                   fontSize: 13.sp),
             ),

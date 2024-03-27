@@ -26,9 +26,9 @@ class ScreenSearchResult extends StatelessWidget {
             "Search Results",
             style: TextStyle(
               color: Colors.black,
-              fontSize: 24.sp,
+              fontSize: 20.sp,
               fontWeight: FontWeight.w700,
-              fontFamily: "UrbanistBold",
+              fontFamily: "Urbanist",
             ),
           ),
           centerTitle: true,

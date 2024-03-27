@@ -29,9 +29,9 @@ class ScreenSearch extends StatelessWidget {
           "Search",
           style: TextStyle(
             color: Colors.black,
-            fontSize: 24.sp,
+            fontSize: 20.sp,
             fontWeight: FontWeight.w700,
-            fontFamily: "UrbanistBold",
+            fontFamily: "Urbanist",
           ),
         ),
         centerTitle: true,
@@ -86,7 +86,7 @@ class ScreenSearch extends StatelessWidget {
                         alignment: Alignment.centerLeft,
                           child: Text("Clear History",style: TextStyle(fontFamily: "Urbanist",fontSize: 20.sp,fontWeight: FontWeight.w600,color: Colors.red),)),
                       actions: [
-                        Text("Are you sure you want to clear your browsing history?",style: TextStyle(fontFamily: "UrbanistBold",fontWeight: FontWeight.w500,fontSize: 16.sp),),
+                        Text("Are you sure you want to clear your browsing history?",style: TextStyle(fontFamily: "Urbanist",fontWeight: FontWeight.w500,fontSize: 16.sp),),
                         Align(
                         alignment: Alignment.bottomRight,
                           child: Row(

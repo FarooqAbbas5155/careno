@@ -40,7 +40,7 @@ class CustomButton extends StatelessWidget {
         ),
         child: Text(
           title ?? 'Button',
-          style: textStyle ?? TextStyle(fontSize: 18.sp,fontFamily: "UrbanistBold", fontWeight: FontWeight.w700,color: textColor??Colors.white),
+          style: textStyle ?? TextStyle(fontSize: 18.sp,fontFamily: "Urbanist", fontWeight: FontWeight.w700,color: textColor??Colors.white),
         ),
       ),
     );

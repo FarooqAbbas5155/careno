@@ -30,9 +30,9 @@ class ScreenAllReviews extends StatelessWidget {
           "See All Reviews",
           style: TextStyle(
               color: Colors.black,
-              fontSize: 24.sp,
+              fontSize: 20.sp,
               fontWeight: FontWeight.w700,
-              fontFamily: "UrbanistBold"),
+              fontFamily: "Urbanist"),
         ),
         centerTitle: true,
       ),
@@ -44,9 +44,9 @@ class ScreenAllReviews extends StatelessWidget {
             "Over All Rating",
             style: TextStyle(
                 color: Colors.black,
-                fontSize: 24.sp,
+                fontSize: 20.sp,
                 fontWeight: FontWeight.w700,
-                fontFamily: "UrbanistBold"),
+                fontFamily: "Urbanist"),
           ).marginOnly(bottom: 3.h),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -64,7 +64,7 @@ class ScreenAllReviews extends StatelessWidget {
                         style: TextStyle(
                             fontSize: 42.sp,
                             fontWeight: FontWeight.w700,
-                            fontFamily: "UrbanistBold"),
+                            fontFamily: "Urbanist"),
                       ),
                     ).marginSymmetric(vertical: 8.h),
                     RatingBar(
@@ -75,7 +75,7 @@ class ScreenAllReviews extends StatelessWidget {
                       maxRating: 5,
                       size: 24,
                     ).marginSymmetric(vertical: 8.h),
-                    Text("922 Reviews",style: TextStyle(color: Color(0xff616161).withOpacity(.8),fontFamily: "Urbanist",fontSize: 15.sp),).marginOnly(top: 12.h,left: 12.w),
+                    Text("922 Reviews",style: TextStyle(color: Color(0xff616161).withOpacity(.8),fontFamily: "Urbanist",fontSize: 14.sp),).marginOnly(top: 12.h,left: 12.w),
 
                   ],
                 ),

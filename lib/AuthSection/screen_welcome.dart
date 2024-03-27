@@ -68,11 +68,11 @@ class ScreenWelcome extends StatelessWidget {
                   children: [
                     Image.asset("assets/images/careno.png",).marginSymmetric(
                        vertical : 30.sp, horizontal: 15.sp),
-                    Text("SignUp",style: TextStyle(color: Colors.black,fontSize: 26.sp,fontWeight: FontWeight.w700,fontFamily: "UrbanistBold"),).marginOnly(left: 14.w),
+                    Text("SignUp",style: TextStyle(color: Colors.black,fontSize: 26.sp,fontWeight: FontWeight.w700,fontFamily: "Urbanist"),).marginOnly(left: 14.w,bottom: 10.h),
                     Obx(() {
                       return RadioListTile(
                           title: Text("As a Customer/User",
-                            style: TextStyle(color: Colors.black,fontFamily: "UrbanistBold",fontWeight: FontWeight.w700,fontSize: 18.sp),),
+                            style: TextStyle(color: Colors.black,fontFamily: "Urbanist",fontWeight: FontWeight.w700,fontSize: 18.sp),),
                           controlAffinity: ListTileControlAffinity.trailing,
                           activeColor: primaryColor,
                           value: "user",
@@ -84,7 +84,7 @@ class ScreenWelcome extends StatelessWidget {
                     Obx(() {
                       return RadioListTile(
                           title: Text("As a Vehicle Host",
-                            style: TextStyle(color: Colors.black,fontFamily: "UrbanistBold",fontWeight: FontWeight.w700,fontSize: 18.sp),),
+                            style: TextStyle(color: Colors.black,fontFamily: "Urbanist",fontWeight: FontWeight.w700,fontSize: 18.sp),),
                           controlAffinity: ListTileControlAffinity.trailing,
                           activeColor: primaryColor,
                           value: "host",

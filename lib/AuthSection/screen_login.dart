@@ -30,11 +30,11 @@ class ScreenLogin extends StatelessWidget {
               Image.asset("assets/images/careno.png").marginSymmetric(
                   vertical: 50.h),
               Center(child: Text("Let’s Get It Started! ", style: TextStyle(
-                  fontFamily: "UrbanistBold",
+                  fontFamily: "Urbanist",
                   fontWeight: FontWeight.w700,
                   fontSize: 18.sp,
                   color: Colors.black),)),
-              Text("Please enter your phone number to verify your identity. You will receive a code on this number..",style:TextStyle(color: Color(0xff8391A1),fontFamily: "Urbanist" ,)).marginSymmetric(horizontal: 25.w,vertical: 6.h),
+              Text("Please enter your phone number to verify your identity. You will receive a code on this number..",style:TextStyle(color: Color(0xff989898),fontFamily: "Urbanist",fontSize: 13.sp)).marginSymmetric(horizontal: 40.w,vertical: 6.h),
 
               Container(
                 margin: EdgeInsets.symmetric(horizontal: 30.w),
@@ -42,8 +42,8 @@ class ScreenLogin extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Phone", style: TextStyle(fontFamily: "UrbanistBold",
-                        fontSize: 16.sp,
+                    Text("Phone", style: TextStyle(fontFamily: "Urbanist",
+                        fontSize: 14.sp,
                         fontWeight: FontWeight.w700),).marginOnly(top: 30.h, bottom: 8.h),
                     Obx(() {
                       return CustomTextField(
@@ -147,7 +147,7 @@ class ScreenLogin extends StatelessWidget {
                         ),
                         Padding(
                           padding: EdgeInsets.symmetric(horizontal: 10),
-                          child: Text("or Continue with",style: TextStyle(color: Colors.black,fontFamily: "Urbanist",fontSize: 14.sp),),
+                          child: Text("or Continue with",style: TextStyle(color: Colors.black,fontFamily: "Urbanist",fontSize: 14.sp,fontWeight: FontWeight.w500),),
                         ),
                         Expanded(
                           child: Divider(
