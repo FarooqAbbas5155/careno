@@ -14,6 +14,7 @@ class ScreenHostVehicle extends StatelessWidget {
       child: SafeArea(
         child: Scaffold(
           appBar: AppBar(
+            elevation: 0,
             title: Text("My Vehicle"),
             bottom: PreferredSize(
               preferredSize: Size.fromHeight(55.h),

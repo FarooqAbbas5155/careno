@@ -22,7 +22,9 @@ class ScreenHostAddIdentIdentityProof extends StatelessWidget {
     ControllerHostAddIdentityProof controllerHostAddIdentityProof = Get.put(
         ControllerHostAddIdentityProof());
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        elevation: 0,
+      ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

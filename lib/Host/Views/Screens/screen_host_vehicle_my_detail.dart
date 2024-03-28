@@ -10,6 +10,7 @@ class ScreenHostVehicleMyDetail extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          elevation: 0,
           title: Text("Vehicle Details"),
           actions: [
             Row(

@@ -19,6 +19,7 @@ class ScreenHostEditProfile extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          elevation: 0,
           title: Text("Edit Profile"),
         ),
         body: SingleChildScrollView(

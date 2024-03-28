@@ -25,6 +25,7 @@ class ScreenHostAddVehicle extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          elevation: 0,
           leading: IconButton(
             onPressed: () {
               Get.back();
@@ -40,8 +41,7 @@ class ScreenHostAddVehicle extends StatelessWidget {
                 "Now Add Your Vehicle",
                 style: TextStyle(fontWeight: FontWeight.w700, fontSize: 24.sp),
               ),
-              buildVehicleContainer(controllerHostAddIdentityProof)
-                  .marginSymmetric(horizontal: 40.w, vertical: 20.h),
+              buildVehicleContainer(controllerHostAddIdentityProof).marginSymmetric(horizontal: 40.w, vertical: 20.h),
               Text(
                 "Add Details",
                 style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20.sp),
@@ -49,8 +49,7 @@ class ScreenHostAddVehicle extends StatelessWidget {
               CustomTextField(
                 hint: "Select Make & Model of Vehicle",
               ).marginSymmetric(vertical: 8.h),
-              buildCategoryContainer(controllerHostAddIdentityProof, context)
-                  .marginSymmetric(vertical: 10.h),
+              buildCategoryContainer(controllerHostAddIdentityProof, context).marginSymmetric(vertical: 10.h),
               CustomTextField(
                 hint: "Enter Year of Vehicle",
                 keyboardType: TextInputType.number,
@@ -404,4 +403,5 @@ class ScreenHostAddVehicle extends StatelessWidget {
       );
     });
   }
+
 }

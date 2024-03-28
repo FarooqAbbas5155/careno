@@ -35,6 +35,7 @@ class _ScreenCompleteProfileState extends State<ScreenCompleteProfile> {
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
+          elevation: 0,
           backgroundColor: Colors.white,
           leading: IconButton(
             icon: Icon(Icons.arrow_back_rounded, color: Colors.black),

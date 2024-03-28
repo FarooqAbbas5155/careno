@@ -13,6 +13,7 @@ class LayoutHostBooking extends StatelessWidget {
       length: 3,
       child: Scaffold(
         appBar: AppBar(
+          elevation: 0,
           title: Text("Bookings",
               style: TextStyle(
                   color: AppColors.appPrimaryColor,

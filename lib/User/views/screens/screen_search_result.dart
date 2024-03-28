@@ -12,7 +12,7 @@ class ScreenSearchResult extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
-          elevation: 1,
+          elevation: 0,
           leading: IconButton(
             onPressed: () {
               Get.back();

@@ -205,47 +205,6 @@ class LayoutHostProfile extends StatelessWidget {
                               onTap: () {
                                 Get.back();
                               },
-                              child: Container(
-                                  margin: EdgeInsets.only(right: 10.sp),
-                                  alignment: Alignment.topRight,
-                                  child: SvgPicture.asset("assets/icons/icon.svg")),
-                            ),
-                            actions: [
-                              Column(
-                                children: [
-                                  Container(
-                                    padding: EdgeInsets.all(12),
-                                    decoration: BoxDecoration(color: Colors.grey.withOpacity(.5), shape: BoxShape.circle),
-                                    child: SvgPicture.asset("assets/icons/logout2.svg",color: primaryColor,),
-                                  ),
-                                  SizedBox(
-                                    height: 10.sp,
-                                  ),
-                                  Text(
-                                   "Logout",
-                                    style: TextStyle(color: Colors.black, fontSize: 14.sp, fontWeight: FontWeight.w500),
-                                  ),
-                                  SizedBox(
-                                    height: 3.sp,
-                                  ),
-                                  Text(
-                                    "Are you sure you want to Logout",
-                                    style: TextStyle(color: Colors.black, fontSize: 14.sp, fontWeight: FontWeight.w400),
-                                  ),
-                                  SizedBox(height: 5.h),
-                                  CustomButton(
-                                      width: 40.w,
-                                      title: "Logout Now",
-                                      onPressed: () {
-                                      })
-                                ],
-                              )
-                            ]); Get.defaultDialog(
-                            title: '',
-                            content: GestureDetector(
-                              onTap: () {
-                                Get.back();
-                              },
                               child: Align(
                                 alignment: Alignment.topRight,
                                 child: Container(

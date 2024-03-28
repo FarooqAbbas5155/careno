@@ -14,8 +14,9 @@ class ScreenSearch extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(child: Scaffold(
       appBar: AppBar(
+
         backgroundColor: Colors.white,
-        elevation: 1,
+        elevation: 0,
         leading: IconButton(
           onPressed: () {
             Get.back();
