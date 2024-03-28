@@ -1,3 +1,4 @@
+import 'package:card_swiper/card_swiper.dart';
 import 'package:careno/User/views/screens/screen_all_reviews.dart';
 import 'package:careno/User/views/screens/screen_booking.dart';
 import 'package:careno/User/views/screens/screen_booking_review.dart';
@@ -16,6 +17,13 @@ import '../layouts/item_screen_car_details.dart';
 class ScreenBookingDetails extends StatelessWidget {
   String status;
   bool submitReview = false;
+  List<String> imagesList=[
+    "assets/images/image.png",
+    "assets/images/image1.png",
+    "assets/images/image2.png",
+    "assets/images/image3.png",
+    "assets/images/image4.png",
+  ];
   @override
   Widget build(BuildContext context) {
 
@@ -28,31 +36,37 @@ class ScreenBookingDetails extends StatelessWidget {
               children: [
                 Stack(
                   children: [
-                    Container(
-                      height: 313.h,
-                      width: Get.width,
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image:
-                              AssetImage("assets/images/image_car_details.png"),
-                              fit: BoxFit.cover)),
-                    ),
-                    Positioned(
-                        bottom: 0,
-                        left: 0,
-                        right: 0,
-                        child: Container(
-                          height: 145.h,
-                          decoration: BoxDecoration(
-                      gradient: LinearGradient(colors: [
-                       Colors.black.withOpacity(.0),
-                        Colors.black
-                      ]
-                      ,
-                        begin: Alignment.topCenter,
-                        end: FractionalOffset.bottomCenter,
-                      )
-                    ),)),
+                    ConstrainedBox(
+                        child: Swiper(
+                          outer: false,
+                          itemBuilder: (c, i) {
+                            return Container(
+                              decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      image: AssetImage(
+                                          imagesList[i]),
+                                      fit: BoxFit.cover)),
+                              child: Container(
+                                height: 145.h,
+                                decoration: BoxDecoration(
+                                    gradient: LinearGradient(colors: [
+                                      Colors.black.withOpacity(.0),
+                                      Colors.black
+                                    ]
+                                      ,
+                                      begin: Alignment.topCenter,
+                                      end: FractionalOffset.bottomCenter,
+                                    )
+                                ),),
+
+                            );
+                          },
+                          pagination: SwiperPagination(
+                              margin: EdgeInsets.symmetric(vertical: 15.h)),
+                          itemCount: imagesList.length,
+                        ),
+                        constraints:
+                        BoxConstraints.loose(Size(Get.width, 231.0.h))),
                     Positioned(
                       left: 10.w,
                       top: 20.h,

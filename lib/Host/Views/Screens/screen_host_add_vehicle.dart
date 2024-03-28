@@ -21,7 +21,7 @@ class ScreenHostAddVehicle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ControllerHostAddVechicle controllerHostAddIdentityProof =
-        Get.put(ControllerHostAddVechicle());
+    Get.put(ControllerHostAddVechicle());
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -41,7 +41,55 @@ class ScreenHostAddVehicle extends StatelessWidget {
                 "Now Add Your Vehicle",
                 style: TextStyle(fontWeight: FontWeight.w700, fontSize: 24.sp),
               ),
-              buildVehicleContainer(controllerHostAddIdentityProof).marginSymmetric(horizontal: 40.w, vertical: 20.h),
+              Wrap(
+                spacing: 20.w,
+                runSpacing: 20.h,
+                children: [
+                  Obx(() {
+                    return addVehicle(() async {
+                      controllerHostAddIdentityProof.vehiclePath.value =
+                      await FilePick().pickImage(ImageSource.gallery);
+                    }, "Vehicle Image must be visible in image",
+                        RxString((controllerHostAddIdentityProof.vehiclePath
+                            .value)));
+                  }),
+                  Obx(() {
+                    return addVehicle(() async {
+                      controllerHostAddIdentityProof.vehicleNumberPlatePath.value =
+                      await FilePick().pickImage(ImageSource.gallery);
+                    }, "Car plate number must visible in image",
+                        RxString((controllerHostAddIdentityProof.vehicleNumberPlatePath
+                            .value)));
+                  }),
+                  Obx(() {
+                    return addVehicle(() async {
+                      controllerHostAddIdentityProof.vehicleRightSidePaths.value =
+                      await FilePick().pickImage(ImageSource.gallery);
+                    }, "Capture vehicle's right side in the image",
+                        RxString((controllerHostAddIdentityProof.vehicleRightSidePaths
+                            .value)));
+                  }),
+                  Obx(() {
+                    return addVehicle(() async {
+                      controllerHostAddIdentityProof.vehicleRearPaths.value =
+                      await FilePick().pickImage(ImageSource.gallery);
+                    }, "Include the rear, with the rear plate",
+                        RxString((controllerHostAddIdentityProof.vehicleRearPaths
+                            .value)));
+                  }),
+                  Obx(() {
+                    return addVehicle(() async {
+                      controllerHostAddIdentityProof.vehicleInteriorPaths.value =
+                      await FilePick().pickImage(ImageSource.gallery);
+                    }, "Provide car interior picture",
+                        RxString((controllerHostAddIdentityProof.vehicleInteriorPaths
+                            .value)));
+                  }),
+
+                ],
+              ),
+              // buildVehicleContainer(controllerHostAddIdentityProof)
+              //     .marginSymmetric(horizontal: 40.w, vertical: 20.h),
               Text(
                 "Add Details",
                 style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20.sp),
@@ -49,7 +97,8 @@ class ScreenHostAddVehicle extends StatelessWidget {
               CustomTextField(
                 hint: "Select Make & Model of Vehicle",
               ).marginSymmetric(vertical: 8.h),
-              buildCategoryContainer(controllerHostAddIdentityProof, context).marginSymmetric(vertical: 10.h),
+              buildCategoryContainer(controllerHostAddIdentityProof, context)
+                  .marginSymmetric(vertical: 10.h),
               CustomTextField(
                 hint: "Enter Year of Vehicle",
                 keyboardType: TextInputType.number,
@@ -59,7 +108,7 @@ class ScreenHostAddVehicle extends StatelessWidget {
                 keyboardType: TextInputType.number,
               ).marginSymmetric(vertical: 8.h),
               buildTransmissionContainer(
-                      controllerHostAddIdentityProof, context)
+                  controllerHostAddIdentityProof, context)
                   .marginSymmetric(vertical: 10.h),
               buildFuelContainer(controllerHostAddIdentityProof, context),
               CustomTextField(
@@ -82,11 +131,13 @@ class ScreenHostAddVehicle extends StatelessWidget {
                 hint: "Per Hours Rent \$",
                 keyboardType: TextInputType.number,
               ).marginSymmetric(vertical: 8.h),
-              buildVehicleNumberPlate(controllerHostAddIdentityProof),
+              // buildVehicleNumberPlate(controllerHostAddIdentityProof),
               buildRegistrationProof(controllerHostAddIdentityProof),
-              CustomButton(title: 'Next', onPressed: () {
-                Get.offAll(ScreenHostHomePage());
-              }).marginSymmetric(vertical: 20.h)
+              CustomButton(
+                  title: 'Next',
+                  onPressed: () {
+                    Get.offAll(ScreenHostHomePage());
+                  }).marginSymmetric(vertical: 20.h)
             ],
           ).marginSymmetric(horizontal: 22.w),
         ),
@@ -94,51 +145,49 @@ class ScreenHostAddVehicle extends StatelessWidget {
     );
   }
 
-  Obx buildRegistrationProof(ControllerHostAddVechicle controllerHostAddIdentityProof) {
+  Obx buildRegistrationProof(
+      ControllerHostAddVechicle controllerHostAddIdentityProof) {
     return Obx(() {
-              return GestureDetector(
-                onTap: () async {
-                  controllerHostAddIdentityProof
-                          .vehicleRegistrationProofPath.value =
-                      await FilePick().pickImage(ImageSource.gallery);
-                },
-                child: Container(
-                  margin:
-                      EdgeInsets.symmetric(horizontal: 60.w, vertical: 15.h),
-                  height: 100.h,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10.r),
-                    border: Border.all(color: Color(0xFFA6A6A6), width: 2.r),
+      return GestureDetector(
+        onTap: () async {
+          controllerHostAddIdentityProof.vehicleRegistrationProofPath.value =
+          await FilePick().pickImage(ImageSource.gallery);
+        },
+        child: Container(
+          margin: EdgeInsets.symmetric(horizontal: 60.w, vertical: 15.h),
+          height: 100.h,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10.r),
+            border: Border.all(color: Color(0xFFA6A6A6), width: 2.r),
+          ),
+          child: (controllerHostAddIdentityProof
+              .vehicleRegistrationProofPath.value.isNotEmpty)
+              ? Image.file(File(controllerHostAddIdentityProof
+              .vehicleRegistrationProofPath.value))
+              : Column(
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  CustomSvg(
+                    name: "car-insurance",
                   ),
-                  child: (controllerHostAddIdentityProof
-                          .vehicleRegistrationProofPath.value.isNotEmpty)
-                      ? Image.file(File(controllerHostAddIdentityProof
-                          .vehicleRegistrationProofPath.value))
-                      : Column(
-                          children: <Widget>[
-                            Row(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.spaceEvenly,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                CustomSvg(
-                                  name: "car-insurance",
-                                ),
-                                Text(
-                                  "Add vehicle\nregistration\nImage",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      fontFamily: "Nunito",
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 12.sp),
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
-                ),
-              );
-            });
+                  Text(
+                    "Add vehicle\nregistration\nImage",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontFamily: "Nunito",
+                        fontWeight: FontWeight.w400,
+                        fontSize: 12.sp),
+                  )
+                ],
+              ),
+            ],
+          ),
+        ),
+      );
+    });
   }
 
   Obx buildVehicleNumberPlate(
@@ -147,7 +196,7 @@ class ScreenHostAddVehicle extends StatelessWidget {
       return GestureDetector(
         onTap: () async {
           controllerHostAddIdentityProof.vehicleNumberPlatePath.value =
-              await FilePick().pickImage(ImageSource.gallery);
+          await FilePick().pickImage(ImageSource.gallery);
         },
         child: Container(
           margin: EdgeInsets.symmetric(horizontal: 60.w, vertical: 15.h),
@@ -158,52 +207,52 @@ class ScreenHostAddVehicle extends StatelessWidget {
             border: Border.all(color: Color(0xFFA6A6A6), width: 2.r),
           ),
           child: (controllerHostAddIdentityProof
-                  .vehicleNumberPlatePath.isNotEmpty)
+              .vehicleNumberPlatePath.isNotEmpty)
               ? Image.file(File(
-                  controllerHostAddIdentityProof.vehicleNumberPlatePath.value))
+              controllerHostAddIdentityProof.vehicleNumberPlatePath.value))
               : Column(
-                  children: <Widget>[
-                    Expanded(
-                      child: Container(
-                        color: Colors.white,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            CustomSvg(
-                              name: "vechilcle-number",
-                            ),
-                            Text(
-                              "Take vehicle\nimage",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontFamily: "Nunito",
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 12.sp),
-                            )
-                          ],
-                        ),
+            children: <Widget>[
+              Expanded(
+                child: Container(
+                  color: Colors.white,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      CustomSvg(
+                        name: "vechilcle-number",
                       ),
-                    ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        CustomSvg(
-                          name: "info",
-                        ).marginOnly(right: 3.w),
-                        Text(
-                          "Car plate number must visible in image",
-                          style: TextStyle(
-                              fontSize: 8.sp,
-                              fontWeight: FontWeight.w400,
-                              color: Colors.black,
-                              fontFamily: "Nunito"),
-                        )
-                      ],
-                    ).marginSymmetric(vertical: 5.h)
-                  ],
+                      Text(
+                        "Take vehicle\nimage",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontFamily: "Nunito",
+                            fontWeight: FontWeight.w400,
+                            fontSize: 12.sp),
+                      )
+                    ],
+                  ),
                 ),
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  CustomSvg(
+                    name: "info",
+                  ).marginOnly(right: 3.w),
+                  Text(
+                    "Car plate number must visible in image",
+                    style: TextStyle(
+                        fontSize: 8.sp,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.black,
+                        fontFamily: "Nunito"),
+                  )
+                ],
+              ).marginSymmetric(vertical: 5.h)
+            ],
+          ),
         ),
       );
     });
@@ -224,7 +273,9 @@ class ScreenHostAddVehicle extends StatelessWidget {
             : Colors.black,
         suffix: PopupMenuButton(
           icon: Icon(Icons.expand_more),
-          color: Theme.of(context).primaryColor,
+          color: Theme
+              .of(context)
+              .primaryColor,
           itemBuilder: (BuildContext context) {
             return [
               'Electric Car',
@@ -264,12 +315,14 @@ class ScreenHostAddVehicle extends StatelessWidget {
             ? "Select Transmission"
             : controllerHostAddIdentityProof.selectTransmission.value,
         hintColor:
-            controllerHostAddIdentityProof.selectTransmission.value.isEmpty
-                ? Color(0xff94979F)
-                : Colors.black,
+        controllerHostAddIdentityProof.selectTransmission.value.isEmpty
+            ? Color(0xff94979F)
+            : Colors.black,
         suffix: PopupMenuButton(
           icon: Icon(Icons.expand_more),
-          color: Theme.of(context).primaryColor,
+          color: Theme
+              .of(context)
+              .primaryColor,
           itemBuilder: (BuildContext context) {
             return [
               'Automatic',
@@ -293,6 +346,61 @@ class ScreenHostAddVehicle extends StatelessWidget {
     });
   }
 
+  Widget addVehicle(VoidCallback onTap, String text, RxString imagePath) {
+    return Obx(() {
+      return GestureDetector(
+        onTap: onTap,
+        child: Container(
+          // margin: EdgeInsets.only(r.h),
+          height: 89.h,
+          width: 92.w,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(6.r),
+            color: Color(0xFFC4C4C4).withOpacity(.3),
+          ),
+          child: (imagePath.value.isNotEmpty)
+              ? Container(
+            height: Get.height,
+            width: Get.width,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5.r
+              ),
+              image: DecorationImage(
+                image: FileImage(File(imagePath.value)),
+                fit: BoxFit.fill,
+              ),
+            ),
+            child: Align(
+              alignment: Alignment.topRight,
+              child: CustomSvg(
+                name: "edit-car",
+              ).marginOnly(top: 10.h, right: 10.w),
+            ),
+          )
+              : Column(
+            children: [
+              Spacer(),
+              CustomSvg(
+                name: "camer-",
+              ),
+              Spacer(),
+              Text(
+                text,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontWeight: FontWeight.w400,
+                  fontSize: 6.sp,
+                  fontFamily: "Nunito",
+                  color: Colors.black.withOpacity(.5),
+                ),
+              ).marginSymmetric(horizontal: 5.w, vertical: 8.h),
+            ],
+          ),
+        ),
+      );
+    });
+  }
+
   Obx buildFuelContainer(
       ControllerHostAddVechicle controllerHostAddIdentityProof,
       BuildContext context) {
@@ -308,7 +416,9 @@ class ScreenHostAddVehicle extends StatelessWidget {
             : Colors.black,
         suffix: PopupMenuButton(
           icon: Icon(Icons.expand_more),
-          color: Theme.of(context).primaryColor,
+          color: Theme
+              .of(context)
+              .primaryColor,
           itemBuilder: (BuildContext context) {
             return [
               'Gasoline',
@@ -338,7 +448,7 @@ class ScreenHostAddVehicle extends StatelessWidget {
       return GestureDetector(
         onTap: () async {
           controllerHostAddIdentityProof.vehiclePath.value =
-              await FilePick().pickImage(ImageSource.gallery);
+          await FilePick().pickImage(ImageSource.gallery);
         },
         child: SizedBox(
           height: 135.h,
@@ -357,24 +467,24 @@ class ScreenHostAddVehicle extends StatelessWidget {
                     height: 123.w,
                     width: Get.width,
                     child: controllerHostAddIdentityProof
-                            .vehiclePath.value.isEmpty
+                        .vehiclePath.value.isEmpty
                         ? Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: <Widget>[
-                              CustomImage(
-                                name: "add-vehicle",
-                              ),
-                              Text(
-                                "Click for add",
-                                style: TextStyle(
-                                    fontSize: 10.sp,
-                                    fontWeight: FontWeight.w500,
-                                    color: AppColors.appPrimaryColor),
-                              )
-                            ],
-                          )
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        CustomImage(
+                          name: "add-vehicle",
+                        ),
+                        Text(
+                          "Click for add",
+                          style: TextStyle(
+                              fontSize: 10.sp,
+                              fontWeight: FontWeight.w500,
+                              color: AppColors.appPrimaryColor),
+                        )
+                      ],
+                    )
                         : Image.file(File(
-                            controllerHostAddIdentityProof.vehiclePath.value)),
+                        controllerHostAddIdentityProof.vehiclePath.value)),
                   ),
                 ),
               ).marginSymmetric(horizontal: 18.w),
@@ -403,5 +513,4 @@ class ScreenHostAddVehicle extends StatelessWidget {
       );
     });
   }
-
 }

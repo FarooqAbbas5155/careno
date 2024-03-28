@@ -3,6 +3,9 @@ import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 
 class ControllerHostAddVechicle extends GetxController{
   RxString vehiclePath="".obs;
+  RxString vehicleRightSidePaths="".obs;
+  RxString vehicleInteriorPaths="".obs;
+  RxString vehicleRearPaths="".obs;
   // List<RxString> vehiclePaths = List.generate(4, (index) => "".obs);
   List<RxString> vehiclePaths = <RxString>[].obs;
   RxString vehicleNumberPlatePath="".obs;

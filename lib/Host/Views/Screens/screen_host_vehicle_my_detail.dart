@@ -1,9 +1,18 @@
+import 'package:card_swiper/card_swiper.dart';
+import 'package:careno/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class ScreenHostVehicleMyDetail extends StatelessWidget {
   String status;
+  List<String> imagesList=[
+    "assets/images/image.png",
+    "assets/images/image1.png",
+    "assets/images/image2.png",
+    "assets/images/image3.png",
+    "assets/images/image4.png",
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -51,15 +60,38 @@ class ScreenHostVehicleMyDetail extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Container(
-                height: 231.h,
-                width: Get.width,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage("assets/images/detail.png"),
-                      fit: BoxFit.fill),
-                ),
-              ),
+              ConstrainedBox(
+                  child: Swiper(
+                    outer: false,
+                    itemBuilder: (c, i) {
+                      return Container(
+                          decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  image: AssetImage(
+                                      imagesList[i]),
+                                  fit: BoxFit.cover)),
+                        child: Container(
+                          height: 145.h,
+                          decoration: BoxDecoration(
+                              gradient: LinearGradient(colors: [
+                                Colors.black.withOpacity(.0),
+                                Colors.black
+                              ]
+                                ,
+                                begin: Alignment.topCenter,
+                                end: FractionalOffset.bottomCenter,
+                              )
+                          ),),
+
+                      );
+                    },
+                    pagination: SwiperPagination(
+                        margin: EdgeInsets.symmetric(vertical: 15.h)),
+                    itemCount: imagesList.length,
+                  ),
+                  constraints:
+                  BoxConstraints.loose(Size(Get.width, 231.0.h))),
+
               buildDetail("Make & Model of Vehicle", "Toyota Camry"),
               buildDetail("Category/Type", "Sedan"),
               buildDetail("Year of Vehicle", "2024"),
@@ -70,23 +102,6 @@ class ScreenHostVehicleMyDetail extends StatelessWidget {
               buildDetail("Vehicle License Expiry Date", "02 April, 2030"),
               buildDetail("Per Day Rent", "\$ 150"),
               buildDetail("Per Hours Rent", "\$ 15"),
-              Text(
-                "Vehicle Plate Image",
-                style: TextStyle(
-                    fontSize: 18.sp,
-                    color: Colors.black,
-                    fontWeight: FontWeight.w700),
-              ).marginSymmetric(horizontal: 14.w),
-              Container(
-                height: 162.h,
-                margin: EdgeInsets.symmetric(vertical: 15.h, horizontal: 46.w),
-                width: Get.width,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(6.r),
-                    image: DecorationImage(
-                        image: AssetImage("assets/images/detail.png"),
-                        fit: BoxFit.cover)),
-              ),
               Text(
                 "Vehicle Registration",
                 style: TextStyle(
@@ -104,7 +119,31 @@ class ScreenHostVehicleMyDetail extends StatelessWidget {
                     image: DecorationImage(
                         image: AssetImage("assets/images/registration.png"),
                         fit: BoxFit.cover)),
-              )
+              ),
+              Row(
+                children: <Widget>[
+                  Expanded(
+                      child: CustomButton(title: "Edit Vehicle",
+                  textStyle: TextStyle(
+                    fontSize: 15.sp,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white
+                  ),onPressed: (){})),
+                  SizedBox(width: 10.w
+                    ,),
+                  Expanded(
+                      child: CustomButton(title: "Delete Vehicle",
+
+                  textStyle: TextStyle(
+                    fontSize: 15.sp,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white
+                  ),onPressed: (){},
+                      color: Color(0xFFFE0000),
+                      )),
+                ],
+              ).marginSymmetric(horizontal: 28.w
+              ,vertical: 20.h),
             ],
           ),
         ),
