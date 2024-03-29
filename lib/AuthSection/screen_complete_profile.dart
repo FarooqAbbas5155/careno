@@ -1,12 +1,11 @@
 import 'dart:io';
 
 import 'package:careno/AuthSection/screen_allow_location.dart';
+import 'package:careno/AuthSection/screen_location.dart';
 import 'package:careno/Host/Views/Screens/screen_host_add_ident_identity_proof.dart';
 import 'package:careno/User/views/screens/screen_user_home.dart';
 import 'package:careno/widgets/custom_textfiled.dart';
 import 'package:careno/constant/helpers.dart';
-
-import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,6 +13,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../constant/location_utils.dart';
 import '../widgets/custom_button.dart';
 import '../controllers/home_controller.dart';
 
@@ -27,6 +27,7 @@ class ScreenCompleteProfile extends StatefulWidget {
 
 class _ScreenCompleteProfileState extends State<ScreenCompleteProfile> {
   HomeController controller = Get.put(HomeController());
+
   // DateTime? selectedDate;
 
   @override
@@ -83,8 +84,10 @@ class _ScreenCompleteProfileState extends State<ScreenCompleteProfile> {
                           child: CircleAvatar(
                             radius: 10.sp, // Adjust the radius as needed
                             backgroundImage: controller.images.value == null
-                                ? AssetImage("assets/images/profile.png") as ImageProvider// Default image
-                                : FileImage(controller.images.value), // Image from File object
+                                ? AssetImage(
+                                "assets/images/profile.png") as ImageProvider // Default image
+                                : FileImage(controller.images
+                                .value), // Image from File object
                           ),
                         ),
                         Positioned(
@@ -107,52 +110,68 @@ class _ScreenCompleteProfileState extends State<ScreenCompleteProfile> {
                     )
                 ),
                 Center(child: Text("Add Profile Image",
-                  style: TextStyle(fontFamily: "Urbanist", fontSize: 13.sp,color: Colors.black,fontWeight: FontWeight.w500),)),
+                  style: TextStyle(fontFamily: "Urbanist",
+                      fontSize: 13.sp,
+                      color: Colors.black,
+                      fontWeight: FontWeight.w500),)),
                 Text("Add Details", style: TextStyle(fontFamily: "Urbanist",
                     fontSize: 16.sp,
                     fontWeight: FontWeight.w700),).marginOnly(
-                    top: 15.h,),
-              CustomTextField(
-                padding: EdgeInsets.only(left: 18.w, top: 1.h),
-                hint: "Enter Full Name",
-                hintColor:controller.fullName.value.isEmpty?Color(0xff94979F).withOpacity(.7):Colors.black,
-              ).marginSymmetric(horizontal: 12.w, vertical: 8.h),
-              CustomTextField(
-                padding: EdgeInsets.only(left: 18.w, top: 1.h),
-                hint: "Enter Email",
-                hintColor:controller.email.value.isEmpty?Color(0xff94979F).withOpacity(.7):Colors.black,
-              ).marginSymmetric(horizontal: 12.w, vertical: 8.h),
+                  top: 15.h,),
+                CustomTextField(
+                  padding: EdgeInsets.only(left: 18.w, top: 1.h),
+                  hint: "Enter Full Name",
+                  hintColor: controller.fullName.value.isEmpty ? Color(
+                      0xff94979F).withOpacity(.7) : Colors.black,
+                ).marginSymmetric(horizontal: 12.w, vertical: 8.h),
+                CustomTextField(
+                  padding: EdgeInsets.only(left: 18.w, top: 1.h),
+                  hint: "Enter Email",
+                  hintColor: controller.email.value.isEmpty ? Color(0xff94979F)
+                      .withOpacity(.7) : Colors.black,
+                ).marginSymmetric(horizontal: 12.w, vertical: 8.h),
                 Obx(() {
                   return CustomTextField(
                     padding: EdgeInsets.only(left: 18.w, top: 18.h),
                     readOnly: true,
-                    hint: controller.dateTime.value==null?"Date of Birth" : "${controller.dateTime.value?.year}/${controller.dateTime.value?.month}/${controller.dateTime.value?.day}",
-                    hintColor:controller.dateTime.value==null?Color(0xff94979F).withOpacity(.7):Colors.black,
-            
+                    hint: controller.dateTime.value == null
+                        ? "Date of Birth"
+                        : "${controller.dateTime.value?.year}/${controller
+                        .dateTime.value?.month}/${controller.dateTime.value
+                        ?.day}",
+                    hintColor: controller.dateTime.value == null ? Color(
+                        0xff94979F).withOpacity(.7) : Colors.black,
+
                     suffix: IconButton(
-                      icon: SvgPicture.asset("assets/images/picker.svg",width: 30.w,),
+                      icon: SvgPicture.asset(
+                        "assets/images/picker.svg", width: 30.w,),
                       onPressed: () {
                         controller.selectDate(context);
-            
                       },).marginOnly(top: 4.h),
                   );
-                }).marginSymmetric(horizontal: 12.w,vertical: 8.h),
-            
+                }).marginSymmetric(horizontal: 12.w, vertical: 8.h),
+
                 Obx(() {
                   return CustomTextField(
                     padding: EdgeInsets.only(left: 18.w, top: 18.h),
                     readOnly: true,
-                    hintColor:controller.selectedGender.value.isEmpty?Color(0xff94979F).withOpacity(.7):Colors.black,
+                    hintColor: controller.selectedGender.value.isEmpty ? Color(
+                        0xff94979F).withOpacity(.7) : Colors.black,
 
-                    hint: controller.selectedGender.value.isEmpty ? "Gender" : controller.selectedGender.value,
+                    hint: controller.selectedGender.value.isEmpty
+                        ? "Gender"
+                        : controller.selectedGender.value,
                     suffix: PopupMenuButton(
                       icon: Icon(Icons.expand_more),
-                      color: Theme.of(context).primaryColor,
+                      color: Theme
+                          .of(context)
+                          .primaryColor,
                       itemBuilder: (BuildContext context) {
                         return ['Male', 'Female',].map((String choice) {
                           return PopupMenuItem<String>(
                             value: choice,
-                            child: Text(choice,style: TextStyle(color: Colors.white,fontFamily: "Urbanist"),),
+                            child: Text(choice, style: TextStyle(
+                                color: Colors.white, fontFamily: "Urbanist"),),
                           );
                         }).toList();
                       },
@@ -188,33 +207,76 @@ class _ScreenCompleteProfileState extends State<ScreenCompleteProfile> {
                 //   );
                 // }).marginSymmetric(horizontal: 12.w,vertical: 10.h),
                 Obx(() {
-                  return CustomTextField(
-                    padding: EdgeInsets.only(left: 18.w, top: 1.h),
-                    hint: "Address",
-                    hintColor:controller.selectedGender.value.isEmpty?Color(0xff94979F).withOpacity(.7):Colors.black,
-                    suffix: InkWell(
-                      onTap: (){
-                        Get.to(ScreenAllowLocation());
-                      },
-                        child: SvgPicture.asset("assets/images/location.svg").marginOnly(top: 4.h)),
+                  return FutureBuilder<String?>(
+                    future: getAddressFromLatLng(
+                        controller.latitude, controller.longitude),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        // While the future is loading, return a placeholder or loading indicator
+                        return CircularProgressIndicator(); // Example loading indicator
+                      } else if (snapshot.hasError) {
+                        // If there's an error, handle it accordingly
+                        return CustomTextField(
+                          padding: EdgeInsets.only(left: 18.w, top: 1.h),
+                          hint: 'Select Address again',
+                          // Use the address from the snapshot
+                          hintColor: Color(0xff94979F).withOpacity(.7),
+                          suffix: InkWell(
+                            onTap: () {
+                              if (controller.permissionStatus.value == true) Get.to(
+                                  ScreenLocation());
+                              if (controller.permissionStatus.value == false) Get.to(
+                                  ScreenAllowLocation());
+                            },
+                            child: SvgPicture.asset(
+                                "assets/images/location.svg").marginOnly(
+                                top: 4.h),
+                          ),
+                        );
+                      } else {
+                        // If the future has completed successfully, display the address
+                        return CustomTextField(
+                          padding: EdgeInsets.only(left: 18.w, top: 1.h),
+                          hint: snapshot.data ?? '',
+                          // Use the address from the snapshot
+                          hintColor: Colors.black,
+                          suffix: InkWell(
+                            onTap: () {
+                              Get.to(ScreenAllowLocation());
+                              if (controller.permissionStatus.value == true) Get.to(
+                                  ScreenLocation());
+                              if (controller.permissionStatus.value == false) Get.to(
+                                  ScreenAllowLocation());
+                            },
+                            child: SvgPicture.asset(
+                                "assets/images/location.svg").marginOnly(
+                                top: 4.h),
+                          ),
+                        );
+                      }
+                    },
                   );
                 }).marginSymmetric(horizontal: 12.w, vertical: 8.h),
-            CustomTextField(
-              padding: EdgeInsets.only(left: 18.w),
-              hint: controller.profileDescription.value.isEmpty ? "Profile Description" : controller.profileDescription.value,
-              hintColor:controller.profileDescription.value.isEmpty?Color(0xff94979F).withOpacity(.7):Colors.black,
-            
-            ).marginSymmetric(horizontal: 12.w, vertical: 8.h),
+                CustomTextField(
+                  padding: EdgeInsets.only(left: 18.w),
+                  hint: controller.profileDescription.value.isEmpty
+                      ? "Profile Description"
+                      : controller.profileDescription.value,
+                  hintColor: controller.profileDescription.value.isEmpty
+                      ? Color(0xff94979F).withOpacity(.7)
+                      : Colors.black,
+
+                ).marginSymmetric(horizontal: 12.w, vertical: 8.h),
                 Center(
                   child: CustomButton(
-                    width: 310.w,
-                      title: "Save", onPressed: (){
-                      if (controller.userType.value=="user") {
-                        Get.to(ScreenUserHome());
-                      }
-                      else{
-                        Get.to(ScreenHostAddIdentIdentityProof());
-                      }
+                      width: 310.w,
+                      title: "Save", onPressed: () {
+                    if (controller.userType.value == "user") {
+                      Get.to(ScreenUserHome());
+                    }
+                    else {
+                      Get.to(ScreenHostAddIdentIdentityProof());
+                    }
                   }).marginOnly(top: 8.h),
                 )
               ],
@@ -224,14 +286,14 @@ class _ScreenCompleteProfileState extends State<ScreenCompleteProfile> {
       ),
     );
   }
+
   Future getImage() async {
     final image = await ImagePicker().pickImage(source: ImageSource.gallery);
     if (image == null) return;
     final imageT = File(image.path);
-setState(() {
-  this.controller.images.value = imageT;
-
-});
+    setState(() {
+      this.controller.images.value = imageT;
+    });
   }
 
 

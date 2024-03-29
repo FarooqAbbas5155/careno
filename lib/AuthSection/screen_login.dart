@@ -1,4 +1,5 @@
 import 'package:careno/AuthSection/screen_otp.dart';
+import 'package:careno/controllers/phone_controller.dart';
 import 'package:careno/widgets/custom_button.dart';
 import 'package:careno/constant/helpers.dart';
 
@@ -15,7 +16,9 @@ import '../controllers/home_controller.dart';
 
 
 class ScreenLogin extends StatelessWidget {
-  HomeController controller = Get.put(HomeController());
+  var code = '';
+
+  PhoneController controller = Get.put(PhoneController());
 
 
   @override
@@ -47,14 +50,15 @@ class ScreenLogin extends StatelessWidget {
                         fontWeight: FontWeight.w700),).marginOnly(top: 30.h, bottom: 8.h),
                     Obx(() {
                       return CustomTextField(
+                        controller: controller.phoneController.value,
                         padding: EdgeInsets.only(left: 10.w, top: 22.h),
                         hint: "Phone Number",
                         keyboardType: TextInputType.number,
-                        hintColor:controller.countryCode.value==null?Color(0xff94979F).withOpacity(.7):Colors.black,
+                        hintColor:controller.country_code==null?Color(0xff94979F).withOpacity(.7):Colors.black,
                         prefix: CountryCodePicker(
                         padding: EdgeInsets.zero,
                         onChanged: (value) {
-                          controller.countryCode.value= value.dialCode.toString();
+                          controller.country_code= value.dialCode.toString();
                         },
                         textStyle: TextStyle(fontSize: 16.sp,fontFamily: "UrbanistBold"),
                         // Initial selection and favorite can be one of code ('IT') OR dial_code('+39')
@@ -133,7 +137,7 @@ class ScreenLogin extends StatelessWidget {
                     //   ],
                     // ).marginSymmetric(vertical: 4.h),
                     Center(child: CustomButton(title: "Send Code", onPressed: (){
-                      Get.to(ScreenOtp());
+                      controller.sendVerificationCode();
                     })).marginOnly(top: 50.h,bottom: 30.h),
                     Row(
                       children: [

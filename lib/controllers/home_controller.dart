@@ -10,6 +10,9 @@ RxBool isPasswordVisible = false.obs;
 RxBool checkBox = false.obs;
 Rx<File> images = Rx<File>(File(''));
 RxString selectedGender = ''.obs;
+double latitude = 0.0;
+double longitude = 0.0;
+RxBool permissionStatus = false.obs;
 var selectedRange=RangeValues(10, 60).obs;
 RxString fullName = ''.obs;
 RxString email = ''.obs;
@@ -27,7 +30,6 @@ Rx<String> CarSeatsCapacity = '04'.obs;
 Rx<String> CarLocation     = 'Central park New York'.obs;
 // DateTime? dateTime;
 Rx<DateTime?> dateTime = Rx<DateTime?>(null);
-var countryCode = "92".obs;
 
 Future<void> selectDate(BuildContext context) async {
   final DateTime? picked = await showDatePicker(

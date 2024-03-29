@@ -1,5 +1,3 @@
-import 'package:careno/Host/Views/Screens/screen_host_home_page.dart';
-import 'package:careno/User/views/screens/screen_user_home.dart';
 import 'package:careno/widgets/custom_error.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -10,25 +8,31 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
-
-import 'AuthSection/screen_welcome.dart';
-import 'Host/Views/Layouts/layout_host_profile.dart';
-import 'Host/Views/Screens/screen_host_notification.dart';
 import 'constant/colors.dart';
+import 'constant/helpers.dart';
 import 'firebase_options.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Future.delayed(Duration(seconds: 1));
   colorConfig();
-
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
-  );
-
-
-  runApp(const MyApp());
+  );  await checkUserAndRunApp();
 }
+Future<void> checkUserAndRunApp() async {
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  Widget screen = await getHomeScreen();
+
+  runApp(MyApp(
+    screen: screen,
+  ));
+  FlutterNativeSplash.remove();
+}
+
 void colorConfig() {
   MaterialColor appPrimaryColor = MaterialColor(
     0xFF4C0AE1,
@@ -47,8 +51,11 @@ void colorConfig() {
   );
 }
 class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
+  Widget screen;
 
+  MyApp({
+    required this.screen,
+  });
   @override
   State<MyApp> createState() => _MyAppState();
 }
@@ -168,7 +175,7 @@ class _MyAppState extends State<MyApp> {
         builder: (_, child) {
           return GetMaterialApp(
             // home: ScreenAthleteHomePage(),
-            home: ScreenWelcome(),
+            home: widget.screen,
             locale: Locale('en', 'US'),
             debugShowCheckedModeBanner: false,
             defaultTransition: Transition.fade,

@@ -1,6 +1,8 @@
 import 'package:careno/AuthSection/screen_complete_profile.dart';
+import 'package:careno/controllers/phone_controller.dart';
 import 'package:careno/widgets/custom_button.dart';
 import 'package:careno/constant/helpers.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +13,10 @@ import 'package:pinput/pin_put/pin_put.dart';
 
 
 class ScreenOtp extends StatelessWidget {
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  final FocusNode _pinPutFocusNode = FocusNode();
+  PhoneController controller = Get.put(PhoneController());
+  var code = '';
 
   @override
   Widget build(BuildContext context) {
@@ -49,22 +55,22 @@ class ScreenOtp extends StatelessWidget {
               Text("Enter the verification code we just sent on your Phone Number +1230******722.",style:TextStyle(color: Color(0xff838BA1),fontFamily: "Urbanist" ,fontSize: 16.sp)).marginSymmetric(horizontal: 25.w),
 
               Container(
-                margin: EdgeInsets.symmetric(horizontal: 35.w,vertical: 20.h),
+                margin: EdgeInsets.symmetric(horizontal: 25.w,vertical: 20.h),
                 child: PinPut(
                    autofocus: true,
                   onChanged: (value) {
-                    // code = value;
-                    // controller
-                    //   ..isButtonEnabled.value = code.length == 6
-                    //   ..update();
+                    code = value;
+                    controller
+                      ..isButtonEnabled.value = code.length == 6
+                      ..update();
                   },
                   autofillHints: ["2","3","7"],
-                  eachFieldWidth: 63.w,
+                  eachFieldWidth: 50.w,
                   cursorColor: primaryColor,
                   pinAnimationType: PinAnimationType.none,
                   eachFieldHeight: 60.h,
                   cursorHeight: 20.h,
-                  fieldsCount: 4,
+                  fieldsCount: 6,
                     textStyle: TextStyle(color: primaryColor,fontFamily: "Urbanist",fontSize: 22.sp,fontWeight: FontWeight.w700) ,
                   inputDecoration: InputDecoration(
                   //  filled: true,
@@ -74,9 +80,9 @@ class ScreenOtp extends StatelessWidget {
 
                   ),
                   onSubmit: (String pin) {},
-                  // focusNode: _pinPutFocusNode,
-                  //
-                  // controller: controller.pinPutController.value,
+                  focusNode: _pinPutFocusNode,
+
+                  controller: controller.pinPutController.value,
                   submittedFieldDecoration: BoxDecoration(
                     border: Border.all(color: primaryColor),
                     borderRadius: BorderRadius.circular(8.0),
@@ -94,7 +100,8 @@ class ScreenOtp extends StatelessWidget {
                 ),
               ),
               Center(child: CustomButton(title: "Verify", onPressed: (){
-                Get.to(ScreenCompleteProfile());
+                controller.verifyPin(code);
+                // Get.to(ScreenCompleteProfile());
               })).marginSymmetric(vertical: 30.h),
               Center(
                 child: RichText(
@@ -108,11 +115,9 @@ class ScreenOtp extends StatelessWidget {
                       TextSpan(
                           text: "Resend",
                           style: TextStyle(color: primaryColor,fontFamily: "Urbanist",fontSize: 15.sp,fontWeight: FontWeight.w500), // Use primary color
-                          // recognizer: TapGestureRecognizer()..onTap = (){
-                          //   Navigator.of(context).push(MaterialPageRoute(
-                          //     builder: (context) => ScreenSignup(),
-                          //   ));
-                          // }
+                          recognizer: TapGestureRecognizer()..onTap = (){
+                            controller.sendVerificationCode();
+                          }
                       ),
                     ],
                   ),
