@@ -1,5 +1,5 @@
 class User{
-   String uid,userType,phoneNumner,imageUrl,name,email,profileDescription,gender;
+   String uid,userType,phoneNumner,imageUrl,name,email,profileDescription,gender,notificationToken;
    int dob;
    double lat,lng;
    bool notification;
@@ -14,6 +14,7 @@ class User{
     required this.email,
     required this.profileDescription,
     required this.gender,
+    required this.notificationToken,
     required this.dob,
     required this.lat,
     required this.lng,
@@ -33,6 +34,7 @@ class User{
           email == other.email &&
           profileDescription == other.profileDescription &&
           gender == other.gender &&
+          notificationToken == other.notificationToken &&
           dob == other.dob &&
           lat == other.lat &&
           lng == other.lng &&
@@ -48,6 +50,7 @@ class User{
       email.hashCode ^
       profileDescription.hashCode ^
       gender.hashCode ^
+      notificationToken.hashCode ^
       dob.hashCode ^
       lat.hashCode ^
       lng.hashCode ^
@@ -64,6 +67,7 @@ class User{
         ' email: $email,' +
         ' profileDescription: $profileDescription,' +
         ' gender: $gender,' +
+        ' notificationToken: $notificationToken,' +
         ' dob: $dob,' +
         ' lat: $lat,' +
         ' lng: $lng,' +
@@ -80,6 +84,7 @@ class User{
     String? email,
     String? profileDescription,
     String? gender,
+    String? notificationToken,
     int? dob,
     double? lat,
     double? lng,
@@ -94,6 +99,7 @@ class User{
       email: email ?? this.email,
       profileDescription: profileDescription ?? this.profileDescription,
       gender: gender ?? this.gender,
+      notificationToken: notificationToken ?? this.notificationToken,
       dob: dob ?? this.dob,
       lat: lat ?? this.lat,
       lng: lng ?? this.lng,
@@ -111,6 +117,7 @@ class User{
       'email': this.email,
       'profileDescription': this.profileDescription,
       'gender': this.gender,
+      'notificationToken': this.notificationToken,
       'dob': this.dob,
       'lat': this.lat,
       'lng': this.lng,
@@ -128,6 +135,7 @@ class User{
       email: map['email'] as String,
       profileDescription: map['profileDescription'] as String,
       gender: map['gender'] as String,
+      notificationToken: map['notificationToken'] as String,
       dob: map['dob'] as int,
       lat: map['lat'] as double,
       lng: map['lng'] as double,

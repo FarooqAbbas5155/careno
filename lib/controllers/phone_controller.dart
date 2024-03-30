@@ -77,8 +77,12 @@ class PhoneController extends GetxController {
     if (alreadyExists) {
       var screen = await getHomeScreen();
       Get.offAll(screen);
+      showLoading.value = false;
+
     } else {
       await completeRegistration(credential);
+      showLoading.value = false;
+
     }
   }
 
@@ -137,7 +141,7 @@ class PhoneController extends GetxController {
         dob: null?? 0,
         lat:  0.0,
         lng:0.0, uid: uid,
-      gender: "", notification: false,
+      gender: "", notification: false, notificationToken: '',
     );
 
     // newUser.id = userCredential.user!.uid;
@@ -161,9 +165,11 @@ class PhoneController extends GetxController {
       response = "success";
       Get.to(ScreenCompleteProfile());
 
+
     }).catchError((error) {
       Get.snackbar("Error", error.toString());
       response = error;
+
     });
 
     return response;
