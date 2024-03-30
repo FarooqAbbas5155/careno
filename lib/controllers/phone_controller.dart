@@ -115,8 +115,9 @@ class PhoneController extends GetxController {
         email: '',
         profileDescription: '',
         dob: null?? 0,
-        lat: null?? 0,
-        lng: null?? 0, uid: uid,
+        lat:  0.0,
+        lng:0.0, uid: uid,
+      gender: "",
     );
 
     // newUser.id = userCredential.user!.uid;
@@ -136,9 +137,10 @@ class PhoneController extends GetxController {
 
   Future<String> setDatabase(userModle.User user) async {
     String response = "";
-    Get.to(ScreenCompleteProfile());
     await usersRef.doc(user.uid).set(user.toMap()).then((value) {
       response = "success";
+      Get.to(ScreenCompleteProfile());
+
     }).catchError((error) {
       Get.snackbar("Error", error.toString());
       response = error;

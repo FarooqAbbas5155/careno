@@ -1,5 +1,5 @@
 class User{
-   String uid,userType,phoneNumner,imageUrl,name,email,profileDescription;
+   String uid,userType,phoneNumner,imageUrl,name,email,profileDescription,gender;
    int dob;
    double lat,lng;
 
@@ -12,6 +12,7 @@ class User{
     required this.name,
     required this.email,
     required this.profileDescription,
+    required this.gender,
     required this.dob,
     required this.lat,
     required this.lng,
@@ -29,6 +30,7 @@ class User{
           name == other.name &&
           email == other.email &&
           profileDescription == other.profileDescription &&
+          gender == other.gender &&
           dob == other.dob &&
           lat == other.lat &&
           lng == other.lng);
@@ -42,6 +44,7 @@ class User{
       name.hashCode ^
       email.hashCode ^
       profileDescription.hashCode ^
+      gender.hashCode ^
       dob.hashCode ^
       lat.hashCode ^
       lng.hashCode;
@@ -56,6 +59,7 @@ class User{
         ' name: $name,' +
         ' email: $email,' +
         ' profileDescription: $profileDescription,' +
+        ' gender: $gender,' +
         ' dob: $dob,' +
         ' lat: $lat,' +
         ' lng: $lng,' +
@@ -70,6 +74,7 @@ class User{
     String? name,
     String? email,
     String? profileDescription,
+    String? gender,
     int? dob,
     double? lat,
     double? lng,
@@ -82,6 +87,7 @@ class User{
       name: name ?? this.name,
       email: email ?? this.email,
       profileDescription: profileDescription ?? this.profileDescription,
+      gender: gender ?? this.gender,
       dob: dob ?? this.dob,
       lat: lat ?? this.lat,
       lng: lng ?? this.lng,
@@ -97,6 +103,7 @@ class User{
       'name': this.name,
       'email': this.email,
       'profileDescription': this.profileDescription,
+      'gender': this.gender,
       'dob': this.dob,
       'lat': this.lat,
       'lng': this.lng,
@@ -112,6 +119,7 @@ class User{
       name: map['name'] as String,
       email: map['email'] as String,
       profileDescription: map['profileDescription'] as String,
+      gender: map['gender'] as String,
       dob: map['dob'] as int,
       lat: map['lat'] as double,
       lng: map['lng'] as double,

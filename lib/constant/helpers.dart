@@ -37,9 +37,10 @@ Future<Widget> getHomeScreen() async {
         user.profileDescription.isEmpty ||
         user.imageUrl.isEmpty ||
         user.phoneNumner.isEmpty ||
-        user.lat == 0 ||
-  user.lng == 0 ||
-  user.dob == 0;
+        user.gender.isEmpty ||
+        user.lat == 0.0 ||
+  user.lng == 0.0 ||
+  user.dob == null;
     if (registrationIncomplete) {
       screen = ScreenWelcome();
     }else if (user.userType == "host") {

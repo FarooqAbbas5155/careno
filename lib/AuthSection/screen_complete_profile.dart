@@ -12,7 +12,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-
 import '../constant/location_utils.dart';
 import '../widgets/custom_button.dart';
 import '../controllers/home_controller.dart';
@@ -119,27 +118,29 @@ class _ScreenCompleteProfileState extends State<ScreenCompleteProfile> {
                     fontWeight: FontWeight.w700),).marginOnly(
                   top: 15.h,),
                 CustomTextField(
+                  controller: controller.fullName.value,
                   padding: EdgeInsets.only(left: 18.w, top: 1.h),
                   hint: "Enter Full Name",
-                  hintColor: controller.fullName.value.isEmpty ? Color(
+                  hintColor: controller.fullName.value == null ? Color(
                       0xff94979F).withOpacity(.7) : Colors.black,
                 ).marginSymmetric(horizontal: 12.w, vertical: 8.h),
                 CustomTextField(
+                  controller: controller.email.value,
                   padding: EdgeInsets.only(left: 18.w, top: 1.h),
                   hint: "Enter Email",
-                  hintColor: controller.email.value.isEmpty ? Color(0xff94979F)
+                  hintColor: controller.email.value == null ? Color(0xff94979F)
                       .withOpacity(.7) : Colors.black,
                 ).marginSymmetric(horizontal: 12.w, vertical: 8.h),
                 Obx(() {
                   return CustomTextField(
                     padding: EdgeInsets.only(left: 18.w, top: 18.h),
                     readOnly: true,
-                    hint: controller.dateTime.value == null
+                    hint: controller.Dob.value == null
                         ? "Date of Birth"
-                        : "${controller.dateTime.value?.year}/${controller
-                        .dateTime.value?.month}/${controller.dateTime.value
+                        : "${controller.Dob.value?.year}/${controller
+                        .Dob.value?.month}/${controller.Dob.value
                         ?.day}",
-                    hintColor: controller.dateTime.value == null ? Color(
+                    hintColor: controller.Dob.value == null ? Color(
                         0xff94979F).withOpacity(.7) : Colors.black,
 
                     suffix: IconButton(
@@ -206,63 +207,60 @@ class _ScreenCompleteProfileState extends State<ScreenCompleteProfile> {
                 //   ).marginOnly(top: 4.h),
                 //   );
                 // }).marginSymmetric(horizontal: 12.w,vertical: 10.h),
-                Obx(() {
-                  return FutureBuilder<String?>(
-                    future: getAddressFromLatLng(
-                        controller.latitude, controller.longitude),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        // While the future is loading, return a placeholder or loading indicator
-                        return CircularProgressIndicator(); // Example loading indicator
-                      } else if (snapshot.hasError) {
-                        // If there's an error, handle it accordingly
-                        return CustomTextField(
-                          padding: EdgeInsets.only(left: 18.w, top: 1.h),
-                          hint: 'Select Address again',
-                          // Use the address from the snapshot
-                          hintColor: Color(0xff94979F).withOpacity(.7),
-                          suffix: InkWell(
-                            onTap: () {
-                              if (controller.permissionStatus.value == true) Get.to(
-                                  ScreenLocation());
-                              if (controller.permissionStatus.value == false) Get.to(
-                                  ScreenAllowLocation());
-                            },
-                            child: SvgPicture.asset(
-                                "assets/images/location.svg").marginOnly(
-                                top: 4.h),
-                          ),
-                        );
-                      } else {
-                        // If the future has completed successfully, display the address
-                        return CustomTextField(
-                          padding: EdgeInsets.only(left: 18.w, top: 1.h),
-                          hint: snapshot.data ?? '',
-                          // Use the address from the snapshot
-                          hintColor: Colors.black,
-                          suffix: InkWell(
-                            onTap: () {
-                              Get.to(ScreenAllowLocation());
-                              if (controller.permissionStatus.value == true) Get.to(
-                                  ScreenLocation());
-                              if (controller.permissionStatus.value == false) Get.to(
-                                  ScreenAllowLocation());
-                            },
-                            child: SvgPicture.asset(
-                                "assets/images/location.svg").marginOnly(
-                                top: 4.h),
-                          ),
-                        );
-                      }
-                    },
-                  );
-                }).marginSymmetric(horizontal: 12.w, vertical: 8.h),
+              FutureBuilder<String?>(
+                future: getAddressFromLatLng(
+                    controller.latitude, controller.longitude),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    // While the future is loading, return a placeholder or loading indicator
+                    return CircularProgressIndicator(); // Example loading indicator
+                  } else if (snapshot.hasError) {
+                    // If there's an error, handle it accordingly
+                    return CustomTextField(
+                      padding: EdgeInsets.only(left: 18.w, top: 1.h),
+                      hint: 'Select Address again',
+                      // Use the address from the snapshot
+                      hintColor: Color(0xff94979F).withOpacity(.7),
+                      suffix: InkWell(
+                        onTap: () {
+                          if (controller.permissionStatus.value == true) Get.to(
+                              ScreenLocation());
+                          if (controller.permissionStatus.value == false) Get.to(
+                              ScreenAllowLocation());
+                        },
+                        child: SvgPicture.asset(
+                            "assets/images/location.svg").marginOnly(
+                            top: 4.h),
+                      ),
+                    );
+                  } else {
+                    // If the future has completed successfully, display the address
+                    return CustomTextField(
+                      padding: EdgeInsets.only(left: 18.w, top: 1.h),
+                      hint: snapshot.data ?? '',
+                      // Use the address from the snapshot
+                      hintColor: Colors.black,
+                      suffix: InkWell(
+                        onTap: () {
+                          Get.to(ScreenAllowLocation());
+                          if (controller.permissionStatus.value == true) Get.to(
+                              ScreenLocation());
+                          if (controller.permissionStatus.value == false) Get.to(
+                              ScreenAllowLocation());
+                        },
+                        child: SvgPicture.asset(
+                            "assets/images/location.svg").marginOnly(
+                            top: 4.h),
+                      ),
+                    );
+                  }
+                },
+              ).marginSymmetric(horizontal: 12.w, vertical: 8.h),
                 CustomTextField(
+                  controller: controller.profileDescription.value,
                   padding: EdgeInsets.only(left: 18.w),
-                  hint: controller.profileDescription.value.isEmpty
-                      ? "Profile Description"
-                      : controller.profileDescription.value,
-                  hintColor: controller.profileDescription.value.isEmpty
+                  hint:"Profile Description",
+                  hintColor: controller.profileDescription.value == null
                       ? Color(0xff94979F).withOpacity(.7)
                       : Colors.black,
 
@@ -270,13 +268,16 @@ class _ScreenCompleteProfileState extends State<ScreenCompleteProfile> {
                 Center(
                   child: CustomButton(
                       width: 310.w,
-                      title: "Save", onPressed: () {
-                    if (controller.userType.value == "user") {
-                      Get.to(ScreenUserHome());
-                    }
-                    else {
-                      Get.to(ScreenHostAddIdentIdentityProof());
-                    }
+                      title: "Save", onPressed: ()async {
+                  await  controller.UpdateProfileData();
+
+                    // if (controller.userType.value == "user") {
+                    //   controller.UpdateProfileData();
+                    //   Get.to(ScreenUserHome());
+                    // }
+                    // else {
+                    //   Get.to(ScreenHostAddIdentIdentityProof());
+                    // }
                   }).marginOnly(top: 8.h),
                 )
               ],
@@ -287,13 +288,27 @@ class _ScreenCompleteProfileState extends State<ScreenCompleteProfile> {
     );
   }
 
-  Future getImage() async {
+  Future<void> getImage() async {
     final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (image == null) return;
-    final imageT = File(image.path);
-    setState(() {
-      this.controller.images.value = imageT;
-    });
+    if (image == null) {
+      print("Image selection cancelled.");
+      return;
+    }
+
+    final imageFile = File(image.path);
+    if (!imageFile.existsSync()) {
+      print("Image file does not exist at path: ${imageFile.path}");
+      return;
+    }
+
+    try {
+      setState(() {
+        this.controller.images.value = imageFile;
+        print("Image Path: ${controller.images.value}");
+      });
+    } catch (error) {
+      print("Error setting image: $error");
+    }
   }
 
 

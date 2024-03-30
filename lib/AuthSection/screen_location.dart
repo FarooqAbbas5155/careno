@@ -102,137 +102,135 @@ class _ScreenLocationState extends State<ScreenLocation> {
                 ),
               );
             }
-            return Obx(() {
-              return FutureBuilder<Position>(
-                future: Geolocator.getCurrentPosition(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(
-                      child: CircularProgressIndicator(
-                        backgroundColor: primaryColor,
-                        strokeWidth: 3,
-                      ),
-                    );
-                  }
-                  var position = snapshot.data!;
-                  controller.permissionStatus.value = true;
+            return FutureBuilder<Position>(
+              future: Geolocator.getCurrentPosition(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(
+                    child: CircularProgressIndicator(
+                      backgroundColor: primaryColor,
+                      strokeWidth: 3,
+                    ),
+                  );
+                }
+                var position = snapshot.data!;
+                controller.permissionStatus.value = true;
 
-                  return Stack(
-                    children: [
-                      GoogleMap(
-                        myLocationEnabled: true,
-                        onMapCreated: _onMapCreated,
-                        initialCameraPosition: CameraPosition(
-                          target: LatLng(
-                              position!.latitude, position.longitude),
-                          zoom: 8.0,
-                        ),
-                        markers: _markers,
-                        onTap: _handleMapLongPress,
+                return Stack(
+                  children: [
+                    GoogleMap(
+                      myLocationEnabled: true,
+                      onMapCreated: _onMapCreated,
+                      initialCameraPosition: CameraPosition(
+                        target: LatLng(
+                            position!.latitude, position.longitude),
+                        zoom: 8.0,
                       ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Positioned(
+                      markers: _markers,
+                      onTap: _handleMapLongPress,
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Positioned(
+                          top: 10.h,
+                          left: 10.w,
+                          right: 10.w,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                onPressed: () {
+                                  Get.back();
+                                },
+                                icon: Icon(
+                                    Icons.arrow_back, color: Colors.black),
+                              ),
+                              Text(
+                                "            ",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 20.sp,
+                                  fontWeight: FontWeight.w700,
+                                  fontFamily: "UrbanistBold",
+                                ),
+                              ),
+                              Text(
+                                "Location Map",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 20.sp,
+                                  fontWeight: FontWeight.w700,
+                                  fontFamily: "UrbanistBold",
+                                ),
+                              ),
+
+                            ],
+                          ),
+                        ),
+                        Positioned(
                             top: 10.h,
                             left: 10.w,
                             right: 10.w,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                IconButton(
-                                  onPressed: () {
-                                    Get.back();
-                                  },
-                                  icon: Icon(
-                                      Icons.arrow_back, color: Colors.black),
-                                ),
-                                Text(
-                                  "            ",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 20.sp,
-                                    fontWeight: FontWeight.w700,
-                                    fontFamily: "UrbanistBold",
-                                  ),
-                                ),
-                                Text(
-                                  "Location Map",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 20.sp,
-                                    fontWeight: FontWeight.w700,
-                                    fontFamily: "UrbanistBold",
-                                  ),
-                                ),
+                            child: Center(
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    width: 287.w,
+                                    height: 48.h,
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 18.w),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(
+                                          25.r),
 
-                              ],
-                            ),
-                          ),
-                          Positioned(
-                              top: 10.h,
-                              left: 10.w,
-                              right: 10.w,
-                              child: Center(
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      width: 287.w,
-                                      height: 48.h,
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 18.w),
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(
-                                            25.r),
-
-                                      ),
-                                      child: TextField(
-                                        decoration: InputDecoration(
-                                            hintText: "Search here.....",
-                                            border: InputBorder.none
-                                        ),
+                                    ),
+                                    child: TextField(
+                                      decoration: InputDecoration(
+                                          hintText: "Search here.....",
+                                          border: InputBorder.none
                                       ),
                                     ),
-                                    Container(
-                                      padding: EdgeInsets.all(6.sp),
-                                      decoration: BoxDecoration(
-                                          color: primaryColor,
-                                          shape: BoxShape.circle
-                                      ),
-                                      child: Icon(
-                                        Icons.search, color: Colors.white,),
-                                    ).marginSymmetric(horizontal: 8.w)
-                                  ],
-                                ),
-                              )
-                          ),
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.all(6.sp),
+                                    decoration: BoxDecoration(
+                                        color: primaryColor,
+                                        shape: BoxShape.circle
+                                    ),
+                                    child: Icon(
+                                      Icons.search, color: Colors.white,),
+                                  ).marginSymmetric(horizontal: 8.w)
+                                ],
+                              ),
+                            )
+                        ),
 
-                        ],
-                      ),
-                      Positioned(
-                          left: 22.w,
-                          right: 22.w,
-                          bottom: 20.h,
-                          child: CustomButton(
-                              title: "Save", onPressed: () {
-                            setState(() {
-                              controller.latitude = lat;
-                              controller.longitude = lng;
-                              Get.offAll(ScreenCompleteProfile());
-                            });
-                          }))
+                      ],
+                    ),
+                    Positioned(
+                        left: 22.w,
+                        right: 22.w,
+                        bottom: 20.h,
+                        child: CustomButton(
+                            title: "Save", onPressed: () {
+                          setState(() {
+                            controller.latitude = lat;
+                            controller.longitude = lng;
+                            Get.offAll(ScreenCompleteProfile());
+                          });
+                        }))
 
-                    ],
-                  );
-                },
-              );
-            });
+                  ],
+                );
+              },
+            );
           },
         ),
       ),
