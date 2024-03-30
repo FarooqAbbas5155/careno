@@ -14,13 +14,6 @@ import '../User/views/screens/screen_user_home.dart';
 import '../constant/firebase_utils.dart';
 
 class HomeController extends GetxController {
-
-
-
-
-
-
-
   var selectedRange = RangeValues(10, 60).obs;
 
   RxInt selectIndex = 0.obs;
