@@ -49,7 +49,7 @@ class ScreenHostAddIdentIdentityProof extends StatelessWidget {
             ),).marginSymmetric(vertical: 20.h),
             buildIdCardBack(controllerHostAddIdentityProof).marginSymmetric(horizontal: 31.w, vertical: 20.h),
             CustomButton(title: "Share Proof", onPressed: () {
-              Get.to(ScreenHostAccountPending());
+              controllerHostAddIdentityProof.sethostIdentityProof();
             }).marginSymmetric(horizontal: 8.w, vertical: 20.h)
 
           ],

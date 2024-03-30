@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:careno/Host/Views/Screens/screen_host_home_page.dart';
+import 'package:careno/constant/helpers.dart';
 import 'package:careno/controllers/controller_host_add_vechicle.dart';
 import 'package:careno/widgets/custom_button.dart';
 import 'package:careno/widgets/custom_image.dart';
@@ -14,6 +15,7 @@ import 'package:image_picker/image_picker.dart';
 
 import '../../../constant/colors.dart';
 import '../../../constant/file_pick.dart';
+import '../../../constant/firebase_utils.dart';
 
 class ScreenHostAddVehicle extends StatelessWidget {
   const ScreenHostAddVehicle({Key? key}) : super(key: key);
@@ -257,51 +259,50 @@ class ScreenHostAddVehicle extends StatelessWidget {
       );
     });
   }
-
-  Obx buildCategoryContainer(
+  Stream<List<String>> fetchCategories() {
+    return categoryRef.snapshots().map((snapshot) {
+      return snapshot.docs.map((doc) => doc.id).toList();
+    });
+  }
+  Widget buildCategoryContainer(
       ControllerHostAddVechicle controllerHostAddIdentityProof,
       BuildContext context) {
-    return Obx(() {
-      return CustomTextField(
-        padding: EdgeInsets.only(left: 18.w, top: 18.h),
-        readOnly: true,
-        hint: controllerHostAddIdentityProof.selectCategory.value.isEmpty
-            ? "Select Category/Type"
-            : controllerHostAddIdentityProof.selectCategory.value,
-        hintColor: controllerHostAddIdentityProof.selectCategory.value.isEmpty
-            ? Color(0xff94979F)
-            : Colors.black,
-        suffix: PopupMenuButton(
-          icon: Icon(Icons.expand_more),
-          color: Theme
-              .of(context)
-              .primaryColor,
-          itemBuilder: (BuildContext context) {
-            return [
-              'Electric Car',
-              'Economy Car',
-              'Convertible',
-              'Vans',
-              'Trucks',
-              'Motorbike',
-              'Hatchbacks',
-            ].map((String choice) {
-              return PopupMenuItem<String>(
-                value: choice,
-                child: Text(
-                  choice,
-                  style: TextStyle(color: Colors.white, fontFamily: "Urbanist"),
-                ),
-              );
-            }).toList();
-          },
-          onSelected: (String choice) {
-            // Update selected gender when an option is chosen
-            controllerHostAddIdentityProof.selectCategory.value = choice;
-          },
-        ).marginOnly(top: 4.h),
-      );
-    });
+    return StreamBuilder<List<String>>(
+      stream: fetchCategories(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return CustomTextField(
+            padding: EdgeInsets.only(left: 18.w, top: 18.h),
+            readOnly: true,
+            hint: controllerHostAddIdentityProof.selectCategory.value .isEmpty ? "Select Category/Type" : controllerHostAddIdentityProof.selectCategory.value ,
+            hintColor: controllerHostAddIdentityProof.selectCategory.value .isEmpty ? Color(0xff94979F) : Colors.black,
+            suffix: PopupMenuButton(
+              icon: Icon(Icons.expand_more),
+              color: Theme.of(context).primaryColor,
+              itemBuilder: (BuildContext context) {
+                return snapshot.data!.map((choice) {
+                  return PopupMenuItem<String>(
+                    value: choice,
+                    child: Text(
+                      choice,
+                      style: TextStyle(color: Colors.white, fontFamily: "Urbanist"),
+                    ),
+                  );
+                }).toList();
+              },
+              onSelected: (String choice) {
+                // Update selected category when an option is chosen
+                controllerHostAddIdentityProof.selectCategory.value = choice;
+              },
+            ).marginOnly(top: 4.h),
+          );
+        } else if (snapshot.hasError) {
+          return Text('Error: ${snapshot.error}');
+        } else {
+          return Text("No Category here"); // Loading indicator while fetching data
+        }
+      },
+    );
   }
 
   Obx buildTransmissionContainer(

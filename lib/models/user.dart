@@ -139,7 +139,7 @@ class User{
       dob: map['dob'] as int,
       lat: map['lat'] as double,
       lng: map['lng'] as double,
-      notification: map['notification'] as bool,
+      notification: map['notification'] as bool? ?? false, // handle potential null
     );
   }
 
