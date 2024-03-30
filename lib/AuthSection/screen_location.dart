@@ -10,6 +10,7 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import '../controllers/phone_controller.dart';
 import '../widgets/custom_button.dart';
 import '../constant/helpers.dart';
 import '../constant/location_utils.dart';
@@ -21,7 +22,7 @@ class ScreenLocation extends StatefulWidget {
 }
 
 class _ScreenLocationState extends State<ScreenLocation> {
-  HomeController controller = Get.put(HomeController());
+  PhoneController controller = Get.put(PhoneController());
   TextEditingController _searchController = TextEditingController();
   LatLng? _selectedLocation;
   GoogleMapController? _controller;

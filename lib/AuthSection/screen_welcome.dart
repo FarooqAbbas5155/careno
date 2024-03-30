@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:careno/AuthSection/screen_login.dart';
+import 'package:careno/controllers/phone_controller.dart';
 import 'package:careno/widgets/button.dart';
 import 'package:careno/widgets/custom_button.dart';
 import 'package:careno/constant/helpers.dart';
@@ -13,7 +14,7 @@ import 'package:get/get.dart';
 import 'package:get/get_utils/get_utils.dart';
 
 class ScreenWelcome extends StatelessWidget {
-  HomeController controller = Get.put(HomeController());
+  PhoneController controller = Get.put(PhoneController());
 
   @override
   Widget build(BuildContext context) {

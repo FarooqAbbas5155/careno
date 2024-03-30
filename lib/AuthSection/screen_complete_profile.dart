@@ -2,8 +2,6 @@ import 'dart:io';
 
 import 'package:careno/AuthSection/screen_allow_location.dart';
 import 'package:careno/AuthSection/screen_location.dart';
-import 'package:careno/Host/Views/Screens/screen_host_add_ident_identity_proof.dart';
-import 'package:careno/User/views/screens/screen_user_home.dart';
 import 'package:careno/widgets/custom_textfiled.dart';
 import 'package:careno/constant/helpers.dart';
 import 'package:flutter/cupertino.dart';
@@ -13,8 +11,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import '../constant/location_utils.dart';
+import '../controllers/phone_controller.dart';
 import '../widgets/custom_button.dart';
-import '../controllers/home_controller.dart';
 
 
 class ScreenCompleteProfile extends StatefulWidget {
@@ -25,7 +23,7 @@ class ScreenCompleteProfile extends StatefulWidget {
 }
 
 class _ScreenCompleteProfileState extends State<ScreenCompleteProfile> {
-  HomeController controller = Get.put(HomeController());
+  PhoneController controller = Get.put(PhoneController());
 
   // DateTime? selectedDate;
 

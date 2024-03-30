@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:careno/AuthSection/screen_complete_profile.dart';
 import 'package:careno/AuthSection/screen_login.dart';
 import 'package:careno/AuthSection/screen_otp.dart';
@@ -9,6 +11,9 @@ import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:careno/models/user.dart' as userModle;
 
+import '../Host/Views/Screens/screen_host_add_ident_identity_proof.dart';
+import '../User/views/screens/screen_user_home.dart';
+import '../constant/colors.dart';
 import '../constant/helpers.dart';
 
 
@@ -16,7 +21,21 @@ class PhoneController extends GetxController {
   HomeController homeController = Get.put(HomeController());
   var pinPutController = TextEditingController().obs;
   var phoneController = TextEditingController().obs;
+  Rx<TextEditingController> fullName = TextEditingController().obs;
+  Rx<TextEditingController> email = TextEditingController().obs;
+  Rx<TextEditingController> profileDescription = TextEditingController().obs;
+  RxString selectedGender = ''.obs;
+  double latitude = 0.0;
+  double longitude = 0.0;
+  RxBool isPasswordVisible = false.obs;
+  RxBool checkBox = false.obs;
+  Rx<File> images = Rx<File>(File(''));
+  // final RxString images = ''.obs;
 
+  RxBool permissionStatus = false.obs;
+  
+  Rx<DateTime?> Dob = Rx<DateTime?>(null);
+  RxString userType = 'user'.obs;
   RxBool loading = false.obs;
   var isButtonEnabled = true.obs;
   final _auth = FirebaseAuth.instance;
@@ -108,7 +127,7 @@ class PhoneController extends GetxController {
   Future<String> completeRegistration(UserCredential userCredential) async {
     String response = "";
     var user = userModle.User(
-        userType: homeController.userType.value,
+        userType: userType.value,
         phoneNumner:country_code + phoneController.value.text,
         imageUrl: "",
         name: '',
@@ -117,7 +136,7 @@ class PhoneController extends GetxController {
         dob: null?? 0,
         lat:  0.0,
         lng:0.0, uid: uid,
-      gender: "",
+      gender: "", notification: false,
     );
 
     // newUser.id = userCredential.user!.uid;
@@ -247,5 +266,66 @@ class PhoneController extends GetxController {
     _googleSignIn.signOut();
     _googleSignIn.disconnect();
     Get.offAll(ScreenLogin());
+  }
+
+
+
+  Future<void> selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(1800, 1, 01),
+        lastDate: DateTime(2101, 12, 01));
+    if (picked != null && picked != Dob) {
+      Dob.value = picked;
+    }
+  }
+
+  Future<void> UpdateProfileData() async {
+    String name = fullName.value.text.trim();
+    String userEmail = email.value.text.trim();
+    String description = profileDescription.value.text.trim();
+
+    if (name.isEmpty && userEmail.isEmpty && description.isEmpty && Dob.value == null && selectedGender.isEmpty && images.value == null) {
+      Get.snackbar("Alert", "All Fields Required");
+      return; // Return here to exit the function if fields are empty
+    }
+
+    try {
+      // String imagePath = images.value.toString();
+      // File imageFile = File(imagePath);
+      //
+      // print("Image Path: $imagePath");
+      //
+      // if (!imageFile.existsSync()) {
+      //   print("Image file does not exist.");
+      //   Get.snackbar("Alert", "Image file does not exist.", backgroundColor: AppColors.appPrimaryColor,colorText: Colors.white);
+      //   return;
+      // }
+      //
+      // String url = await FirebaseUtils.uploadImage(imagePath, "Careno/ProfileImages/${FirebaseUtils.myId}/image");
+
+      await usersRef.doc(uid).update({
+        "name": name,
+        "email": userEmail,
+        "profileDescription": description,
+        "imageUrl": "url",
+        "dob": Dob.value!.millisecondsSinceEpoch,
+        "gender": selectedGender.value,
+        "lat":latitude,
+        "lng":longitude,
+      });
+
+      if (userType.value == "host") {
+        Get.to(ScreenHostAddIdentIdentityProof());
+      } else {
+        Get.to(ScreenUserHome());
+      }
+
+      Get.snackbar("Successfully", "Updated Your Profile", backgroundColor: AppColors.appPrimaryColor);
+    } catch (error) {
+      Get.snackbar("Alert", "${error.toString()}", backgroundColor: AppColors.appPrimaryColor);
+      print(error);
+    }
   }
 }

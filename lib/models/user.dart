@@ -2,6 +2,7 @@ class User{
    String uid,userType,phoneNumner,imageUrl,name,email,profileDescription,gender;
    int dob;
    double lat,lng;
+   bool notification;
 
 //<editor-fold desc="Data Methods">
   User({
@@ -16,6 +17,7 @@ class User{
     required this.dob,
     required this.lat,
     required this.lng,
+    required this.notification,
   });
 
   @override
@@ -33,7 +35,8 @@ class User{
           gender == other.gender &&
           dob == other.dob &&
           lat == other.lat &&
-          lng == other.lng);
+          lng == other.lng &&
+          notification == other.notification);
 
   @override
   int get hashCode =>
@@ -47,7 +50,8 @@ class User{
       gender.hashCode ^
       dob.hashCode ^
       lat.hashCode ^
-      lng.hashCode;
+      lng.hashCode ^
+      notification.hashCode;
 
   @override
   String toString() {
@@ -63,6 +67,7 @@ class User{
         ' dob: $dob,' +
         ' lat: $lat,' +
         ' lng: $lng,' +
+        ' notification: $notification,' +
         '}';
   }
 
@@ -78,6 +83,7 @@ class User{
     int? dob,
     double? lat,
     double? lng,
+    bool? notification,
   }) {
     return User(
       uid: uid ?? this.uid,
@@ -91,6 +97,7 @@ class User{
       dob: dob ?? this.dob,
       lat: lat ?? this.lat,
       lng: lng ?? this.lng,
+      notification: notification ?? this.notification,
     );
   }
 
@@ -107,6 +114,7 @@ class User{
       'dob': this.dob,
       'lat': this.lat,
       'lng': this.lng,
+      'notification': this.notification,
     };
   }
 
@@ -123,6 +131,7 @@ class User{
       dob: map['dob'] as int,
       lat: map['lat'] as double,
       lng: map['lng'] as double,
+      notification: map['notification'] as bool,
     );
   }
 
