@@ -1,4 +1,5 @@
 import 'package:careno/AuthSection/screen_otp.dart';
+import 'package:careno/controllers/google_controller.dart';
 import 'package:careno/controllers/phone_controller.dart';
 import 'package:careno/widgets/custom_button.dart';
 import 'package:careno/constant/helpers.dart';
@@ -19,7 +20,7 @@ class ScreenLogin extends StatelessWidget {
   var code = '';
 
   PhoneController controller = Get.put(PhoneController());
-
+  GoogleController _controller = Get.put(GoogleController());
 
   @override
   Widget build(BuildContext context) {
@@ -144,14 +145,11 @@ class ScreenLogin extends StatelessWidget {
                     //     ),
                     //   ],
                     // ).marginSymmetric(vertical: 4.h),
-                    Obx(() {
-                      controller.showLoading.value == false;
-                      return Center(
-                          child: CustomButton(
-                              title: "Send Code", onPressed: () {
-                            controller.sendVerificationCode();
-                          }));
-                    }).marginOnly(top: 50.h, bottom: 30.h),
+                  Center(
+                      child: CustomButton(
+                          title: "Send Code", onPressed: () {
+                        controller.sendVerificationCode();
+                      })).marginOnly(top: 50.h, bottom: 30.h),
                     Row(
                       children: [
                         Expanded(
@@ -186,7 +184,9 @@ class ScreenLogin extends StatelessWidget {
                         CustomContainer(
                             "Apple", "assets/images/cib_apple.svg", () {}),
                         CustomContainer(
-                            "Google", "assets/images/google.svg", () {})
+                            "Google", "assets/images/google.svg", () {
+                              _controller.googleLogin();
+                        })
                       ],
                     ),
                     // Center(
