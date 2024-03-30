@@ -16,6 +16,7 @@ var dbInstance = FirebaseFirestore.instance;
 CollectionReference usersRef = dbInstance.collection("users");
 CollectionReference hostIdentityProofRef = dbInstance.collection("identies");
 CollectionReference categoryRef = dbInstance.collection("categories");
+CollectionReference addVehicleRef = dbInstance.collection("vehicles");
 Map<String, User> _allUsersMap = {};
 Future<bool> hostProofAlreadyExists(String uid) async {
   final doc = await hostIdentityProofRef.doc(uid).get();

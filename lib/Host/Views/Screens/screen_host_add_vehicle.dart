@@ -3,10 +3,12 @@ import 'dart:io';
 import 'package:careno/Host/Views/Screens/screen_host_home_page.dart';
 import 'package:careno/constant/helpers.dart';
 import 'package:careno/controllers/controller_host_add_vechicle.dart';
+import 'package:careno/models/categories.dart';
 import 'package:careno/widgets/custom_button.dart';
 import 'package:careno/widgets/custom_image.dart';
 import 'package:careno/widgets/custom_svg.dart';
 import 'package:careno/widgets/custom_textfiled.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -24,6 +26,7 @@ class ScreenHostAddVehicle extends StatelessWidget {
   Widget build(BuildContext context) {
     ControllerHostAddVechicle controllerHostAddIdentityProof =
     Get.put(ControllerHostAddVechicle());
+    print(controllerHostAddIdentityProof.showLoading.value);
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -97,15 +100,18 @@ class ScreenHostAddVehicle extends StatelessWidget {
                 style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20.sp),
               ).marginSymmetric(vertical: 10.h),
               CustomTextField(
+                controller: controllerHostAddIdentityProof.vehicleModel.value,
                 hint: "Select Make & Model of Vehicle",
               ).marginSymmetric(vertical: 8.h),
               buildCategoryContainer(controllerHostAddIdentityProof, context)
                   .marginSymmetric(vertical: 10.h),
               CustomTextField(
+                controller: controllerHostAddIdentityProof.vehicleYear.value,
                 hint: "Enter Year of Vehicle",
                 keyboardType: TextInputType.number,
               ).marginSymmetric(vertical: 8.h),
               CustomTextField(
+                controller: controllerHostAddIdentityProof.vehicleSeats.value,
                 hint: "Number of Seats",
                 keyboardType: TextInputType.number,
               ).marginSymmetric(vertical: 8.h),
@@ -114,32 +120,44 @@ class ScreenHostAddVehicle extends StatelessWidget {
                   .marginSymmetric(vertical: 10.h),
               buildFuelContainer(controllerHostAddIdentityProof, context),
               CustomTextField(
+                controller: controllerHostAddIdentityProof.vehicleNumberPlate.value,
                 hint: "Vehicle Plate Number",
                 keyboardType: TextInputType.number,
               ).marginSymmetric(vertical: 8.h),
               CustomTextField(
+                controller: controllerHostAddIdentityProof.vehicleColor.value,
                 hint: "Enter Vehicle Color",
                 keyboardType: TextInputType.name,
               ).marginSymmetric(vertical: 8.h),
               CustomTextField(
+                controller: controllerHostAddIdentityProof.vehicleLicenseExpiryDate.value,
                 hint: "Vehicle License Expiry Date",
                 keyboardType: TextInputType.datetime,
               ).marginSymmetric(vertical: 8.h),
               CustomTextField(
+                controller: controllerHostAddIdentityProof.vehiclePerDayRent.value,
                 hint: "Per Day Rent \$",
                 keyboardType: TextInputType.number,
               ).marginSymmetric(vertical: 8.h),
               CustomTextField(
+                controller: controllerHostAddIdentityProof.vehiclePerHourRent.value,
                 hint: "Per Hours Rent \$",
                 keyboardType: TextInputType.number,
               ).marginSymmetric(vertical: 8.h),
               // buildVehicleNumberPlate(controllerHostAddIdentityProof),
               buildRegistrationProof(controllerHostAddIdentityProof),
-              CustomButton(
+             controllerHostAddIdentityProof.showLoading.value == false? CustomButton(
                   title: 'Next',
-                  onPressed: () {
-                    Get.offAll(ScreenHostHomePage());
-                  }).marginSymmetric(vertical: 20.h)
+                  onPressed: () async{
+                    print(controllerHostAddIdentityProof.showLoading.value);
+                    controllerHostAddIdentityProof.submitForm();
+                  await  controllerHostAddIdentityProof.hostAddVehicle();
+                  }).marginSymmetric(vertical: 20.h):Center(
+                    child: SizedBox(
+                                   height: 30.h,
+                                     width: 30.w,
+                                     child: CircularProgressIndicator(backgroundColor: AppColors.appPrimaryColor,color: Colors.white,)),
+                  )
             ],
           ).marginSymmetric(horizontal: 22.w),
         ),
@@ -259,30 +277,41 @@ class ScreenHostAddVehicle extends StatelessWidget {
       );
     });
   }
-  Stream<List<String>> fetchCategories() {
-    return categoryRef.snapshots().map((snapshot) {
-      return snapshot.docs.map((doc) => doc.id).toList();
-    });
-  }
+  // Stream<Category> fetchCategories() {
+  //   return categoryRef.snapshots().map((snapshot) {
+  //     return snapshot.docs.map((doc) => doc.).toList();
+  //   });
+  // }
   Widget buildCategoryContainer(
       ControllerHostAddVechicle controllerHostAddIdentityProof,
       BuildContext context) {
-    return StreamBuilder<List<String>>(
-      stream: fetchCategories(),
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
+    return StatefulBuilder(builder: (BuildContext context, void Function(void Function()) setState) {
+      return StreamBuilder<QuerySnapshot>(
+        stream: categoryRef.snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
+          }
+
+          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+            return Text("No Category Added"); // Loading indicator while fetching data
+          }
+
+          var categories = snapshot.data!.docs.map((e) => Category.fromMap(e.data() as Map<String, dynamic>)).toList();
+          var categoryNameList = categories.map((e) => e.name).toList();
+
           return CustomTextField(
             padding: EdgeInsets.only(left: 18.w, top: 18.h),
             readOnly: true,
-            hint: controllerHostAddIdentityProof.selectCategory.value .isEmpty ? "Select Category/Type" : controllerHostAddIdentityProof.selectCategory.value ,
-            hintColor: controllerHostAddIdentityProof.selectCategory.value .isEmpty ? Color(0xff94979F) : Colors.black,
-            suffix: PopupMenuButton(
+            hint: controllerHostAddIdentityProof.selectCategory.value.isEmpty ? "Select Category/Type" : controllerHostAddIdentityProof.selectCategory.value,
+            hintColor: controllerHostAddIdentityProof.selectCategory.value.isEmpty ? Color(0xff94979F) : Colors.black,
+            suffix: PopupMenuButton<String>(
               icon: Icon(Icons.expand_more),
               color: Theme.of(context).primaryColor,
               itemBuilder: (BuildContext context) {
-                return snapshot.data!.map((choice) {
+                return categoryNameList.map((choice) {
                   return PopupMenuItem<String>(
-                    value: choice,
+                    value: choice.toString(),
                     child: Text(
                       choice,
                       style: TextStyle(color: Colors.white, fontFamily: "Urbanist"),
@@ -292,18 +321,19 @@ class ScreenHostAddVehicle extends StatelessWidget {
               },
               onSelected: (String choice) {
                 // Update selected category when an option is chosen
-                controllerHostAddIdentityProof.selectCategory.value = choice;
+                setState((){
+                  controllerHostAddIdentityProof.selectCategory.value = choice.toString();
+
+                });
               },
             ).marginOnly(top: 4.h),
           );
-        } else if (snapshot.hasError) {
-          return Text('Error: ${snapshot.error}');
-        } else {
-          return Text("No Category here"); // Loading indicator while fetching data
-        }
-      },
+        },
+      );
+    },
     );
   }
+
 
   Obx buildTransmissionContainer(
       ControllerHostAddVechicle controllerHostAddIdentityProof,
