@@ -14,6 +14,7 @@ import 'package:careno/models/user.dart' as userModle;
 import '../Host/Views/Screens/screen_host_add_ident_identity_proof.dart';
 import '../User/views/screens/screen_user_home.dart';
 import '../constant/colors.dart';
+import '../constant/firebase_utils.dart';
 import '../constant/helpers.dart';
 
 
@@ -292,24 +293,17 @@ class PhoneController extends GetxController {
     }
 
     try {
-      // String imagePath = images.value.toString();
-      // File imageFile = File(imagePath);
-      //
-      // print("Image Path: $imagePath");
-      //
-      // if (!imageFile.existsSync()) {
-      //   print("Image file does not exist.");
-      //   Get.snackbar("Alert", "Image file does not exist.", backgroundColor: AppColors.appPrimaryColor,colorText: Colors.white);
-      //   return;
-      // }
-      //
-      // String url = await FirebaseUtils.uploadImage(imagePath, "Careno/ProfileImages/${FirebaseUtils.myId}/image");
 
+
+
+
+      String url = await FirebaseUtils.uploadImage(images.value.path, "Careno/ProfileImages/${FirebaseUtils.myId}/image");
+      //
       await usersRef.doc(uid).update({
         "name": name,
         "email": userEmail,
         "profileDescription": description,
-        "imageUrl": "url",
+        "imageUrl": url,
         "dob": Dob.value!.millisecondsSinceEpoch,
         "gender": selectedGender.value,
         "lat":latitude,
