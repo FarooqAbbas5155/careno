@@ -1,20 +1,13 @@
-import 'dart:ui';
-
-import 'package:careno/AuthSection/screen_login.dart';
-import 'package:careno/controllers/phone_controller.dart';
-import 'package:careno/widgets/button.dart';
-import 'package:careno/widgets/custom_button.dart';
+import 'package:careno/AuthSection/screen_complete_profile.dart';
 import 'package:careno/constant/helpers.dart';
-import 'package:careno/controllers/home_controller.dart';
-
-import 'package:flutter/cupertino.dart';
+import 'package:careno/controllers/controller_update_profile.dart';
+import 'package:careno/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_utils/get_utils.dart';
 
 class ScreenWelcome extends StatelessWidget {
-  PhoneController controller = Get.put(PhoneController());
+  ControllerUpdateProfile controller = Get.put(ControllerUpdateProfile());
 
   @override
   Widget build(BuildContext context) {
@@ -26,10 +19,7 @@ class ScreenWelcome extends StatelessWidget {
           children: [
             Container(
               height: 540.h,
-              width: MediaQuery
-                  .of(context)
-                  .size
-                  .width,
+              width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage("assets/images/login_image.png"),
@@ -67,13 +57,27 @@ class ScreenWelcome extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Image.asset("assets/images/careno.png",).marginSymmetric(
-                       vertical : 30.sp, horizontal: 15.sp),
-                    Text("SignUp",style: TextStyle(color: Colors.black,fontSize: 26.sp,fontWeight: FontWeight.w700,fontFamily: "Urbanist"),).marginOnly(left: 14.w,bottom: 10.h),
+                    Image.asset(
+                      "assets/images/careno.png",
+                    ).marginSymmetric(vertical: 30.sp, horizontal: 15.sp),
+                    Text(
+                      "SignUp",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 26.sp,
+                          fontWeight: FontWeight.w700,
+                          fontFamily: "Urbanist"),
+                    ).marginOnly(left: 14.w, bottom: 10.h),
                     Obx(() {
                       return RadioListTile(
-                          title: Text("As a Customer/User",
-                            style: TextStyle(color: Colors.black,fontFamily: "Urbanist",fontWeight: FontWeight.w700,fontSize: 18.sp),),
+                          title: Text(
+                            "As a Customer/User",
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontFamily: "Urbanist",
+                                fontWeight: FontWeight.w700,
+                                fontSize: 18.sp),
+                          ),
                           controlAffinity: ListTileControlAffinity.trailing,
                           activeColor: primaryColor,
                           value: "user",
@@ -84,8 +88,14 @@ class ScreenWelcome extends StatelessWidget {
                     }),
                     Obx(() {
                       return RadioListTile(
-                          title: Text("As a Vehicle Host",
-                            style: TextStyle(color: Colors.black,fontFamily: "Urbanist",fontWeight: FontWeight.w700,fontSize: 18.sp),),
+                          title: Text(
+                            "As a Vehicle Host",
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontFamily: "Urbanist",
+                                fontWeight: FontWeight.w700,
+                                fontSize: 18.sp),
+                          ),
                           controlAffinity: ListTileControlAffinity.trailing,
                           activeColor: primaryColor,
                           value: "host",
@@ -93,24 +103,35 @@ class ScreenWelcome extends StatelessWidget {
                           onChanged: (String? value) {
                             controller.userType.value = value!;
                           });
-
                     }),
                     Center(
-                      child: CustomButton(
-                        width: 310.w,
-                        title: 'Next', onPressed: () {
-                        Get.to(ScreenLogin());
-                      },).marginSymmetric(vertical: 25.h),
+                      child: Obx(() {
+                        return CustomButton(
+                          width: 310.w,
+                          isLoading: controller.loadingUserType.value,
+                          title: 'Next',
+                          onPressed: () async {
+                            Get.to(ScreenCompleteProfile());
+
+                            // var response = await controller.updateUserType();
+                            // if (response == "success") {
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("content")));
+                              // Get.to(ScreenCompleteProfile());
+                            // }
+                            //   else {
+                            //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(response)));
+                            // }
+                          },
+                        );
+                      }).marginSymmetric(vertical: 25.h),
                     ),
 
                     // Button(title: "Register", onPressed: (){
                     //   Get.to(ScreenSignup());
                     // })
-
                   ],
                 ),
               ),
-
             )
           ],
         ),

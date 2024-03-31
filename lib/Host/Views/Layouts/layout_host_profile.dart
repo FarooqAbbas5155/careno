@@ -5,7 +5,9 @@ import 'package:careno/Host/Views/Screens/screen_host_setting.dart';
 import 'package:careno/Host/Views/Screens/screen_host_vehicle.dart';
 import 'package:careno/Host/Views/Screens/screen_host_vehicle_my_detail.dart';
 import 'package:careno/constant/helpers.dart';
+import 'package:careno/controllers/home_controller.dart';
 import 'package:careno/widgets/custom_svg.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -15,7 +17,7 @@ import '../../../constant/colors.dart';
 import '../../../widgets/custom_button.dart';
 
 class LayoutHostProfile extends StatelessWidget {
-  const LayoutHostProfile({Key? key}) : super(key: key);
+  HomeController controller = Get.put(HomeController());
 
   @override
   Widget build(BuildContext context) {
@@ -57,38 +59,50 @@ class LayoutHostProfile extends StatelessWidget {
                       padding: EdgeInsets.all(6.r),
                       decoration: BoxDecoration(
                           shape: BoxShape.circle, color: Colors.white),
-                      child: CircleAvatar(
-                        radius: 60,
-                        backgroundColor: Colors.white,
-                        backgroundImage:
-                            AssetImage("assets/images/user-image.png"),
-                      ),
+                      child: Obx(() {
+                        return CircleAvatar(
+                          radius: 60,
+                          backgroundColor: Colors.white,
+                          backgroundImage:
+                          NetworkImage(controller.user.value == null
+                              ? image_url
+                              : controller.user.value!.imageUrl),
+                        );
+                      }),
                     ),
-                    Text(
-                      "Jenny Wilson",
-                      style: TextStyle(
-                          fontSize: 18.sp, fontWeight: FontWeight.w700),
-                    ),
-                    Text(
-                      "jenniferfowler78@gmail.com",
-                      style: TextStyle(
-                          fontSize: 14.sp, fontWeight: FontWeight.w500,color: Colors.black.withOpacity(.5)),
-                    ),
+                    Obx(() {
+                      return Text(
+                        controller.user.value == null ? "No User" : controller
+                            .user.value!.name,
+                        style: TextStyle(
+                            fontSize: 18.sp, fontWeight: FontWeight.w700),
+                      );
+                    }),
+                    Obx(() {
+                      return Text(
+                        controller.user.value == null ? "No Email" : controller
+                            .user.value!.email,
+                        style: TextStyle(
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black.withOpacity(.5)),
+                      );
+                    }),
                     Container(
                       width: Get.width,
                       height: 35.h,
                       padding: EdgeInsets.symmetric(horizontal: 18.w),
                       alignment: Alignment.centerLeft,
                       decoration: BoxDecoration(
-                        color: Color(0xFFF0F0F0)
+                          color: Color(0xFFF0F0F0)
                       ),
-                      child: Text("Preferences",style: TextStyle(
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w700
+                      child: Text("Preferences", style: TextStyle(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w700
                       ),),
-                    ).marginOnly(top: 30.h,bottom: 10.h),
+                    ).marginOnly(top: 30.h, bottom: 10.h),
                     ListTile(
-                      onTap: (){
+                      onTap: () {
                         Get.to(ScreenHostEditProfile(userType: 'host',));
                       },
                       leading: Container(
@@ -96,21 +110,21 @@ class LayoutHostProfile extends StatelessWidget {
                         width: 36.w,
                         padding: EdgeInsets.all(5),
                         decoration: BoxDecoration(
-                        color: Color(0xFFF0F0F0),
-                        borderRadius: BorderRadius.circular(8.r)
-                      ),
-                      child: CustomSvg(
-                        name: "edit-profile",
-                      ),
+                            color: Color(0xFFF0F0F0),
+                            borderRadius: BorderRadius.circular(8.r)
+                        ),
+                        child: CustomSvg(
+                          name: "edit-profile",
+                        ),
 
                       ),
-                      title: Text("Edit Account",style: TextStyle(
-                        fontWeight: FontWeight.w700,fontSize: 15.sp
+                      title: Text("Edit Account", style: TextStyle(
+                          fontWeight: FontWeight.w700, fontSize: 15.sp
                       ),),
                       trailing: CustomSvg(name: "arrow-forward",),
                     ),
                     ListTile(
-                      onTap: (){
+                      onTap: () {
                         Get.to(ScreenHostVehicle());
                       },
                       leading: Container(
@@ -118,21 +132,21 @@ class LayoutHostProfile extends StatelessWidget {
                         width: 36.w,
                         padding: EdgeInsets.all(5),
                         decoration: BoxDecoration(
-                        color: Color(0xFFF0F0F0),
-                        borderRadius: BorderRadius.circular(8.r)
-                      ),
-                      child: CustomSvg(
-                        name: "my-vechile",
-                      ),
+                            color: Color(0xFFF0F0F0),
+                            borderRadius: BorderRadius.circular(8.r)
+                        ),
+                        child: CustomSvg(
+                          name: "my-vechile",
+                        ),
 
                       ),
-                      title: Text("My Vehicles",style: TextStyle(
-                        fontWeight: FontWeight.w700,fontSize: 15.sp
+                      title: Text("My Vehicles", style: TextStyle(
+                          fontWeight: FontWeight.w700, fontSize: 15.sp
                       ),),
                       trailing: CustomSvg(name: "arrow-forward",),
                     ),
                     ListTile(
-                      onTap: (){
+                      onTap: () {
                         Get.to(ScreenHostDocuments());
                       },
                       leading: Container(
@@ -140,21 +154,21 @@ class LayoutHostProfile extends StatelessWidget {
                         width: 36.w,
                         padding: EdgeInsets.all(5),
                         decoration: BoxDecoration(
-                        color: Color(0xFFF0F0F0),
-                        borderRadius: BorderRadius.circular(8.r)
-                      ),
-                      child: CustomSvg(
-                        name: "documents",
-                      ),
+                            color: Color(0xFFF0F0F0),
+                            borderRadius: BorderRadius.circular(8.r)
+                        ),
+                        child: CustomSvg(
+                          name: "documents",
+                        ),
 
                       ),
-                      title: Text("My Documents",style: TextStyle(
-                        fontWeight: FontWeight.w700,fontSize: 15.sp
+                      title: Text("My Documents", style: TextStyle(
+                          fontWeight: FontWeight.w700, fontSize: 15.sp
                       ),),
                       trailing: CustomSvg(name: "arrow-forward",),
                     ),
                     ListTile(
-                      onTap: (){
+                      onTap: () {
                         Get.to(ScreenHostSetting());
                       },
                       leading: Container(
@@ -162,21 +176,21 @@ class LayoutHostProfile extends StatelessWidget {
                         width: 36.w,
                         padding: EdgeInsets.all(5),
                         decoration: BoxDecoration(
-                        color: Color(0xFFF0F0F0),
-                        borderRadius: BorderRadius.circular(8.r)
-                      ),
-                      child: CustomSvg(
-                        name: "setting",
-                      ),
+                            color: Color(0xFFF0F0F0),
+                            borderRadius: BorderRadius.circular(8.r)
+                        ),
+                        child: CustomSvg(
+                          name: "setting",
+                        ),
 
                       ),
-                      title: Text("Settings",style: TextStyle(
-                        fontWeight: FontWeight.w700,fontSize: 15.sp
+                      title: Text("Settings", style: TextStyle(
+                          fontWeight: FontWeight.w700, fontSize: 15.sp
                       ),),
                       trailing: CustomSvg(name: "arrow-forward",),
                     ),
                     ListTile(
-                      onTap: (){
+                      onTap: () {
                         Get.to(ScreenHostBlockedUser());
                       },
                       leading: Container(
@@ -184,21 +198,21 @@ class LayoutHostProfile extends StatelessWidget {
                         width: 36.w,
                         padding: EdgeInsets.all(5),
                         decoration: BoxDecoration(
-                        color: Color(0xFFF0F0F0),
-                        borderRadius: BorderRadius.circular(8.r)
-                      ),
-                      child: CustomSvg(
-                        name: "block",
-                      ),
+                            color: Color(0xFFF0F0F0),
+                            borderRadius: BorderRadius.circular(8.r)
+                        ),
+                        child: CustomSvg(
+                          name: "block",
+                        ),
 
                       ),
-                      title: Text("Blocked Users",style: TextStyle(
-                        fontWeight: FontWeight.w700,fontSize: 15.sp
+                      title: Text("Blocked Users", style: TextStyle(
+                          fontWeight: FontWeight.w700, fontSize: 15.sp
                       ),),
                       trailing: CustomSvg(name: "arrow-forward",),
                     ),
                     ListTile(
-                      onTap: (){
+                      onTap: () {
                         Get.defaultDialog(
                             title: '',
                             content: GestureDetector(
@@ -209,12 +223,14 @@ class LayoutHostProfile extends StatelessWidget {
                                 alignment: Alignment.topRight,
                                 child: Container(
                                     padding: EdgeInsets.all(12.sp),
-                                    margin: EdgeInsets.symmetric(horizontal:12.sp),
+                                    margin: EdgeInsets.symmetric(
+                                        horizontal: 12.sp),
                                     decoration: BoxDecoration(
                                         color: Color(0xFFF0F0F0),
                                         shape: BoxShape.circle
                                     ),
-                                    child: Icon(Icons.clear,color: Colors.black,)),
+                                    child: Icon(
+                                      Icons.clear, color: Colors.black,)),
                               ),
                             ),
                             actions: [
@@ -226,7 +242,8 @@ class LayoutHostProfile extends StatelessWidget {
                                     padding: EdgeInsets.all(12.sp),
                                     decoration: BoxDecoration(
                                         color: Color(0xFFF0F0F0),
-                                        borderRadius: BorderRadius.circular(20.r)),
+                                        borderRadius: BorderRadius.circular(
+                                            20.r)),
                                     child: CustomSvg(
                                       name: "logout2",
                                       color: primaryColor,
@@ -237,7 +254,10 @@ class LayoutHostProfile extends StatelessWidget {
                                   ),
                                   Text(
                                     "Logout",
-                                    style: TextStyle(color: Colors.black, fontSize: 22.sp, fontWeight: FontWeight.w700,fontFamily: "UrbanistBold",),
+                                    style: TextStyle(color: Colors.black,
+                                      fontSize: 22.sp,
+                                      fontWeight: FontWeight.w700,
+                                      fontFamily: "UrbanistBold",),
                                   ),
                                   SizedBox(
                                     height: 13.sp,
@@ -248,14 +268,17 @@ class LayoutHostProfile extends StatelessWidget {
                                     child: Text(
                                       textAlign: TextAlign.center,
                                       "Are you sure you want to Logout Account?",
-                                      style: TextStyle(color: Colors.black, fontSize: 15.sp, fontWeight: FontWeight.w600,fontFamily: "UrbanistBold",),
+                                      style: TextStyle(color: Colors.black,
+                                        fontSize: 15.sp,
+                                        fontWeight: FontWeight.w600,
+                                        fontFamily: "UrbanistBold",),
                                     ),
                                   ),
                                   CustomButton(
                                       width: 193.w,
                                       title: "Yes, logout",
                                       onPressed: () {
-                                        Get.back();
+                                        FirebaseAuth.instance.signOut();
                                       }).marginSymmetric(vertical: 20.h)
                                 ],
                               )
@@ -266,16 +289,16 @@ class LayoutHostProfile extends StatelessWidget {
                         width: 36.w,
                         padding: EdgeInsets.all(5),
                         decoration: BoxDecoration(
-                        color: Color(0xFFF0F0F0),
-                        borderRadius: BorderRadius.circular(8.r)
-                      ),
-                      child: CustomSvg(
-                        name: "logout",
-                      ),
+                            color: Color(0xFFF0F0F0),
+                            borderRadius: BorderRadius.circular(8.r)
+                        ),
+                        child: CustomSvg(
+                          name: "logout",
+                        ),
 
                       ),
-                      title: Text("Logout",style: TextStyle(
-                        fontWeight: FontWeight.w700,fontSize: 15.sp
+                      title: Text("Logout", style: TextStyle(
+                          fontWeight: FontWeight.w700, fontSize: 15.sp
                       ),),
                     ),
                   ],

@@ -1,8 +1,10 @@
 import 'package:careno/Host/Views/Layouts/layout_host_active_vehicle.dart';
 import 'package:careno/Host/Views/Layouts/layout_host_pending_vehicle.dart';
+import 'package:careno/Host/Views/Screens/screen_host_add_vehicle.dart';
 import 'package:careno/constant/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 class ScreenHostVehicle extends StatelessWidget {
   const ScreenHostVehicle({Key? key}) : super(key: key);
@@ -55,6 +57,13 @@ class ScreenHostVehicle extends StatelessWidget {
               LayoutHostPendingVehicle(),
               LayoutHostActiveVehicle()
             ],
+          ),
+          floatingActionButton: FloatingActionButton(onPressed: () {
+            Get.to(ScreenHostAddVehicle(
+
+            ));
+          },
+          child: Icon(Icons.add),
           ),
         ),
       ),

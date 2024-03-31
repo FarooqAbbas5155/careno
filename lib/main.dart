@@ -20,7 +20,8 @@ void main() async {
   colorConfig();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
-  );  await checkUserAndRunApp();
+  );
+  await checkUserAndRunApp();
 }
 Future<void> checkUserAndRunApp() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();

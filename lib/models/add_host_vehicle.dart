@@ -2,7 +2,8 @@ class AddHostVehicle{
   String hostId,vehicleId;
   String vehicleImageComplete,vehicleImageNumberPlate,vehicleImageRightSide,vehicleImageRear,vehicleImageInterior;
   String vehicleModel,vehicleCategory,vehicleYear,vehicleSeats,vehicleTransmission,vehicleFuleType,vehicleNumberPlate,vehicleColor,vehicleLicenseExpiryDate,vehiclePerDayRent,vehiclePerHourRent,vehicleRegistrationImage;
-  bool verifivation;
+  String status;
+  double rating;
 
 //<editor-fold desc="Data Methods">
   AddHostVehicle({
@@ -25,7 +26,8 @@ class AddHostVehicle{
     required this.vehiclePerDayRent,
     required this.vehiclePerHourRent,
     required this.vehicleRegistrationImage,
-    required this.verifivation,
+    required this.status,
+    required this.rating,
   });
 
   @override
@@ -52,7 +54,8 @@ class AddHostVehicle{
           vehiclePerDayRent == other.vehiclePerDayRent &&
           vehiclePerHourRent == other.vehiclePerHourRent &&
           vehicleRegistrationImage == other.vehicleRegistrationImage &&
-          verifivation == other.verifivation);
+          status == other.status &&
+          rating == other.rating);
 
   @override
   int get hashCode =>
@@ -75,7 +78,8 @@ class AddHostVehicle{
       vehiclePerDayRent.hashCode ^
       vehiclePerHourRent.hashCode ^
       vehicleRegistrationImage.hashCode ^
-      verifivation.hashCode;
+      status.hashCode ^
+      rating.hashCode;
 
   @override
   String toString() {
@@ -99,7 +103,8 @@ class AddHostVehicle{
         ' vehiclePerDayRent: $vehiclePerDayRent,' +
         ' vehiclePerHourRent: $vehiclePerHourRent,' +
         ' vehicleRegistrationImage: $vehicleRegistrationImage,' +
-        ' verifivation: $verifivation,' +
+        ' status: $status,' +
+        ' rating: $rating,' +
         '}';
   }
 
@@ -123,7 +128,8 @@ class AddHostVehicle{
     String? vehiclePerDayRent,
     String? vehiclePerHourRent,
     String? vehicleRegistrationImage,
-    bool? verifivation,
+    String? status,
+    double? rating,
   }) {
     return AddHostVehicle(
       hostId: hostId ?? this.hostId,
@@ -149,7 +155,8 @@ class AddHostVehicle{
       vehiclePerHourRent: vehiclePerHourRent ?? this.vehiclePerHourRent,
       vehicleRegistrationImage:
           vehicleRegistrationImage ?? this.vehicleRegistrationImage,
-      verifivation: verifivation ?? this.verifivation,
+      status: status ?? this.status,
+      rating: rating ?? this.rating,
     );
   }
 
@@ -174,7 +181,8 @@ class AddHostVehicle{
       'vehiclePerDayRent': this.vehiclePerDayRent,
       'vehiclePerHourRent': this.vehiclePerHourRent,
       'vehicleRegistrationImage': this.vehicleRegistrationImage,
-      'verifivation': this.verifivation,
+      'status': this.status,
+      'rating': this.rating,
     };
   }
 
@@ -199,7 +207,8 @@ class AddHostVehicle{
       vehiclePerDayRent: map['vehiclePerDayRent'] as String,
       vehiclePerHourRent: map['vehiclePerHourRent'] as String,
       vehicleRegistrationImage: map['vehicleRegistrationImage'] as String,
-      verifivation: map['verifivation'] as bool,
+      status: map['status'] as String,
+      rating: (map['rating'] as num).toDouble(),
     );
   }
 

@@ -1,4 +1,5 @@
 import 'package:careno/constant/helpers.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 
 import '../Host/Views/Screens/screen_host_account_pending.dart';
@@ -9,25 +10,47 @@ class ControllerHostAddIdentityProof extends GetxController {
   RxString insurancePath = "".obs;
   RxString idFrontPath = "".obs;
   RxString idBackPath = "".obs;
+  RxBool loading = false.obs;
 
+  Future<String> updateIdentityProof() async {
+    String id = FirebaseAuth.instance.currentUser!.uid;
+    String response = '';
+    loading.value = true;
 
-
-  Future<void> sethostIdentityProof() async {
-    String insurancePathUrl = await FirebaseUtils.uploadImage(insurancePath.value, "Host/IdentityProof/${FirebaseUtils.myId}/image/insurancePath");
-    String idFrontPathUrl = await FirebaseUtils.uploadImage(idFrontPath.value, "Host/IdentityProof/${FirebaseUtils.myId}/image/idFrontPath/");
-    String idBackPathUrl = await FirebaseUtils.uploadImage(insurancePath.value, "Host/IdentityProof/${FirebaseUtils.myId}/image/idBackPath/");
+    String insurancePathUrl = await FirebaseUtils.uploadImage(
+            insurancePath.value, "User/Host${id}/IdentityProof/insurancePath")
+        .catchError((error) {
+      loading.value = false;
+      response = error.toString();
+    });
+    String idFrontPathUrl = await FirebaseUtils.uploadImage(
+            idFrontPath.value, "User/Host${id}/IdentityProof/idFrontPath/")
+        .catchError((error) {
+      loading.value = false;
+      response = error.toString();
+    });
+    String idBackPathUrl = await FirebaseUtils.uploadImage(
+            insurancePath.value, "User/Host${id}/IdentityProof/idBackPath/")
+        .catchError((error) {
+      loading.value = false;
+      response = error.toString();
+    });
 
     HostIdentity hostIdentity = HostIdentity(
-        hostId: FirebaseUtils.myId,
-        insurancePath: insurancePathUrl,
-        idFrontPath: idFrontPathUrl,
-        idBackPath: idBackPathUrl,
+      insurancePath: insurancePathUrl,
+      idFrontPath: idFrontPathUrl,
+      idBackPath: idBackPathUrl,
     );
-    await hostIdentityProofRef.doc(uid).set(hostIdentity.toMap()).then((value) {
-      print("Sccessfull Upload");
-      Get.to(ScreenHostAccountPending());
-
-
-    }).catchError((error){print(error.toString());});
+    await usersRef.doc(uid).update({
+      "hostIdentity": hostIdentity.toMap(),
+    }).then((value) {
+      Get.offAll(ScreenHostAccountPending());
+      response = "success";
+      loading.value = false;
+    }).catchError((error) {
+      response = error.toString();
+      loading.value = false;
+    });
+    return response;
   }
 }

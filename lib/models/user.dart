@@ -1,14 +1,17 @@
+import 'host_identity.dart';
+
 class User{
-   String uid,userType,phoneNumner,imageUrl,name,email,profileDescription,gender,notificationToken;
-   int dob;
+   String uid,userType,phoneNumber,imageUrl,name,email,profileDescription,gender,notificationToken;
+   int dob,timeStamp;
+   HostIdentity?  hostIdentity;
    double lat,lng;
-   bool notification;
+   bool notification,isVerified,isBlocked;
 
 //<editor-fold desc="Data Methods">
   User({
     required this.uid,
     required this.userType,
-    required this.phoneNumner,
+    required this.phoneNumber,
     required this.imageUrl,
     required this.name,
     required this.email,
@@ -16,9 +19,13 @@ class User{
     required this.gender,
     required this.notificationToken,
     required this.dob,
+    required this.timeStamp,
+    this.hostIdentity,
     required this.lat,
     required this.lng,
     required this.notification,
+    required this.isVerified,
+    required this.isBlocked,
   });
 
   @override
@@ -28,7 +35,7 @@ class User{
           runtimeType == other.runtimeType &&
           uid == other.uid &&
           userType == other.userType &&
-          phoneNumner == other.phoneNumner &&
+          phoneNumber == other.phoneNumber &&
           imageUrl == other.imageUrl &&
           name == other.name &&
           email == other.email &&
@@ -36,15 +43,19 @@ class User{
           gender == other.gender &&
           notificationToken == other.notificationToken &&
           dob == other.dob &&
+          timeStamp == other.timeStamp &&
+          hostIdentity == other.hostIdentity &&
           lat == other.lat &&
           lng == other.lng &&
-          notification == other.notification);
+          notification == other.notification &&
+          isVerified == other.isVerified &&
+          isBlocked == other.isBlocked);
 
   @override
   int get hashCode =>
       uid.hashCode ^
       userType.hashCode ^
-      phoneNumner.hashCode ^
+      phoneNumber.hashCode ^
       imageUrl.hashCode ^
       name.hashCode ^
       email.hashCode ^
@@ -52,16 +63,20 @@ class User{
       gender.hashCode ^
       notificationToken.hashCode ^
       dob.hashCode ^
+      timeStamp.hashCode ^
+      hostIdentity.hashCode ^
       lat.hashCode ^
       lng.hashCode ^
-      notification.hashCode;
+      notification.hashCode ^
+      isVerified.hashCode ^
+      isBlocked.hashCode;
 
   @override
   String toString() {
     return 'User{' +
         ' uid: $uid,' +
         ' userType: $userType,' +
-        ' phoneNumner: $phoneNumner,' +
+        ' phoneNumber: $phoneNumber,' +
         ' imageUrl: $imageUrl,' +
         ' name: $name,' +
         ' email: $email,' +
@@ -69,16 +84,20 @@ class User{
         ' gender: $gender,' +
         ' notificationToken: $notificationToken,' +
         ' dob: $dob,' +
+        ' timeStamp: $timeStamp,' +
+        ' hostIdentity: $hostIdentity,' +
         ' lat: $lat,' +
         ' lng: $lng,' +
         ' notification: $notification,' +
+        ' isVerified: $isVerified,' +
+        ' isBlocked: $isBlocked,' +
         '}';
   }
 
   User copyWith({
     String? uid,
     String? userType,
-    String? phoneNumner,
+    String? phoneNumber,
     String? imageUrl,
     String? name,
     String? email,
@@ -86,14 +105,18 @@ class User{
     String? gender,
     String? notificationToken,
     int? dob,
+    int? timeStamp,
+    HostIdentity? hostIdentity,
     double? lat,
     double? lng,
     bool? notification,
+    bool? isVerified,
+    bool? isBlocked,
   }) {
     return User(
       uid: uid ?? this.uid,
       userType: userType ?? this.userType,
-      phoneNumner: phoneNumner ?? this.phoneNumner,
+      phoneNumber: phoneNumber ?? this.phoneNumber,
       imageUrl: imageUrl ?? this.imageUrl,
       name: name ?? this.name,
       email: email ?? this.email,
@@ -101,9 +124,13 @@ class User{
       gender: gender ?? this.gender,
       notificationToken: notificationToken ?? this.notificationToken,
       dob: dob ?? this.dob,
+      timeStamp: timeStamp ?? this.timeStamp,
+      hostIdentity: hostIdentity ?? this.hostIdentity,
       lat: lat ?? this.lat,
       lng: lng ?? this.lng,
       notification: notification ?? this.notification,
+      isVerified: isVerified ?? this.isVerified,
+      isBlocked: isBlocked ?? this.isBlocked,
     );
   }
 
@@ -111,7 +138,7 @@ class User{
     return {
       'uid': this.uid,
       'userType': this.userType,
-      'phoneNumner': this.phoneNumner,
+      'phoneNumber': this.phoneNumber,
       'imageUrl': this.imageUrl,
       'name': this.name,
       'email': this.email,
@@ -119,9 +146,13 @@ class User{
       'gender': this.gender,
       'notificationToken': this.notificationToken,
       'dob': this.dob,
+      'timeStamp': this.timeStamp,
+      'hostIdentity': this.hostIdentity,
       'lat': this.lat,
       'lng': this.lng,
       'notification': this.notification,
+      'isVerified': this.isVerified,
+      'isBlocked': this.isBlocked,
     };
   }
 
@@ -129,7 +160,7 @@ class User{
     return User(
       uid: map['uid'] as String,
       userType: map['userType'] as String,
-      phoneNumner: map['phoneNumner'] as String,
+      phoneNumber: map['phoneNumber'] as String,
       imageUrl: map['imageUrl'] as String,
       name: map['name'] as String,
       email: map['email'] as String,
@@ -137,9 +168,13 @@ class User{
       gender: map['gender'] as String,
       notificationToken: map['notificationToken'] as String,
       dob: map['dob'] as int,
+      timeStamp: map['timeStamp'] as int,
+      hostIdentity: map['hostIdentity'] != null ? HostIdentity.fromMap(map['hostIdentity']) : null,
       lat: map['lat'] as double,
       lng: map['lng'] as double,
-      notification: map['notification'] as bool? ?? false, // handle potential null
+      notification: map['notification'] as bool,
+      isVerified: map['isVerified'] as bool,
+      isBlocked: map['isBlocked'] as bool,
     );
   }
 

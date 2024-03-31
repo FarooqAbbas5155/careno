@@ -1,4 +1,5 @@
 import 'package:careno/Host/Views/Screens/screen_host_vehicle_my_detail.dart';
+import 'package:careno/models/add_host_vehicle.dart';
 import 'package:careno/widgets/custom_svg.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,19 +9,21 @@ import '../../../constant/colors.dart';
 import '../../../constant/helpers.dart';
 
 class ItemHostVehicle extends StatelessWidget {
- String status;
-  @override
+AddHostVehicle addHostVehicle;
+
+@override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: (){
-        Get.to(ScreenHostVehicleMyDetail(status:status));
+        Get.to(ScreenHostVehicleMyDetail(addHostVehicle: addHostVehicle,));
       },
       child: Container(
         alignment: Alignment.center,
+
         height: 75.h,
-        width: 345.w,
+        // width: 345.w,
         padding: EdgeInsets.symmetric(horizontal: 4.w,vertical:6.h),
-        margin: EdgeInsets.symmetric(vertical: 4.h),
+        margin: EdgeInsets.symmetric(vertical: 6.h,horizontal: 25.w),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(5.r),
@@ -42,7 +45,7 @@ class ItemHostVehicle extends StatelessWidget {
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5.r),
                   image: DecorationImage(
-                      image: AssetImage("assets/images/car2.png"),
+                      image: NetworkImage(addHostVehicle.vehicleImageComplete),
                       fit: BoxFit.cover
                   )
               ),
@@ -52,13 +55,13 @@ class ItemHostVehicle extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Tesla Model 3",style: TextStyle(color: Colors.black,fontSize: 14.sp,fontFamily:"UrbanistBold" ,fontWeight: FontWeight.w700),),
-                  Text("Electric Car",style: TextStyle(color: Colors.black.withOpacity(.5),fontSize: 10.sp,fontFamily:"Urbanist" ,fontWeight: FontWeight.w500),).marginOnly(bottom: 2.h),
+                  Text(addHostVehicle.vehicleModel,style: TextStyle(color: Colors.black,fontSize: 14.sp,fontFamily:"UrbanistBold" ,fontWeight: FontWeight.w700),),
+                  Text(addHostVehicle.vehicleCategory,style: TextStyle(color: Colors.black.withOpacity(.5),fontSize: 10.sp,fontFamily:"Urbanist" ,fontWeight: FontWeight.w500),).marginOnly(bottom: 2.h),
                   Row(
                     children: [
                       CustomSvg(name:"Star"),
-                      Text("5.0",style: TextStyle(color: Colors.black,fontSize: 13.sp,fontFamily:"UrbanistBold" ,fontWeight: FontWeight.w600),),
-                      Text("(528)",style: TextStyle(color: Color(0xffAAAAAA),fontSize: 11.sp,fontFamily:"Urbanist" ,fontWeight: FontWeight.w600),).marginOnly(left: 4.w),
+                      Text("${addHostVehicle.rating}",style: TextStyle(color: Colors.black,fontSize: 13.sp,fontFamily:"UrbanistBold" ,fontWeight: FontWeight.w600),),
+                      Text("",style: TextStyle(color: Color(0xffAAAAAA),fontSize: 11.sp,fontFamily:"Urbanist" ,fontWeight: FontWeight.w600),).marginOnly(left: 4.w),
                     ],
                   ),
 
@@ -69,11 +72,11 @@ class ItemHostVehicle extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  status,
+                  addHostVehicle.status,
                   style: TextStyle(
                       fontWeight: FontWeight.w500,
                       fontStyle: FontStyle.italic,
-                      color: status == "Pending"
+                      color: addHostVehicle.status == "Pending"
                           ? Color(0xFFFB9701)
 
                           : Color(0xFF00A651),
@@ -82,7 +85,7 @@ class ItemHostVehicle extends StatelessWidget {
                 ),
                 RichText(
                   text: TextSpan(
-                    text: '\$ 50',
+                    text: '\$ ${addHostVehicle.vehiclePerDayRent}',
                     style: TextStyle(color: primaryColor,fontFamily: "UrbanistBold",fontWeight: FontWeight.w800,fontSize: 16.sp),
                     children: <TextSpan>[
                       TextSpan(
@@ -103,7 +106,7 @@ class ItemHostVehicle extends StatelessWidget {
     );
   }
 
- ItemHostVehicle({
-    required this.status,
+ItemHostVehicle({
+    required this.addHostVehicle,
   });
 }

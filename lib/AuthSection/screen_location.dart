@@ -1,4 +1,5 @@
 import 'package:careno/AuthSection/screen_complete_profile.dart';
+import 'package:careno/controllers/controller_update_profile.dart';
 import 'package:careno/controllers/home_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +23,7 @@ class ScreenLocation extends StatefulWidget {
 }
 
 class _ScreenLocationState extends State<ScreenLocation> {
-  PhoneController controller = Get.put(PhoneController());
+  ControllerUpdateProfile controller = Get.put(ControllerUpdateProfile());
   TextEditingController _searchController = TextEditingController();
   LatLng? _selectedLocation;
   GoogleMapController? _controller;
@@ -110,7 +111,7 @@ class _ScreenLocationState extends State<ScreenLocation> {
                   return Center(
                     child: CircularProgressIndicator(
                       backgroundColor: primaryColor,
-                      strokeWidth: 3,
+                      strokeWidth: 1,
                     ),
                   );
                 }

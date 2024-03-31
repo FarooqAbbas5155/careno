@@ -24,9 +24,9 @@ class ScreenHostAddVehicle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ControllerHostAddVechicle controllerHostAddIdentityProof =
+    ControllerHostAddVechicle controllerAddVehicle =
     Get.put(ControllerHostAddVechicle());
-    print(controllerHostAddIdentityProof.showLoading.value);
+    print(controllerAddVehicle.showLoading.value);
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -52,112 +52,131 @@ class ScreenHostAddVehicle extends StatelessWidget {
                 children: [
                   Obx(() {
                     return addVehicle(() async {
-                      controllerHostAddIdentityProof.vehiclePath.value =
+                      controllerAddVehicle.vehiclePath.value =
                       await FilePick().pickImage(ImageSource.gallery);
                     }, "Vehicle Image must be visible in image",
-                        RxString((controllerHostAddIdentityProof.vehiclePath
+                        RxString((controllerAddVehicle.vehiclePath
                             .value)));
                   }),
                   Obx(() {
                     return addVehicle(() async {
-                      controllerHostAddIdentityProof.vehicleNumberPlatePath.value =
+                      controllerAddVehicle.vehicleNumberPlatePath.value =
                       await FilePick().pickImage(ImageSource.gallery);
                     }, "Car plate number must visible in image",
-                        RxString((controllerHostAddIdentityProof.vehicleNumberPlatePath
+                        RxString((controllerAddVehicle.vehicleNumberPlatePath
                             .value)));
                   }),
                   Obx(() {
                     return addVehicle(() async {
-                      controllerHostAddIdentityProof.vehicleRightSidePaths.value =
+                      controllerAddVehicle.vehicleRightSidePaths.value =
                       await FilePick().pickImage(ImageSource.gallery);
                     }, "Capture vehicle's right side in the image",
-                        RxString((controllerHostAddIdentityProof.vehicleRightSidePaths
+                        RxString((controllerAddVehicle.vehicleRightSidePaths
                             .value)));
                   }),
                   Obx(() {
                     return addVehicle(() async {
-                      controllerHostAddIdentityProof.vehicleRearPaths.value =
+                      controllerAddVehicle.vehicleRearPaths.value =
                       await FilePick().pickImage(ImageSource.gallery);
                     }, "Include the rear, with the rear plate",
-                        RxString((controllerHostAddIdentityProof.vehicleRearPaths
+                        RxString((controllerAddVehicle.vehicleRearPaths
                             .value)));
                   }),
                   Obx(() {
                     return addVehicle(() async {
-                      controllerHostAddIdentityProof.vehicleInteriorPaths.value =
+                      controllerAddVehicle.vehicleInteriorPaths.value =
                       await FilePick().pickImage(ImageSource.gallery);
                     }, "Provide car interior picture",
-                        RxString((controllerHostAddIdentityProof.vehicleInteriorPaths
+                        RxString((controllerAddVehicle.vehicleInteriorPaths
                             .value)));
                   }),
 
                 ],
               ),
-              // buildVehicleContainer(controllerHostAddIdentityProof)
+              // buildVehicleContainer(controllerAddVehicle)
               //     .marginSymmetric(horizontal: 40.w, vertical: 20.h),
               Text(
                 "Add Details",
                 style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20.sp),
               ).marginSymmetric(vertical: 10.h),
               CustomTextField(
-                controller: controllerHostAddIdentityProof.vehicleModel.value,
-                hint: "Select Make & Model of Vehicle",
+                controller: controllerAddVehicle.vehicleModel.value,
+                hint: "Enter Model of Vehicle",
+                readOnly: controllerAddVehicle.showLoading.value,
               ).marginSymmetric(vertical: 8.h),
-              buildCategoryContainer(controllerHostAddIdentityProof, context)
+              buildCategoryContainer(controllerAddVehicle, context)
                   .marginSymmetric(vertical: 10.h),
-              CustomTextField(
-                controller: controllerHostAddIdentityProof.vehicleYear.value,
+              CustomTextField(readOnly: controllerAddVehicle.showLoading.value,
+
+
+                controller: controllerAddVehicle.vehicleYear.value,
                 hint: "Enter Year of Vehicle",
                 keyboardType: TextInputType.number,
               ).marginSymmetric(vertical: 8.h),
               CustomTextField(
-                controller: controllerHostAddIdentityProof.vehicleSeats.value,
+                readOnly: controllerAddVehicle.showLoading.value,
+
+                controller: controllerAddVehicle.vehicleSeats.value,
                 hint: "Number of Seats",
                 keyboardType: TextInputType.number,
               ).marginSymmetric(vertical: 8.h),
               buildTransmissionContainer(
-                  controllerHostAddIdentityProof, context)
+                  controllerAddVehicle, context)
                   .marginSymmetric(vertical: 10.h),
-              buildFuelContainer(controllerHostAddIdentityProof, context),
+              buildFuelContainer(controllerAddVehicle, context),
               CustomTextField(
-                controller: controllerHostAddIdentityProof.vehicleNumberPlate.value,
+                readOnly: controllerAddVehicle.showLoading.value,
+
+                controller: controllerAddVehicle.vehicleNumberPlate.value,
                 hint: "Vehicle Plate Number",
-                keyboardType: TextInputType.number,
+                keyboardType: TextInputType.name,
               ).marginSymmetric(vertical: 8.h),
               CustomTextField(
-                controller: controllerHostAddIdentityProof.vehicleColor.value,
+                readOnly: controllerAddVehicle.showLoading.value,
+
+                controller: controllerAddVehicle.vehicleColor.value,
                 hint: "Enter Vehicle Color",
                 keyboardType: TextInputType.name,
               ).marginSymmetric(vertical: 8.h),
               CustomTextField(
-                controller: controllerHostAddIdentityProof.vehicleLicenseExpiryDate.value,
+                readOnly: controllerAddVehicle.showLoading.value,
+
+                controller: controllerAddVehicle.vehicleLicenseExpiryDate.value,
                 hint: "Vehicle License Expiry Date",
-                keyboardType: TextInputType.datetime,
+                keyboardType: TextInputType.name,
               ).marginSymmetric(vertical: 8.h),
               CustomTextField(
-                controller: controllerHostAddIdentityProof.vehiclePerDayRent.value,
+                readOnly: controllerAddVehicle.showLoading.value,
+
+                controller: controllerAddVehicle.vehiclePerDayRent.value,
                 hint: "Per Day Rent \$",
                 keyboardType: TextInputType.number,
               ).marginSymmetric(vertical: 8.h),
               CustomTextField(
-                controller: controllerHostAddIdentityProof.vehiclePerHourRent.value,
+                readOnly: controllerAddVehicle.showLoading.value,
+
+                controller: controllerAddVehicle.vehiclePerHourRent.value,
                 hint: "Per Hours Rent \$",
                 keyboardType: TextInputType.number,
               ).marginSymmetric(vertical: 8.h),
-              // buildVehicleNumberPlate(controllerHostAddIdentityProof),
-              buildRegistrationProof(controllerHostAddIdentityProof),
-             controllerHostAddIdentityProof.showLoading.value == false? CustomButton(
-                  title: 'Next',
-                  onPressed: () async{
-                    print(controllerHostAddIdentityProof.showLoading.value);
-                    controllerHostAddIdentityProof.submitForm();
-                  await  controllerHostAddIdentityProof.hostAddVehicle();
-                  }).marginSymmetric(vertical: 20.h):Center(
-                    child: SizedBox(
-                                   height: 30.h,
-                                     width: 30.w,
-                                     child: CircularProgressIndicator(backgroundColor: AppColors.appPrimaryColor,color: Colors.white,)),
-                  )
+              // buildVehicleNumberPlate(controllerAddVehicle),
+              buildRegistrationProof(controllerAddVehicle),
+              Obx(() {
+                return CustomButton(
+                    title: 'Add',
+                    isLoading: controllerAddVehicle.showLoading.value,
+                    onPressed: () async {
+                    var response=
+                      await controllerAddVehicle.hostAddVehicle();
+                    if (response=="success") {
+                      Get.offAll(ScreenHostHomePage());
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Your Vehicle added Successfully")));
+                    }
+                    else{
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(response)));
+                    }
+                    });
+              }).marginSymmetric(vertical: 20.h)
             ],
           ).marginSymmetric(horizontal: 22.w),
         ),
@@ -165,12 +184,11 @@ class ScreenHostAddVehicle extends StatelessWidget {
     );
   }
 
-  Obx buildRegistrationProof(
-      ControllerHostAddVechicle controllerHostAddIdentityProof) {
+  Obx buildRegistrationProof(ControllerHostAddVechicle controllerAddVehicle) {
     return Obx(() {
       return GestureDetector(
         onTap: () async {
-          controllerHostAddIdentityProof.vehicleRegistrationProofPath.value =
+          controllerAddVehicle.vehicleRegistrationProofPath.value =
           await FilePick().pickImage(ImageSource.gallery);
         },
         child: Container(
@@ -180,9 +198,9 @@ class ScreenHostAddVehicle extends StatelessWidget {
             borderRadius: BorderRadius.circular(10.r),
             border: Border.all(color: Color(0xFFA6A6A6), width: 2.r),
           ),
-          child: (controllerHostAddIdentityProof
+          child: (controllerAddVehicle
               .vehicleRegistrationProofPath.value.isNotEmpty)
-              ? Image.file(File(controllerHostAddIdentityProof
+              ? Image.file(File(controllerAddVehicle
               .vehicleRegistrationProofPath.value))
               : Column(
             children: <Widget>[
@@ -210,12 +228,11 @@ class ScreenHostAddVehicle extends StatelessWidget {
     });
   }
 
-  Obx buildVehicleNumberPlate(
-      ControllerHostAddVechicle controllerHostAddIdentityProof) {
+  Obx buildVehicleNumberPlate(ControllerHostAddVechicle controllerAddVehicle) {
     return Obx(() {
       return GestureDetector(
         onTap: () async {
-          controllerHostAddIdentityProof.vehicleNumberPlatePath.value =
+          controllerAddVehicle.vehicleNumberPlatePath.value =
           await FilePick().pickImage(ImageSource.gallery);
         },
         child: Container(
@@ -226,10 +243,10 @@ class ScreenHostAddVehicle extends StatelessWidget {
             color: Color(0xFFA6A6A6),
             border: Border.all(color: Color(0xFFA6A6A6), width: 2.r),
           ),
-          child: (controllerHostAddIdentityProof
+          child: (controllerAddVehicle
               .vehicleNumberPlatePath.isNotEmpty)
               ? Image.file(File(
-              controllerHostAddIdentityProof.vehicleNumberPlatePath.value))
+              controllerAddVehicle.vehicleNumberPlatePath.value))
               : Column(
             children: <Widget>[
               Expanded(
@@ -277,76 +294,85 @@ class ScreenHostAddVehicle extends StatelessWidget {
       );
     });
   }
+
   // Stream<Category> fetchCategories() {
   //   return categoryRef.snapshots().map((snapshot) {
   //     return snapshot.docs.map((doc) => doc.).toList();
   //   });
   // }
-  Widget buildCategoryContainer(
-      ControllerHostAddVechicle controllerHostAddIdentityProof,
+  Widget buildCategoryContainer(ControllerHostAddVechicle controllerAddVehicle,
       BuildContext context) {
-    return StatefulBuilder(builder: (BuildContext context, void Function(void Function()) setState) {
-      return StreamBuilder<QuerySnapshot>(
-        stream: categoryRef.snapshots(),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return Text('Error: ${snapshot.error}');
-          }
+    return StatefulBuilder(
+      builder: (BuildContext context, void Function(void Function()) setState) {
+        return StreamBuilder<QuerySnapshot>(
+          stream: categoryRef.snapshots(),
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error}');
+            }
 
-          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return Text("No Category Added"); // Loading indicator while fetching data
-          }
+            if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+              return Text(
+                  "No Category Added"); // Loading indicator while fetching data
+            }
 
-          var categories = snapshot.data!.docs.map((e) => Category.fromMap(e.data() as Map<String, dynamic>)).toList();
-          var categoryNameList = categories.map((e) => e.name).toList();
+            var categories = snapshot.data!.docs.map((e) =>
+                Category.fromMap(e.data() as Map<String, dynamic>)).toList();
+            var categoryNameList = categories.map((e) => e.name).toList();
 
-          return CustomTextField(
-            padding: EdgeInsets.only(left: 18.w, top: 18.h),
-            readOnly: true,
-            hint: controllerHostAddIdentityProof.selectCategory.value.isEmpty ? "Select Category/Type" : controllerHostAddIdentityProof.selectCategory.value,
-            hintColor: controllerHostAddIdentityProof.selectCategory.value.isEmpty ? Color(0xff94979F) : Colors.black,
-            suffix: PopupMenuButton<String>(
-              icon: Icon(Icons.expand_more),
-              color: Theme.of(context).primaryColor,
-              itemBuilder: (BuildContext context) {
-                return categoryNameList.map((choice) {
-                  return PopupMenuItem<String>(
-                    value: choice.toString(),
-                    child: Text(
-                      choice,
-                      style: TextStyle(color: Colors.white, fontFamily: "Urbanist"),
-                    ),
-                  );
-                }).toList();
-              },
-              onSelected: (String choice) {
-                // Update selected category when an option is chosen
-                setState((){
-                  controllerHostAddIdentityProof.selectCategory.value = choice.toString();
-
-                });
-              },
-            ).marginOnly(top: 4.h),
-          );
-        },
-      );
-    },
+            return CustomTextField(
+              padding: EdgeInsets.only(left: 18.w, top: 18.h),
+              readOnly: true,
+              hint: controllerAddVehicle.selectCategory.value.isEmpty
+                  ? "Select Category/Type"
+                  : controllerAddVehicle.selectCategory.value,
+              hintColor: controllerAddVehicle.selectCategory.value.isEmpty
+                  ? Color(0xff94979F)
+                  : Colors.black,
+              suffix: PopupMenuButton<String>(
+                icon: Icon(Icons.expand_more),
+                color: Theme
+                    .of(context)
+                    .primaryColor,
+                itemBuilder: (BuildContext context) {
+                  return categoryNameList.map((choice) {
+                    return PopupMenuItem<String>(
+                      value: choice.toString(),
+                      child: Text(
+                        choice,
+                        style: TextStyle(
+                            color: Colors.white, fontFamily: "Urbanist"),
+                      ),
+                    );
+                  }).toList();
+                },
+                onSelected: (String choice) {
+                  // Update selected category when an option is chosen
+                  setState(() {
+                    controllerAddVehicle.selectCategory.value =
+                        choice.toString();
+                  });
+                },
+              ).marginOnly(top: 4.h),
+            );
+          },
+        );
+      },
     );
   }
 
 
-  Obx buildTransmissionContainer(
-      ControllerHostAddVechicle controllerHostAddIdentityProof,
+  Obx buildTransmissionContainer(ControllerHostAddVechicle controllerAddVehicle,
       BuildContext context) {
     return Obx(() {
       return CustomTextField(
         padding: EdgeInsets.only(left: 18.w, top: 18.h),
         readOnly: true,
-        hint: controllerHostAddIdentityProof.selectTransmission.value.isEmpty
+        hint: controllerAddVehicle.selectTransmission.value.isEmpty
             ? "Select Transmission"
-            : controllerHostAddIdentityProof.selectTransmission.value,
+            : controllerAddVehicle.selectTransmission.value,
         hintColor:
-        controllerHostAddIdentityProof.selectTransmission.value.isEmpty
+        controllerAddVehicle.selectTransmission.value.isEmpty
             ? Color(0xff94979F)
             : Colors.black,
         suffix: PopupMenuButton(
@@ -370,7 +396,7 @@ class ScreenHostAddVehicle extends StatelessWidget {
           },
           onSelected: (String choice) {
             // Update selected gender when an option is chosen
-            controllerHostAddIdentityProof.selectTransmission.value = choice;
+            controllerAddVehicle.selectTransmission.value = choice;
           },
         ).marginOnly(top: 4.h),
       );
@@ -432,17 +458,16 @@ class ScreenHostAddVehicle extends StatelessWidget {
     });
   }
 
-  Obx buildFuelContainer(
-      ControllerHostAddVechicle controllerHostAddIdentityProof,
+  Obx buildFuelContainer(ControllerHostAddVechicle controllerAddVehicle,
       BuildContext context) {
     return Obx(() {
       return CustomTextField(
         padding: EdgeInsets.only(left: 18.w, top: 18.h),
         readOnly: true,
-        hint: controllerHostAddIdentityProof.selectFuelType.value.isEmpty
+        hint: controllerAddVehicle.selectFuelType.value.isEmpty
             ? "Select Fuel Type"
-            : controllerHostAddIdentityProof.selectFuelType.value,
-        hintColor: controllerHostAddIdentityProof.selectFuelType.value.isEmpty
+            : controllerAddVehicle.selectFuelType.value,
+        hintColor: controllerAddVehicle.selectFuelType.value.isEmpty
             ? Color(0xff94979F)
             : Colors.black,
         suffix: PopupMenuButton(
@@ -466,19 +491,18 @@ class ScreenHostAddVehicle extends StatelessWidget {
           },
           onSelected: (String choice) {
             // Update selected gender when an option is chosen
-            controllerHostAddIdentityProof.selectFuelType.value = choice;
+            controllerAddVehicle.selectFuelType.value = choice;
           },
         ).marginOnly(top: 4.h),
       );
     });
   }
 
-  Obx buildVehicleContainer(
-      ControllerHostAddVechicle controllerHostAddIdentityProof) {
+  Obx buildVehicleContainer(ControllerHostAddVechicle controllerAddVehicle) {
     return Obx(() {
       return GestureDetector(
         onTap: () async {
-          controllerHostAddIdentityProof.vehiclePath.value =
+          controllerAddVehicle.vehiclePath.value =
           await FilePick().pickImage(ImageSource.gallery);
         },
         child: SizedBox(
@@ -497,7 +521,7 @@ class ScreenHostAddVehicle extends StatelessWidget {
                   child: Container(
                     height: 123.w,
                     width: Get.width,
-                    child: controllerHostAddIdentityProof
+                    child: controllerAddVehicle
                         .vehiclePath.value.isEmpty
                         ? Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -515,7 +539,7 @@ class ScreenHostAddVehicle extends StatelessWidget {
                       ],
                     )
                         : Image.file(File(
-                        controllerHostAddIdentityProof.vehiclePath.value)),
+                        controllerAddVehicle.vehiclePath.value)),
                   ),
                 ),
               ).marginSymmetric(horizontal: 18.w),

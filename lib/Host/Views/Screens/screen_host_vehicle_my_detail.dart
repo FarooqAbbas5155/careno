@@ -1,21 +1,23 @@
 import 'package:card_swiper/card_swiper.dart';
+import 'package:careno/models/add_host_vehicle.dart';
 import 'package:careno/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class ScreenHostVehicleMyDetail extends StatelessWidget {
-  String status;
-  List<String> imagesList=[
-    "assets/images/image.png",
-    "assets/images/image1.png",
-    "assets/images/image2.png",
-    "assets/images/image3.png",
-    "assets/images/image4.png",
-  ];
+ AddHostVehicle addHostVehicle;
+
 
   @override
   Widget build(BuildContext context) {
+    List<String> imagesList=[
+      addHostVehicle.vehicleImageComplete,
+      addHostVehicle.vehicleImageInterior,
+      addHostVehicle.vehicleImageRear,
+      addHostVehicle.vehicleImageRightSide,
+      addHostVehicle.vehicleImageNumberPlate,
+    ];
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -29,25 +31,25 @@ class ScreenHostVehicleMyDetail extends StatelessWidget {
                   height: 8.h,
                   width: 8.h,
                   decoration: BoxDecoration(
-                      color: status == "Pending"
+                      color: addHostVehicle.status == "Pending"
                           ? Color(0xFFFB9701)
-                          : status == "In progress"
+                          : addHostVehicle.status == "In progress"
                               ? Color(0xFF3C79E6)
-                              : status == "Completed"
+                              : addHostVehicle.status == "Completed"
                                   ? Color(0xFF0F9D58)
                                   : Color(0xFFFF2021),
                       shape: BoxShape.circle),
                 ),
                 Text(
-                  status,
+                  addHostVehicle.status,
                   style: TextStyle(
                       fontWeight: FontWeight.w500,
                       fontStyle: FontStyle.italic,
-                      color: status == "Pending"
+                      color: addHostVehicle.status == "Pending"
                           ? Color(0xFFFB9701)
-                          : status == "In progress"
+                          : addHostVehicle.status == "In progress"
                               ? Color(0xFF3C79E6)
-                              : status == "Completed"
+                              : addHostVehicle.status == "Completed"
                                   ? Color(0xFF0F9D58)
                                   : Color(0xFFFF2021),
                       fontSize: 12.sp),
@@ -67,7 +69,7 @@ class ScreenHostVehicleMyDetail extends StatelessWidget {
                       return Container(
                           decoration: BoxDecoration(
                               image: DecorationImage(
-                                  image: AssetImage(
+                                  image: NetworkImage(
                                       imagesList[i]),
                                   fit: BoxFit.cover)),
                         child: Container(
@@ -92,16 +94,16 @@ class ScreenHostVehicleMyDetail extends StatelessWidget {
                   constraints:
                   BoxConstraints.loose(Size(Get.width, 231.0.h))),
 
-              buildDetail("Make & Model of Vehicle", "Toyota Camry"),
-              buildDetail("Category/Type", "Sedan"),
-              buildDetail("Year of Vehicle", "2024"),
-              buildDetail("Number of Seats", "4"),
-              buildDetail("Transmission", "Automatic"),
-              buildDetail("Fuel Type", "Gasoline"),
-              buildDetail("Vehicle Plate Number", "10-SY-118"),
-              buildDetail("Vehicle License Expiry Date", "02 April, 2030"),
-              buildDetail("Per Day Rent", "\$ 150"),
-              buildDetail("Per Hours Rent", "\$ 15"),
+              buildDetail("Make & Model of Vehicle", addHostVehicle.vehicleModel),
+              buildDetail("Category/Type", addHostVehicle.vehicleCategory),
+              buildDetail("Year of Vehicle", addHostVehicle.vehicleYear),
+              buildDetail("Number of Seats", addHostVehicle.vehicleSeats),
+              buildDetail("Transmission", addHostVehicle.vehicleTransmission),
+              buildDetail("Fuel Type", addHostVehicle.vehicleFuleType),
+              buildDetail("Vehicle Plate Number", addHostVehicle.vehicleNumberPlate),
+              buildDetail("Vehicle License Expiry Date", addHostVehicle.vehicleLicenseExpiryDate),
+              buildDetail("Per Day Rent", "\$ ${addHostVehicle.vehiclePerDayRent}"),
+              buildDetail("Per Hours Rent", "\$ ${addHostVehicle.vehiclePerHourRent}"),
               Text(
                 "Vehicle Registration",
                 style: TextStyle(
@@ -117,7 +119,7 @@ class ScreenHostVehicleMyDetail extends StatelessWidget {
                     border: Border.all(color: Color(0xFF979797)),
                     borderRadius: BorderRadius.circular(6.r),
                     image: DecorationImage(
-                        image: AssetImage("assets/images/registration.png"),
+                        image: NetworkImage(addHostVehicle.vehicleRegistrationImage),
                         fit: BoxFit.cover)),
               ),
               Row(
@@ -176,7 +178,7 @@ class ScreenHostVehicleMyDetail extends StatelessWidget {
     ).marginSymmetric(vertical: 6.h, horizontal: 14.w);
   }
 
-  ScreenHostVehicleMyDetail({
-    required this.status,
+ ScreenHostVehicleMyDetail({
+    required this.addHostVehicle,
   });
 }
