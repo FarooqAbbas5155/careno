@@ -38,6 +38,7 @@ class HomeController extends GetxController {
   void onInit() {
 updateToken();
 UserStream();
+
 super.onInit();
   }
   String uid = FirebaseAuth.instance.currentUser!.uid;
@@ -53,6 +54,6 @@ super.onInit();
       log("${user.value}");
     });
   }
-
   Rx<model.User?> user = Rx<model.User?>(null);
+
 }

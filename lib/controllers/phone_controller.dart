@@ -1,20 +1,9 @@
-import 'dart:io';
-
-import 'package:careno/AuthSection/screen_complete_profile.dart';
-import 'package:careno/AuthSection/screen_login.dart';
 import 'package:careno/AuthSection/screen_otp.dart';
-import 'package:careno/controllers/home_controller.dart';
 import 'package:careno/models/user.dart' as userModle;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-
 import '../AuthSection/screen_welcome.dart';
-import '../Host/Views/Screens/screen_host_add_ident_identity_proof.dart';
-import '../User/views/screens/screen_user_home.dart';
-import '../constant/colors.dart';
-import '../constant/firebase_utils.dart';
 import '../constant/helpers.dart';
 
 class PhoneController extends GetxController {
@@ -120,7 +109,7 @@ class PhoneController extends GetxController {
       notificationToken: '',
       timeStamp: DateTime.now().millisecondsSinceEpoch,
       isVerified: false,
-      isBlocked: false,
+      isBlocked: false, status: '',
     );
     await await setDatabase(user);
     //

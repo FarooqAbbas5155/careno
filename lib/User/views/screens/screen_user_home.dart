@@ -9,13 +9,18 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
+import '../../../constant/firebase_utils.dart';
 import '../layouts/layout_user_booking.dart';
 import '../layouts/layout_user_explore.dart';
 import '../layouts/layout_user_messages.dart';
 import '../layouts/layout_user_profile.dart';
 
-class ScreenUserHome extends StatelessWidget {
-  HomeController controller = Get.put(HomeController());
+class ScreenUserHome extends StatefulWidget {
+  @override
+  State<ScreenUserHome> createState() => _ScreenUserHomeState();
+}
+
+class _ScreenUserHomeState extends State<ScreenUserHome> with WidgetsBindingObserver {
 
   final widgetOptions = [
     LayoutUserExplore(),
@@ -23,8 +28,30 @@ class ScreenUserHome extends StatelessWidget {
     LayoutUserMessages(),
     LayoutUserProfile(),
   ];
+  void setStatus(String status) async {
+    await usersRef.doc(FirebaseUtils.myId).update(
+        {"status": status});
+  }
+
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      //online
+      setStatus("Online");
+    } else {
+      //offline
+      setStatus("Offline");
+    }
+  }
+@override
+  void initState() {
+  WidgetsBinding.instance?.addObserver(this);
+  setStatus("Online");
+  super.initState();
+  }
   @override
   Widget build(BuildContext context) {
+    HomeController controller = Get.put(HomeController());
+
     return SafeArea(
         child: Scaffold(
           backgroundColor: Colors.white,

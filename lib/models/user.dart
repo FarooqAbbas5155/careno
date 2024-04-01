@@ -1,7 +1,7 @@
 import 'host_identity.dart';
 
 class User{
-   String uid,userType,phoneNumber,imageUrl,name,email,profileDescription,gender,notificationToken;
+   String uid,userType,phoneNumber,imageUrl,name,email,profileDescription,gender,notificationToken,status;
    int dob,timeStamp;
    HostIdentity?  hostIdentity;
    double lat,lng;
@@ -18,6 +18,7 @@ class User{
     required this.profileDescription,
     required this.gender,
     required this.notificationToken,
+    required this.status,
     required this.dob,
     required this.timeStamp,
     this.hostIdentity,
@@ -42,6 +43,7 @@ class User{
           profileDescription == other.profileDescription &&
           gender == other.gender &&
           notificationToken == other.notificationToken &&
+          status == other.status &&
           dob == other.dob &&
           timeStamp == other.timeStamp &&
           hostIdentity == other.hostIdentity &&
@@ -62,6 +64,7 @@ class User{
       profileDescription.hashCode ^
       gender.hashCode ^
       notificationToken.hashCode ^
+      status.hashCode ^
       dob.hashCode ^
       timeStamp.hashCode ^
       hostIdentity.hashCode ^
@@ -83,6 +86,7 @@ class User{
         ' profileDescription: $profileDescription,' +
         ' gender: $gender,' +
         ' notificationToken: $notificationToken,' +
+        ' status: $status,' +
         ' dob: $dob,' +
         ' timeStamp: $timeStamp,' +
         ' hostIdentity: $hostIdentity,' +
@@ -104,6 +108,7 @@ class User{
     String? profileDescription,
     String? gender,
     String? notificationToken,
+    String? status,
     int? dob,
     int? timeStamp,
     HostIdentity? hostIdentity,
@@ -123,6 +128,7 @@ class User{
       profileDescription: profileDescription ?? this.profileDescription,
       gender: gender ?? this.gender,
       notificationToken: notificationToken ?? this.notificationToken,
+      status: status ?? this.status,
       dob: dob ?? this.dob,
       timeStamp: timeStamp ?? this.timeStamp,
       hostIdentity: hostIdentity ?? this.hostIdentity,
@@ -145,6 +151,7 @@ class User{
       'profileDescription': this.profileDescription,
       'gender': this.gender,
       'notificationToken': this.notificationToken,
+      'status': this.status,
       'dob': this.dob,
       'timeStamp': this.timeStamp,
       'hostIdentity': this.hostIdentity,
@@ -167,6 +174,7 @@ class User{
       profileDescription: map['profileDescription'] as String,
       gender: map['gender'] as String,
       notificationToken: map['notificationToken'] as String,
+      status: map['status'] as String,
       dob: map['dob'] as int,
       timeStamp: map['timeStamp'] as int,
       hostIdentity: map['hostIdentity'] != null ? HostIdentity.fromMap(map['hostIdentity']) : null,

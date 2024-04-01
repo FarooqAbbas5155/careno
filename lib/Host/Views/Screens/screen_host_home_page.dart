@@ -9,15 +9,45 @@ import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 
 import '../../../User/views/layouts/layout_user_messages.dart';
 import '../../../User/views/screens/screen_user_home.dart';
+import '../../../constant/firebase_utils.dart';
+import '../../../constant/helpers.dart';
 
-class ScreenHostHomePage extends StatelessWidget {
+class ScreenHostHomePage extends StatefulWidget {
+  @override
+  State<ScreenHostHomePage> createState() => _ScreenHostHomePageState();
+}
+
+class _ScreenHostHomePageState extends State<ScreenHostHomePage> with WidgetsBindingObserver {
+
 List<Widget> Layouts=[
   LayoutHostBooking(),
   LayoutUserMessages(),
   LayoutHostEarning(),
   LayoutHostProfile()
 ];
+
+void setStatus(String status) async {
+  await usersRef.doc(FirebaseUtils.myId).update(
+      {"status": status});
+}
+
+void didChangeAppLifecycleState(AppLifecycleState state) {
+  if (state == AppLifecycleState.resumed) {
+    //online
+    setStatus("Online");
+  } else {
+    //offline
+    setStatus("Offline");
+  }
+}
+@override
+  void initState() {
+  WidgetsBinding.instance?.addObserver(this);
+  setStatus("Online");
+  super.initState();
+  }
 HomeController controller=Get.put(HomeController());
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(

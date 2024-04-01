@@ -16,10 +16,11 @@ import '../../../constant/colors.dart';
 import '../../../constant/helpers.dart';
 import '../../../widgets/custom_button.dart';
 class LayoutUserProfile extends StatelessWidget {
-  HomeController controller = Get.put(HomeController());
 
   @override
   Widget build(BuildContext context) {
+    HomeController controller = Get.put(HomeController());
+
     log(controller.user.value.toString());
     return Scaffold(
       body: SafeArea(
@@ -59,12 +60,16 @@ class LayoutUserProfile extends StatelessWidget {
                       padding: EdgeInsets.all(6.r),
                       decoration: BoxDecoration(
                           shape: BoxShape.circle, color: Colors.white),
-                      child: CircleAvatar(
-                        radius: 60,
-                        backgroundColor: Colors.white,
-                        backgroundImage:
-                        AssetImage("assets/images/user-image.png"),
-                      ),
+                      child: Obx(() {
+                        return CircleAvatar(
+                          radius: 60,
+                          backgroundColor: Colors.white,
+                          backgroundImage:
+                          NetworkImage(controller.user.value == null
+                              ? image_url
+                              : controller.user.value!.imageUrl),
+                        );
+                      }),
                     ),
                     Obx(() {
                       return Text(

@@ -214,8 +214,7 @@ class ScreenHostEditProfile extends StatelessWidget {
                     if (response == "success") {
                       ScaffoldMessenger.of(context)
                           .showSnackBar(SnackBar(
-                          content: Text(
-                              "Profile Updated Successfully")));
+                          content: Text("Profile Updated Successfully")));
                     } else {
                       ScaffoldMessenger.of(context)
                           .showSnackBar(SnackBar(

@@ -57,6 +57,7 @@ class ControllerEditProfile extends GetxController{
 
       }).then((value) {
         response == "success";
+        loading.value = false;
       }).catchError((error){
         response = "success";
         loading.value = false;
