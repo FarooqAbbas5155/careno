@@ -1,3 +1,4 @@
+import 'package:careno/AuthSection/screen_login.dart';
 import 'package:careno/Host/Views/Screens/screen_host_blocked_user.dart';
 import 'package:careno/Host/Views/Screens/screen_host_documents.dart';
 import 'package:careno/Host/Views/Screens/screen_host_edit_profile.dart';
@@ -279,6 +280,7 @@ class LayoutHostProfile extends StatelessWidget {
                                       title: "Yes, logout",
                                       onPressed: () {
                                         FirebaseAuth.instance.signOut();
+                                        Get.offAll(ScreenLogin());
                                       }).marginSymmetric(vertical: 20.h)
                                 ],
                               )

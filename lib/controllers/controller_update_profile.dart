@@ -18,8 +18,8 @@ class ControllerUpdateProfile extends GetxController {
   Rx<TextEditingController> email = TextEditingController().obs;
   Rx<TextEditingController> profileDescription = TextEditingController().obs;
   RxString selectedGender = ''.obs;
-  double latitude = 0.0;
-  double longitude = 0.0;
+  RxDouble latitude = 0.0.obs;
+  RxDouble longitude = 0.0.obs;
   RxBool isPasswordVisible = false.obs;
   RxBool checkBox = false.obs;
   Rx<File> images = Rx<File>(File(''));
@@ -74,8 +74,8 @@ class ControllerUpdateProfile extends GetxController {
         "imageUrl": url,
         "dob": Dob.value!.millisecondsSinceEpoch,
         "gender": selectedGender.value,
-        "lat": latitude,
-        "lng": longitude,
+        "lat": latitude.value,
+        "lng": longitude.value,
       });
       response = "success";
       loading.value = false;

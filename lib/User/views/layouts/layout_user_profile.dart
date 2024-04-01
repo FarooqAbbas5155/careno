@@ -1,24 +1,26 @@
+import 'dart:developer';
+
+import 'package:careno/AuthSection/screen_login.dart';
 import 'package:careno/User/views/screens/screen_user_favorite_vehicles.dart';
+import 'package:careno/controllers/home_controller.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:careno/Host/Views/Screens/screen_host_blocked_user.dart';
-import 'package:careno/Host/Views/Screens/screen_host_documents.dart';
 import 'package:careno/Host/Views/Screens/screen_host_edit_profile.dart';
 import 'package:careno/Host/Views/Screens/screen_host_setting.dart';
-import 'package:careno/Host/Views/Screens/screen_host_vehicle.dart';
-import 'package:careno/Host/Views/Screens/screen_host_vehicle_my_detail.dart';
 import 'package:careno/widgets/custom_svg.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 import '../../../constant/colors.dart';
 import '../../../constant/helpers.dart';
-import '../../../widgets/custom_button.dart';class LayoutUserProfile extends StatelessWidget {
-  const LayoutUserProfile({Key? key}) : super(key: key);
+import '../../../widgets/custom_button.dart';
+class LayoutUserProfile extends StatelessWidget {
+  HomeController controller = Get.put(HomeController());
 
   @override
   Widget build(BuildContext context) {
+    log(controller.user.value.toString());
     return Scaffold(
       body: SafeArea(
         child: Container(
@@ -64,16 +66,24 @@ import '../../../widgets/custom_button.dart';class LayoutUserProfile extends Sta
                         AssetImage("assets/images/user-image.png"),
                       ),
                     ),
-                    Text(
-                      "Jenny Wilson",
-                      style: TextStyle(
-                          fontSize: 18.sp, fontWeight: FontWeight.w700),
-                    ),
-                    Text(
-                      "jenniferfowler78@gmail.com",
-                      style: TextStyle(
-                          fontSize: 14.sp, fontWeight: FontWeight.w500,color: Colors.black.withOpacity(.5)),
-                    ),
+                    Obx(() {
+                      return Text(
+                        controller.user.value == null ? "No User" : controller
+                            .user.value!.name,
+                        style: TextStyle(
+                            fontSize: 18.sp, fontWeight: FontWeight.w700),
+                      );
+                    }),
+                    Obx(() {
+                      return Text(
+                        controller.user.value == null ? "No Email" : controller
+                            .user.value!.email,
+                        style: TextStyle(
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black.withOpacity(.5)),
+                      );
+                    }),
                     Container(
                       width: Get.width,
                       height: 35.h,
@@ -234,7 +244,9 @@ import '../../../widgets/custom_button.dart';class LayoutUserProfile extends Sta
                                       width: 193.w,
                                       title: "Yes, logout",
                                       onPressed: () {
-                                        Get.back();
+                                        FirebaseAuth.instance.signOut().then((value) {
+                                          Get.offAll(ScreenLogin());
+                                        });
                                       }).marginSymmetric(vertical: 20.h)
                                 ],
                               )

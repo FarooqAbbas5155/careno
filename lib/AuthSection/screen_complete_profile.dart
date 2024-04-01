@@ -83,6 +83,8 @@ class ScreenCompleteProfile extends StatelessWidget {
                       }
                       var position = snapshot.data!;
                       controller.permissionStatus.value = true;
+                      controller.latitude.value = position.latitude;
+                      controller.longitude.value = position.longitude;
                       return FutureBuilder<String?>(
                           future: getAddressFromCurrentLocation(),
                           builder: (BuildContext context,
@@ -93,8 +95,7 @@ class ScreenCompleteProfile extends StatelessWidget {
                                   child: CircularProgressIndicator.adaptive());
                             }
 
-                            if (locationSnapshot.hasError ||
-                                locationSnapshot.data == null) {
+                            if (locationSnapshot.hasError || locationSnapshot.data == null) {
                               // Handle the error or null case here
                               return Center(
                                   child: TextButton(
@@ -104,8 +105,7 @@ class ScreenCompleteProfile extends StatelessWidget {
                                       child: Text(
                                           'Error loading location,try again')));
                             }
-                            controller.controllerLocation.value.text =
-                                locationSnapshot.data;
+                            controller.controllerLocation.value.text = locationSnapshot.data;
                             return Padding(
                               padding: EdgeInsets.symmetric(horizontal: 20.w),
                               child: SingleChildScrollView(
@@ -284,6 +284,7 @@ class ScreenCompleteProfile extends StatelessWidget {
                                     }).marginSymmetric(
                                         horizontal: 12.w, vertical: 8.h),
                                     CustomTextField(
+                                      controller: controller.controllerLocation.value,
                                       padding:
                                           EdgeInsets.only(left: 18.w, top: 1.h),
                                       hint: 'Select Address again',

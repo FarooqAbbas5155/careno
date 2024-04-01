@@ -223,8 +223,8 @@ class _ScreenLocationState extends State<ScreenLocation> {
                         child: CustomButton(
                             title: "Save", onPressed: () {
                           setState(() {
-                            controller.latitude = lat;
-                            controller.longitude = lng;
+                            controller.latitude.value = lat;
+                            controller.longitude.value = lng;
                             Get.offAll(ScreenCompleteProfile());
                           });
                         }))
