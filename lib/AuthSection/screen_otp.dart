@@ -52,7 +52,7 @@ class ScreenOtp extends StatelessWidget {
                 padding:  EdgeInsets.only(left: 25.w,top: 20.h),
                 child: Text("OTP Verification",style: TextStyle(fontFamily: "Urbanist",fontSize: 24.sp,fontWeight: FontWeight.w700),),
               ),
-              Text("Enter the verification code we just sent on your Phone Number +1230******722.",style:TextStyle(color: Color(0xff838BA1),fontFamily: "Urbanist" ,fontSize: 16.sp)).marginSymmetric(horizontal: 25.w),
+              Text("Enter the verification code we just sent on your Phone Number ${controller.country_code}${controller.phoneController.value.text}",style:TextStyle(color: Color(0xff838BA1),fontFamily: "Urbanist" ,fontSize: 16.sp)).marginSymmetric(horizontal: 25.w),
 
               Container(
                 margin: EdgeInsets.symmetric(horizontal: 25.w,vertical: 20.h),

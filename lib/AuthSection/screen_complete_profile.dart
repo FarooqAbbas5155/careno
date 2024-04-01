@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:careno/AuthSection/screen_allow_location.dart';
+import 'package:careno/AuthSection/screen_location.dart';
 import 'package:careno/constant/helpers.dart';
 import 'package:careno/controllers/controller_update_profile.dart';
 import 'package:careno/widgets/custom_textfiled.dart';
@@ -41,8 +42,6 @@ class ScreenCompleteProfile extends StatelessWidget {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(
                     child: CircularProgressIndicator.adaptive(
-                      backgroundColor: primaryColor,
-                      strokeWidth: 1,
                     ),
                   );
                 }
@@ -76,8 +75,6 @@ class ScreenCompleteProfile extends StatelessWidget {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return Center(
                           child: CircularProgressIndicator(
-                            backgroundColor: primaryColor,
-                            strokeWidth: 3,
                           ),
                         );
                       }
@@ -105,7 +102,7 @@ class ScreenCompleteProfile extends StatelessWidget {
                                       child: Text(
                                           'Error loading location,try again')));
                             }
-                            controller.controllerLocation.value.text = locationSnapshot.data;
+                            controller.address.value = locationSnapshot.data;
                             return Padding(
                               padding: EdgeInsets.symmetric(horizontal: 20.w),
                               child: SingleChildScrollView(
@@ -284,7 +281,8 @@ class ScreenCompleteProfile extends StatelessWidget {
                                     }).marginSymmetric(
                                         horizontal: 12.w, vertical: 8.h),
                                     CustomTextField(
-                                      controller: controller.controllerLocation.value,
+                                      // controller: controller.controllerLocation.value,
+                                      text: controller.address.value,
                                       padding:
                                           EdgeInsets.only(left: 18.w, top: 1.h),
                                       hint: 'Select Address again',
@@ -293,7 +291,7 @@ class ScreenCompleteProfile extends StatelessWidget {
                                           Color(0xff94979F).withOpacity(.7),
                                       suffix: InkWell(
                                         onTap: () {
-                                          Get.to(ScreenAllowLocation());
+                                          Get.to(ScreenLocation());
                                         },
                                         child: SvgPicture.asset(
                                                 "assets/images/location.svg")

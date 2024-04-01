@@ -12,6 +12,7 @@ import '../constant/firebase_utils.dart';
 
 class ControllerUpdateProfile extends GetxController {
   RxString userType = 'user'.obs;
+  RxString address = ''.obs;
   RxBool loading = false.obs;
   Rx<TextEditingController> fullName = TextEditingController().obs;
   Rx<TextEditingController> controllerLocation = TextEditingController().obs;
