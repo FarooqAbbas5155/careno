@@ -1,18 +1,30 @@
+import 'package:careno/controllers/chat_controller.dart';
 import 'package:careno/widgets/custom_svg.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_holo_date_picker/date_time_formatter.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
+import '../../../constant/helpers.dart';
+import '../../../models/user.dart';
 import '../screens/screen_user_chat.dart';
 
 class ItemUserList extends StatelessWidget {
-  const ItemUserList({Key? key}) : super(key: key);
+  User user;
+  String lastMessage;
+  int timestamp,counter;
+  String roomId;
 
   @override
   Widget build(BuildContext context) {
+    ChatController chatController = Get.put(ChatController());
+    DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(timestamp);
+    String formattedDateTime = DateFormat('hh:mm a').format(dateTime);
+
     return GestureDetector(
       onTap: (){
-        Get.to(ScreenUserChat());
+        Get.to(ScreenUserChat(user: user,counter: counter,chatRoomId: roomId,timeStamp: timestamp,));
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
@@ -24,21 +36,24 @@ class ItemUserList extends StatelessWidget {
                 width: 48.w,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  image: DecorationImage(image: AssetImage("assets/images/user-image.png"))
+                  image: DecorationImage(
+                      image:  NetworkImage(user.imageUrl.isEmpty
+                          ? image_url
+                          : user.imageUrl),)
                 ),
                 child: Align(
                     alignment: Alignment.bottomRight,
-                    child: CustomSvg(name: "circle",)),
+                    child: CustomSvg(name: "circle",color: user.status == "Online"?Colors.green:Colors.grey.withOpacity(.3),)),
               ),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                  Text("Kristin Watson",style: TextStyle(
+                  Text(user.name,style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 18.sp
                   ),),
-                  Text("Hey, How it’s going?",style: TextStyle(
+                  Text(lastMessage,style: TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 15.sp,
                     color: Color(0xFF373132)
@@ -48,15 +63,15 @@ class ItemUserList extends StatelessWidget {
               Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                Text("14:55",style: TextStyle(fontSize: 12.sp,fontWeight: FontWeight.w500),),
-                Container(
+                Text(formattedDateTime,style: TextStyle(fontSize: 12.sp,fontWeight: FontWeight.w500),),
+              counter == 0?SizedBox(): Container(
                   padding: EdgeInsets.all(5.sp),
                   decoration: BoxDecoration(
                   color: Color(0xFFFF2021),
                   shape: BoxShape.circle,
 
                 ),
-                child: Text("3",style: TextStyle(
+                child: Text(counter.toString(),style: TextStyle(
                   fontWeight: FontWeight.w500,
                   color: Colors.white,
                   fontSize: 14.sp
@@ -74,4 +89,11 @@ class ItemUserList extends StatelessWidget {
       ).marginSymmetric(vertical: 5.h),
     );
   }
+  ItemUserList({
+    required this.user,
+    required this.lastMessage,
+    required this.timestamp,
+    required this.counter,
+    required this.roomId,
+  });
 }

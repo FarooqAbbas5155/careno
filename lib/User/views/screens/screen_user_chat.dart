@@ -1,16 +1,130 @@
 import 'package:careno/constant/colors.dart';
+import 'package:careno/constant/database_utils.dart';
 import 'package:careno/widgets/custom_svg.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-
+import 'package:intl/intl.dart';
+import '../../../constant/firebase_utils.dart';
+import '../../../constant/helpers.dart';
 import '../../../widgets/bubble_special_three.dart';
+import 'package:careno/models/user.dart' as model;
+class ScreenUserChat extends StatefulWidget {
+  model.User? user;
+  int? counter;
+  String? chatRoomId;
+  int? timeStamp;
+  @override
+  State<ScreenUserChat> createState() => _ScreenUserChatState();
 
-class ScreenUserChat extends StatelessWidget {
-  const ScreenUserChat({Key? key}) : super(key: key);
+  ScreenUserChat({
+     this.user,
+    this.counter,
+    this.chatRoomId,
+    this.timeStamp,
+  });
+}
+
+class _ScreenUserChatState extends State<ScreenUserChat> {
+
+  late TextEditingController messageController = TextEditingController();
+  final _scrollController = ScrollController();
+  late var chatRoomId = "";
+  // late Stream<DatabaseEvent> stream;
+  bool isActive=false;
+  late Stream<DatabaseEvent> stream = Stream.empty();
+
+  @override
+  void initState() {
+    stream = chatref
+        .child(chatRoomId)
+        .onValue;
+    // _subscription = stream?.listen((event) {});
+
+    print("chatRoom: $chatRoomId");
+    setState(() {});
+    super.initState();
+    clearCounter();
+  }
+    Future<bool> checkUser() async {
+      var exist = await usersRef.doc(FirebaseUtils.myId)
+          .collection('chats')
+          .doc("${widget.user!.uid}_${FirebaseUtils.myId}")
+          .get();
+      return exist.exists;
+    }
+
+    Future<void> checkCondition() async {
+      if (chatRoomId == '') {
+        bool userExists = await checkUser();
+        if (userExists) {
+          chatRoomId = "${widget.user!.uid}_${FirebaseUtils.myId}";
+          // clearCounter();
+
+        } else {
+          chatRoomId = "${FirebaseUtils.myId}_${widget.user!.uid}";
+        }
+      } else {
+        chatRoomId = widget.chatRoomId!;
+      }
+    }
+    //
+    // Future<String> roomId() async {
+    //   String _roomId = '';
+    //   bool check = await checkRoomId();
+    //   if (check) {
+    //     _roomId = "${widget.user.uid}_${FirebaseUtils.myId}";
+    //   } else {
+    //     _roomId = "${FirebaseUtils.myId}_${widget.user.uid}";
+    //   }
+    //   return _roomId;
+    // }
+    //
+    // Future<bool> checkRoomId() async {
+    //   DocumentSnapshot userSnapshot=await usersRef
+    //       .doc(FirebaseUtils.myId)
+    //       .collection("chats")
+    //       .doc("${widget.user.uid}_${FirebaseUtils.myId}")
+    //       .get();
+    //   DocumentSnapshot mySnapshot=await usersRef
+    //       .doc(FirebaseUtils.myId)
+    //       .collection("chats")
+    //       .doc("${FirebaseUtils.myId}_${widget.user.uid}")
+    //       .get();
+    //   if (userSnapshot.exists) {
+    //     return userSnapshot.exists;
+    //   }
+    //
+    //   return mySnapshot.exists;
+    // }
+
+    Future<void> clearCounter() async {
+      try {
+        DocumentReference chatRef = usersRef
+            .doc(FirebaseUtils.myId)
+            .collection("chats")
+            .doc(chatRoomId);
+
+        DocumentSnapshot chatSnapshot = await chatRef.get();
+
+        if (chatSnapshot.exists) {
+          await chatRef.update({"counter": 0});
+        } else {
+          // Handle case when document is not found
+          print("Document not found: $chatRoomId");
+        }
+      } catch (error) {
+        // Handle error
+        print("Error clearing counter: $error");
+      }
+    }
 
   @override
   Widget build(BuildContext context) {
+    DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(widget.timeStamp!);
+    String formattedDateTime = DateFormat('hh:mm a').format(dateTime);
     return SafeArea(child: Scaffold(
       appBar: AppBar(
         elevation: 3,
@@ -28,7 +142,7 @@ class ScreenUserChat extends StatelessWidget {
               Expanded(
                 child: CircleAvatar(
                   radius: 20.r,
-                  backgroundImage: AssetImage("assets/images/user-image.png"),
+                  backgroundImage: NetworkImage(widget.user!.imageUrl)
                 ),
               ),
 
@@ -39,11 +153,11 @@ class ScreenUserChat extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text("Kristin Watson",style: TextStyle(
+            Text(widget.user!.name,style: TextStyle(
               fontWeight: FontWeight.w700,
               fontSize: 20.sp
             ),),
-            Text("Last Seen 12:18  AM",style: TextStyle(
+            Text("Last Seen ${formattedDateTime}",style: TextStyle(
               fontSize: 12.sp,
               fontWeight: FontWeight.w500,
               color: Colors.black.withOpacity(.4)
@@ -152,3 +266,4 @@ class ScreenUserChat extends StatelessWidget {
     ));
   }
 }
+

@@ -36,6 +36,25 @@ Future<User> getUser(String id) async {
 
   return user;
 }
+User defaultUser = User(
+  userType: "",
+  phoneNumber: "phoneNumber",
+  imageUrl: "",
+  name: '',
+  email: '',
+  profileDescription: '',
+  dob: 0,
+  lat: 0.0,
+  lng: 0.0,
+  uid: uid,
+  gender: "",
+  notification: false,
+  notificationToken: '',
+  timeStamp: DateTime.now().millisecondsSinceEpoch,
+  isVerified: false,
+  isBlocked: false,
+  status: '',
+);
 
 Color primaryColor = Color(0xff4C0AE1);
 
