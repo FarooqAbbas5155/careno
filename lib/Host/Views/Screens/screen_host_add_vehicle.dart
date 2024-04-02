@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:careno/Host/Views/Screens/screen_host_add_vehicle_location.dart';
 import 'package:careno/Host/Views/Screens/screen_host_home_page.dart';
 import 'package:careno/constant/helpers.dart';
 import 'package:careno/controllers/controller_host_add_vechicle.dart';
@@ -12,6 +13,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -24,8 +26,7 @@ class ScreenHostAddVehicle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ControllerHostAddVechicle controllerAddVehicle =
-    Get.put(ControllerHostAddVechicle());
+    ControllerHostAddVechicle controllerAddVehicle = Get.put(ControllerHostAddVechicle());
     print(controllerAddVehicle.showLoading.value);
     return SafeArea(
       child: Scaffold(
@@ -160,21 +161,49 @@ class ScreenHostAddVehicle extends StatelessWidget {
                 keyboardType: TextInputType.number,
               ).marginSymmetric(vertical: 8.h),
               // buildVehicleNumberPlate(controllerAddVehicle),
+
+              Obx(() {
+                return CustomTextField(
+                  // controller: controller.controllerLocation.value,
+                  text: controllerAddVehicle.address.value,
+                  padding: EdgeInsets.only(left: 18.w, top: 1.h),
+                  hint: 'Add Vehicle Location',
+                  // Use the address from the snapshot
+                  hintColor:
+                  Color(0xff94979F).withOpacity(.7),
+                  suffix: InkWell(
+                    onTap: () async {
+                      var result = await Get.to(ScreenHostAddVehicleLocation());
+                      if (result == true) {
+                        controllerAddVehicle.update();
+                      }
+                    },
+                    child: SvgPicture.asset(
+                        "assets/images/location.svg")
+                        .marginOnly(top: 4.h),
+                  ),
+                );
+              }).marginSymmetric(
+                   vertical: 8.h),
+
               buildRegistrationProof(controllerAddVehicle),
+
               Obx(() {
                 return CustomButton(
                     title: 'Add',
                     isLoading: controllerAddVehicle.showLoading.value,
                     onPressed: () async {
-                    var response=
+                      var response =
                       await controllerAddVehicle.hostAddVehicle();
-                    if (response=="success") {
-                      Get.offAll(ScreenHostHomePage());
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Your Vehicle added Successfully")));
-                    }
-                    else{
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(response)));
-                    }
+                      if (response == "success") {
+                        Get.offAll(ScreenHostHomePage());
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text("Your Vehicle added Successfully")));
+                      }
+                      else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text(response)));
+                      }
                     });
               }).marginSymmetric(vertical: 20.h)
             ],

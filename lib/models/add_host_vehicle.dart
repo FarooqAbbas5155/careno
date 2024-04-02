@@ -4,6 +4,7 @@ class AddHostVehicle{
   String vehicleModel,vehicleCategory,vehicleYear,vehicleSeats,vehicleTransmission,vehicleFuleType,vehicleNumberPlate,vehicleColor,vehicleLicenseExpiryDate,vehiclePerDayRent,vehiclePerHourRent,vehicleRegistrationImage;
   String status;
   double rating;
+  double latitude,longitude;
 
 //<editor-fold desc="Data Methods">
   AddHostVehicle({
@@ -28,6 +29,8 @@ class AddHostVehicle{
     required this.vehicleRegistrationImage,
     required this.status,
     required this.rating,
+    required this.latitude,
+    required this.longitude,
   });
 
   @override
@@ -55,7 +58,9 @@ class AddHostVehicle{
           vehiclePerHourRent == other.vehiclePerHourRent &&
           vehicleRegistrationImage == other.vehicleRegistrationImage &&
           status == other.status &&
-          rating == other.rating);
+          rating == other.rating &&
+          latitude == other.latitude &&
+          longitude == other.longitude);
 
   @override
   int get hashCode =>
@@ -79,7 +84,10 @@ class AddHostVehicle{
       vehiclePerHourRent.hashCode ^
       vehicleRegistrationImage.hashCode ^
       status.hashCode ^
-      rating.hashCode;
+      rating.hashCode ^
+      latitude.hashCode ^
+      longitude.hashCode;
+
 
   @override
   String toString() {
@@ -105,8 +113,11 @@ class AddHostVehicle{
         ' vehicleRegistrationImage: $vehicleRegistrationImage,' +
         ' status: $status,' +
         ' rating: $rating,' +
+        ' latitude: $latitude,' +
+        ' longitude: $longitude,' +
         '}';
   }
+
 
   AddHostVehicle copyWith({
     String? hostId,
@@ -130,15 +141,17 @@ class AddHostVehicle{
     String? vehicleRegistrationImage,
     String? status,
     double? rating,
+    double? latitude,
+    double? longitude,
   }) {
     return AddHostVehicle(
       hostId: hostId ?? this.hostId,
       vehicleId: vehicleId ?? this.vehicleId,
       vehicleImageComplete: vehicleImageComplete ?? this.vehicleImageComplete,
-      vehicleImageNumberPlate:
-          vehicleImageNumberPlate ?? this.vehicleImageNumberPlate,
-      vehicleImageRightSide:
-          vehicleImageRightSide ?? this.vehicleImageRightSide,
+      vehicleImageNumberPlate: vehicleImageNumberPlate ??
+          this.vehicleImageNumberPlate,
+      vehicleImageRightSide: vehicleImageRightSide ??
+          this.vehicleImageRightSide,
       vehicleImageRear: vehicleImageRear ?? this.vehicleImageRear,
       vehicleImageInterior: vehicleImageInterior ?? this.vehicleImageInterior,
       vehicleModel: vehicleModel ?? this.vehicleModel,
@@ -149,16 +162,19 @@ class AddHostVehicle{
       vehicleFuleType: vehicleFuleType ?? this.vehicleFuleType,
       vehicleNumberPlate: vehicleNumberPlate ?? this.vehicleNumberPlate,
       vehicleColor: vehicleColor ?? this.vehicleColor,
-      vehicleLicenseExpiryDate:
-          vehicleLicenseExpiryDate ?? this.vehicleLicenseExpiryDate,
+      vehicleLicenseExpiryDate: vehicleLicenseExpiryDate ??
+          this.vehicleLicenseExpiryDate,
       vehiclePerDayRent: vehiclePerDayRent ?? this.vehiclePerDayRent,
       vehiclePerHourRent: vehiclePerHourRent ?? this.vehiclePerHourRent,
-      vehicleRegistrationImage:
-          vehicleRegistrationImage ?? this.vehicleRegistrationImage,
+      vehicleRegistrationImage: vehicleRegistrationImage ??
+          this.vehicleRegistrationImage,
       status: status ?? this.status,
       rating: rating ?? this.rating,
+      latitude: latitude ?? this.latitude,
+      longitude: longitude ?? this.longitude,
     );
   }
+
 
   Map<String, dynamic> toMap() {
     return {
@@ -183,6 +199,8 @@ class AddHostVehicle{
       'vehicleRegistrationImage': this.vehicleRegistrationImage,
       'status': this.status,
       'rating': this.rating,
+      'latitude': this.latitude,
+      'longitude': this.longitude,
     };
   }
 
@@ -208,9 +226,12 @@ class AddHostVehicle{
       vehiclePerHourRent: map['vehiclePerHourRent'] as String,
       vehicleRegistrationImage: map['vehicleRegistrationImage'] as String,
       status: map['status'] as String,
-      rating: (map['rating'] as num).toDouble(),
+      rating: map['rating'] as double,
+      latitude: map['latitude'] as double,
+      longitude: map['longitude'] as double,
     );
   }
+
 
 //</editor-fold>
 }

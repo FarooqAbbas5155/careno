@@ -86,6 +86,8 @@ class ControllerEditProfile extends GetxController{
         "dob":dateTime.value!.millisecondsSinceEpoch,
       }).then((value) {
         response == "success";
+        loading.value = false;
+
       }).catchError((error){
         response = "success";
         loading.value = false;

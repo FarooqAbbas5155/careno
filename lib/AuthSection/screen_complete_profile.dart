@@ -313,8 +313,7 @@ class ScreenCompleteProfile extends StatelessWidget {
                                       padding: EdgeInsets.only(left: 18.w),
                                       hint: "Profile Description",
                                       hintColor: controller
-                                                  .profileDescription.value ==
-                                              null
+                                                  .profileDescription.value == null
                                           ? Color(0xff94979F).withOpacity(.7)
                                           : Colors.black,
                                     ).marginSymmetric(

@@ -1,37 +1,29 @@
 import 'dart:async';
-
-import 'package:careno/AuthSection/screen_complete_profile.dart';
-import 'package:careno/controllers/controller_update_profile.dart';
-import 'package:careno/controllers/home_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_google_places/flutter_google_places.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:geocoding/geocoding.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_api_headers/google_api_headers.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_webservice/directions.dart';
 import 'package:google_maps_webservice/places.dart';
-import 'package:permission_handler/permission_handler.dart';
 
-import '../controllers/phone_controller.dart';
-import '../widgets/custom_button.dart';
-import '../constant/helpers.dart';
-import '../constant/location_utils.dart';
+import '../../../constant/helpers.dart';
+import '../../../controllers/controller_host_add_vechicle.dart';
+import '../../../widgets/custom_button.dart';
 
 
-class ScreenLocation extends StatefulWidget {
+class ScreenHostAddVehicleLocation extends StatefulWidget {
 
   @override
-  State<ScreenLocation> createState() => _ScreenLocationState();
+  State<ScreenHostAddVehicleLocation> createState() => _ScreenHostAddVehicleLocationState();
 }
 
-class _ScreenLocationState extends State<ScreenLocation> {
-  ControllerUpdateProfile controller = Get.put(ControllerUpdateProfile());
+class _ScreenHostAddVehicleLocationState extends State<ScreenHostAddVehicleLocation> {
+  ControllerHostAddVechicle controller = Get.put(ControllerHostAddVechicle());
   final Completer<GoogleMapController> _controller =
   Completer<GoogleMapController>();
   String? setLocationOnMap;
@@ -115,7 +107,7 @@ class _ScreenLocationState extends State<ScreenLocation> {
                             fontFamily: "UrbanistBold",
                           ),
                         ),
-                       SizedBox()
+                        SizedBox()
 
                       ],
                     ),
@@ -124,39 +116,42 @@ class _ScreenLocationState extends State<ScreenLocation> {
                       children: [
                         Expanded(
                           child: GestureDetector(
-                          onTap:() async {
-                            print("kddk");
-                            Prediction? p = await PlacesAutocomplete.show(
-                              context: context,
-                              apiKey: googleApiKey,
-                              hint: "Search Address",
-                              mode: Mode.overlay, // Mode.fullscreen
-                              language: "en",
-                              types: [], components: [new Component(Component.country, "pak")],
-                              strictbounds: false,
-                            );
-                            if(p!=null){
-                              displayPrediction(p);
-                            }
-                            print("destination location select is: ${p?.description}");
+                            onTap:() async {
+                              print("kddk");
+                              Prediction? p = await PlacesAutocomplete.show(
+                                context: context,
+                                apiKey: googleApiKey,
+                                hint: "Search Address",
+                                mode: Mode.overlay, // Mode.fullscreen
+                                language: "en",
+                                types: [], components: [new Component(Component.country, "pak")],
+                                strictbounds: false,
+                              );
+                              if(p!=null){
+                                displayPrediction(p);
+                                setState(() {
 
-                          },
-                          child: Container(
-                            height: 48.h,
-                            alignment: Alignment.centerLeft,
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 18.w),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(
-                                  25.r),
+                                });
+                              }
+                              print("destination location select is: ${p?.description}");
 
-                            ),
-                            child: Text(controller.address.value!=''?'${controller.address.value}': 'search your location here',maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
+                            },
+                            child: Container(
+                              height: 48.h,
+                              alignment: Alignment.centerLeft,
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 18.w),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(
+                                    25.r),
+
+                              ),
+                              child: Text(controller.address.value!=''?'${controller.address.value}': 'search your location here',maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             ),
                           ),
-                                        ),
                         ),
                         GestureDetector(
                           onTap:() async {
@@ -200,6 +195,7 @@ class _ScreenLocationState extends State<ScreenLocation> {
                 right: 20,
                 child: CustomButton(title: "Save", onPressed: () async {
                   Get.back(result: true);
+                  controller.update();
                 }, isLoading: false),
               )
             ],
@@ -218,7 +214,6 @@ class _ScreenLocationState extends State<ScreenLocation> {
     controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
   }
   displayPrediction(Prediction? p,) async {
-
     if (p != null) {
       GoogleMapsPlaces _places = GoogleMapsPlaces(
         apiKey: googleApiKey,
@@ -228,26 +223,18 @@ class _ScreenLocationState extends State<ScreenLocation> {
       PlacesDetailsResponse detail = await _places.getDetailsByPlaceId(p.placeId??"");
 
       var placeId = p.placeId;
-      controller.latitude.value = detail.result.geometry!.location.lat;
-      controller.longitude.value  = detail.result.geometry!.location.lng;
-      var addres  =detail.result.formattedAddress;
-      controller.address.value = addres!;
-      // if(pickUpLocation){
-      //   pickupAddress=LocationModel(location: address,lat: lat,long: long);
-      //
-      // }else{
-      //   destinationAddress=LocationModel(location: address,lat: lat,long: long);
 
-      // }
+      if (!mounted) return; // Check if the widget is still mounted
 
-      print("lat is: $controller.longitude.value");
-      print("long is: $controller.longitude.value");
-      if(controller.latitude.value!=null && controller.longitude.value!=null){
-        await add(controller.latitude.value,controller.longitude.value,controller.address.value);
+      setState(() {
+        controller.latitude.value = detail.result.geometry!.location.lat;
+        controller.longitude.value = detail.result.geometry!.location.lng;
+        var address = detail.result.formattedAddress;
+        controller.address.value = address!;
+      });
 
-        mapNavigateOnPoints(controller.latitude.value,controller.longitude.value);
-      }
-      setState(() {});
+      await add(controller.latitude.value, controller.longitude.value, controller.address.value);
+      mapNavigateOnPoints(controller.latitude.value, controller.longitude.value);
     }
   }
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};

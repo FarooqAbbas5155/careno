@@ -14,10 +14,13 @@ class ControllerHostAddVechicle extends GetxController {
   Rx<TextEditingController> vehicleSeats = TextEditingController().obs;
   Rx<TextEditingController> vehicleNumberPlate = TextEditingController().obs;
   Rx<TextEditingController> vehicleColor = TextEditingController().obs;
-  Rx<TextEditingController> vehicleLicenseExpiryDate =
-      TextEditingController().obs;
+  Rx<TextEditingController> vehicleLicenseExpiryDate = TextEditingController().obs;
   Rx<TextEditingController> vehiclePerDayRent = TextEditingController().obs;
   Rx<TextEditingController> vehiclePerHourRent = TextEditingController().obs;
+  RxDouble latitude = 0.0.obs;
+  RxDouble longitude = 0.0.obs;
+  RxString address = ''.obs;
+
   RxString vehiclePath = "".obs;
   RxString vehicleRightSidePaths = "".obs;
   RxString vehicleInteriorPaths = "".obs;
@@ -93,7 +96,7 @@ class ControllerHostAddVechicle extends GetxController {
           vehiclePerHourRent: vehiclePerHourRent.value.text.trim(),
           vehicleRegistrationImage: vehicleRegistrationProofPathUrl,
           status:"Pending",
-          rating: 0.0
+          rating: 0.0, latitude: latitude.value,longitude: longitude.value
       );
       await addVehicleRef
           .doc(id.toString())
