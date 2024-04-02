@@ -26,7 +26,8 @@ class ScreenHostAddVehicle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ControllerHostAddVechicle controllerAddVehicle = Get.put(ControllerHostAddVechicle());
+    ControllerHostAddVechicle controllerAddVehicle = Get.put(
+        ControllerHostAddVechicle());
     print(controllerAddVehicle.showLoading.value);
     return SafeArea(
       child: Scaffold(
@@ -40,174 +41,213 @@ class ScreenHostAddVehicle extends StatelessWidget {
           ),
         ),
         body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                "Now Add Your Vehicle",
-                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 24.sp),
-              ),
-              Wrap(
-                spacing: 20.w,
-                runSpacing: 20.h,
-                children: [
-                  Obx(() {
-                    return addVehicle(() async {
-                      controllerAddVehicle.vehiclePath.value =
+          child: GetBuilder<ControllerHostAddVechicle>(builder: (controller) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  "Now Add Your Vehicle",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w700, fontSize: 24.sp),
+                ),
+                Wrap(
+                  spacing: 20.w,
+                  runSpacing: 20.h,
+                  children: [
+                    Obx(() {
+                      return addVehicle(() async {
+                        controllerAddVehicle.vehiclePath.value =
+                        await FilePick().pickImage(ImageSource.gallery);
+                      }, "Vehicle Image must be visible in image",
+                          RxString((controllerAddVehicle.vehiclePath
+                              .value)));
+                    }),
+                    Obx(() {
+                      return addVehicle(() async {
+                        controllerAddVehicle.vehicleNumberPlatePath.value =
+                        await FilePick().pickImage(ImageSource.gallery);
+                      }, "Car plate number must visible in image",
+                          RxString((controllerAddVehicle.vehicleNumberPlatePath
+                              .value)));
+                    }),
+                    Obx(() {
+                      return addVehicle(() async {
+                        controllerAddVehicle.vehicleRightSidePaths.value =
+                        await FilePick().pickImage(ImageSource.gallery);
+                      }, "Capture vehicle's right side in the image",
+                          RxString((controllerAddVehicle.vehicleRightSidePaths
+                              .value)));
+                    }),
+                    Obx(() {
+                      return addVehicle(() async {
+                        controllerAddVehicle.vehicleRearPaths.value =
+                        await FilePick().pickImage(ImageSource.gallery);
+                      }, "Include the rear, with the rear plate",
+                          RxString((controllerAddVehicle.vehicleRearPaths
+                              .value)));
+                    }),
+                    Obx(() {
+                      return addVehicle(() async {
+                        controllerAddVehicle.vehicleInteriorPaths.value =
+                        await FilePick().pickImage(ImageSource.gallery);
+                      }, "Provide car interior picture",
+                          RxString((controllerAddVehicle.vehicleInteriorPaths
+                              .value)));
+                    }),
+                    addVehicle(() async {
+                      var path =
                       await FilePick().pickImage(ImageSource.gallery);
-                    }, "Vehicle Image must be visible in image",
-                        RxString((controllerAddVehicle.vehiclePath
-                            .value)));
-                  }),
-                  Obx(() {
-                    return addVehicle(() async {
-                      controllerAddVehicle.vehicleNumberPlatePath.value =
-                      await FilePick().pickImage(ImageSource.gallery);
-                    }, "Car plate number must visible in image",
-                        RxString((controllerAddVehicle.vehicleNumberPlatePath
-                            .value)));
-                  }),
-                  Obx(() {
-                    return addVehicle(() async {
-                      controllerAddVehicle.vehicleRightSidePaths.value =
-                      await FilePick().pickImage(ImageSource.gallery);
-                    }, "Capture vehicle's right side in the image",
-                        RxString((controllerAddVehicle.vehicleRightSidePaths
-                            .value)));
-                  }),
-                  Obx(() {
-                    return addVehicle(() async {
-                      controllerAddVehicle.vehicleRearPaths.value =
-                      await FilePick().pickImage(ImageSource.gallery);
-                    }, "Include the rear, with the rear plate",
-                        RxString((controllerAddVehicle.vehicleRearPaths
-                            .value)));
-                  }),
-                  Obx(() {
-                    return addVehicle(() async {
-                      controllerAddVehicle.vehicleInteriorPaths.value =
-                      await FilePick().pickImage(ImageSource.gallery);
-                    }, "Provide car interior picture",
-                        RxString((controllerAddVehicle.vehicleInteriorPaths
-                            .value)));
-                  }),
+                      controllerAddVehicle.vehicleMore.value.add(path);
+                      controller.update();
+                    }, "Add More Images",
+                        RxString(''))
 
-                ],
-              ),
-              // buildVehicleContainer(controllerAddVehicle)
-              //     .marginSymmetric(horizontal: 40.w, vertical: 20.h),
-              Text(
-                "Add Details",
-                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20.sp),
-              ).marginSymmetric(vertical: 10.h),
-              CustomTextField(
-                controller: controllerAddVehicle.vehicleModel.value,
-                hint: "Enter Model of Vehicle",
-                readOnly: controllerAddVehicle.showLoading.value,
-              ).marginSymmetric(vertical: 8.h),
-              buildCategoryContainer(controllerAddVehicle, context)
-                  .marginSymmetric(vertical: 10.h),
-              CustomTextField(readOnly: controllerAddVehicle.showLoading.value,
+                  ],
+                ),
+                Obx(() {
+                  return (controllerAddVehicle.vehicleMore.value.isEmpty)?SizedBox():SizedBox(
+                    height: 90.h,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: controllerAddVehicle.vehicleMore.value.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Container(
+                          margin: EdgeInsets.only(top: 10.h,right: 10.w),
+                          height: 89.h,
+                          width: 92.w,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10.r),
+                              image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: FileImage(
+                                  File(controllerAddVehicle.vehicleMore
+                                      .value[index])))
+                          ),);
+                      },),
+                  );
+                }),
+
+                // buildVehicleContainer(controllerAddVehicle)
+                //     .marginSymmetric(horizontal: 40.w, vertical: 20.h),
+                Text(
+                  "Add Details",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w700, fontSize: 20.sp),
+                ).marginSymmetric(vertical: 10.h),
+                CustomTextField(
+                  controller: controllerAddVehicle.vehicleModel.value,
+                  hint: "Enter Model of Vehicle",
+                  readOnly: controllerAddVehicle.showLoading.value,
+                ).marginSymmetric(vertical: 8.h),
+                buildCategoryContainer(controllerAddVehicle, context)
+                    .marginSymmetric(vertical: 10.h),
+                CustomTextField(
+                  readOnly: controllerAddVehicle.showLoading.value,
 
 
-                controller: controllerAddVehicle.vehicleYear.value,
-                hint: "Enter Year of Vehicle",
-                keyboardType: TextInputType.number,
-              ).marginSymmetric(vertical: 8.h),
-              CustomTextField(
-                readOnly: controllerAddVehicle.showLoading.value,
+                  controller: controllerAddVehicle.vehicleYear.value,
+                  hint: "Enter Year of Vehicle",
+                  keyboardType: TextInputType.number,
+                ).marginSymmetric(vertical: 8.h),
+                CustomTextField(
+                  readOnly: controllerAddVehicle.showLoading.value,
 
-                controller: controllerAddVehicle.vehicleSeats.value,
-                hint: "Number of Seats",
-                keyboardType: TextInputType.number,
-              ).marginSymmetric(vertical: 8.h),
-              buildTransmissionContainer(
-                  controllerAddVehicle, context)
-                  .marginSymmetric(vertical: 10.h),
-              buildFuelContainer(controllerAddVehicle, context),
-              CustomTextField(
-                readOnly: controllerAddVehicle.showLoading.value,
+                  controller: controllerAddVehicle.vehicleSeats.value,
+                  hint: "Number of Seats",
+                  keyboardType: TextInputType.number,
+                ).marginSymmetric(vertical: 8.h),
+                buildTransmissionContainer(
+                    controllerAddVehicle, context)
+                    .marginSymmetric(vertical: 10.h),
+                buildFuelContainer(controllerAddVehicle, context),
+                CustomTextField(
+                  readOnly: controllerAddVehicle.showLoading.value,
 
-                controller: controllerAddVehicle.vehicleNumberPlate.value,
-                hint: "Vehicle Plate Number",
-                keyboardType: TextInputType.name,
-              ).marginSymmetric(vertical: 8.h),
-              CustomTextField(
-                readOnly: controllerAddVehicle.showLoading.value,
+                  controller: controllerAddVehicle.vehicleNumberPlate.value,
+                  hint: "Vehicle Plate Number",
+                  keyboardType: TextInputType.name,
+                ).marginSymmetric(vertical: 8.h),
+                CustomTextField(
+                  readOnly: controllerAddVehicle.showLoading.value,
 
-                controller: controllerAddVehicle.vehicleColor.value,
-                hint: "Enter Vehicle Color",
-                keyboardType: TextInputType.name,
-              ).marginSymmetric(vertical: 8.h),
-              CustomTextField(
-                readOnly: controllerAddVehicle.showLoading.value,
+                  controller: controllerAddVehicle.vehicleColor.value,
+                  hint: "Enter Vehicle Color",
+                  keyboardType: TextInputType.name,
+                ).marginSymmetric(vertical: 8.h),
+                CustomTextField(
+                  readOnly: controllerAddVehicle.showLoading.value,
 
-                controller: controllerAddVehicle.vehicleLicenseExpiryDate.value,
-                hint: "Vehicle License Expiry Date",
-                keyboardType: TextInputType.name,
-              ).marginSymmetric(vertical: 8.h),
-              CustomTextField(
-                readOnly: controllerAddVehicle.showLoading.value,
+                  controller: controllerAddVehicle.vehicleLicenseExpiryDate
+                      .value,
+                  hint: "Vehicle License Expiry Date",
+                  keyboardType: TextInputType.name,
+                ).marginSymmetric(vertical: 8.h),
+                CustomTextField(
+                  readOnly: controllerAddVehicle.showLoading.value,
 
-                controller: controllerAddVehicle.vehiclePerDayRent.value,
-                hint: "Per Day Rent \$",
-                keyboardType: TextInputType.number,
-              ).marginSymmetric(vertical: 8.h),
-              CustomTextField(
-                readOnly: controllerAddVehicle.showLoading.value,
+                  controller: controllerAddVehicle.vehiclePerDayRent.value,
+                  hint: "Per Day Rent \$",
+                  keyboardType: TextInputType.number,
+                ).marginSymmetric(vertical: 8.h),
+                CustomTextField(
+                  readOnly: controllerAddVehicle.showLoading.value,
 
-                controller: controllerAddVehicle.vehiclePerHourRent.value,
-                hint: "Per Hours Rent \$",
-                keyboardType: TextInputType.number,
-              ).marginSymmetric(vertical: 8.h),
-              // buildVehicleNumberPlate(controllerAddVehicle),
+                  controller: controllerAddVehicle.vehiclePerHourRent.value,
+                  hint: "Per Hours Rent \$",
+                  keyboardType: TextInputType.number,
+                ).marginSymmetric(vertical: 8.h),
+                // buildVehicleNumberPlate(controllerAddVehicle),
 
-              Obx(() {
-                return CustomTextField(
-                  // controller: controller.controllerLocation.value,
-                  text: controllerAddVehicle.address.value,
-                  padding: EdgeInsets.only(left: 18.w, top: 1.h),
-                  hint: 'Add Vehicle Location',
-                  // Use the address from the snapshot
-                  hintColor:
-                  Color(0xff94979F).withOpacity(.7),
-                  suffix: InkWell(
-                    onTap: () async {
-                      var result = await Get.to(ScreenHostAddVehicleLocation());
-                      if (result == true) {
-                        controllerAddVehicle.update();
-                      }
-                    },
-                    child: SvgPicture.asset(
-                        "assets/images/location.svg")
-                        .marginOnly(top: 4.h),
-                  ),
-                );
-              }).marginSymmetric(
-                   vertical: 8.h),
+                Obx(() {
+                  return CustomTextField(
+                    controller: TextEditingController(
+                        text: controllerAddVehicle.address.value),
+                    text: controllerAddVehicle.address.value,
+                    padding: EdgeInsets.only(left: 18.w, top: 1.h),
+                    hint: 'Add Vehicle Location',
+                    // Use the address from the snapshot
+                    hintColor:
+                    Color(0xff94979F).withOpacity(.7),
+                    suffix: InkWell(
+                      onTap: () async {
+                        var result = await Get.to(
+                            ScreenHostAddVehicleLocation());
+                        if (result == true) {
+                          controller.update();
+                        }
+                      },
+                      child: SvgPicture.asset(
+                          "assets/images/location.svg")
+                          .marginOnly(top: 4.h),
+                    ),
+                  );
+                }).marginSymmetric(
+                    vertical: 8.h),
 
-              buildRegistrationProof(controllerAddVehicle),
+                buildRegistrationProof(controllerAddVehicle),
 
-              Obx(() {
-                return CustomButton(
-                    title: 'Add',
-                    isLoading: controllerAddVehicle.showLoading.value,
-                    onPressed: () async {
-                      var response =
-                      await controllerAddVehicle.hostAddVehicle();
-                      if (response == "success") {
-                        Get.offAll(ScreenHostHomePage());
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text("Your Vehicle added Successfully")));
-                      }
-                      else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text(response)));
-                      }
-                    });
-              }).marginSymmetric(vertical: 20.h)
-            ],
-          ).marginSymmetric(horizontal: 22.w),
+                Obx(() {
+                  return CustomButton(
+                      title: 'Add',
+                      isLoading: controllerAddVehicle.showLoading.value,
+                      onPressed: () async {
+                        var response =
+                        await controllerAddVehicle.hostAddVehicle();
+                        if (response == "success") {
+                          Get.offAll(ScreenHostHomePage());
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text(
+                                  "Your Vehicle added Successfully")));
+                        }
+                        else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(response)));
+                        }
+                      });
+                }).marginSymmetric(vertical: 20.h)
+              ],
+            );
+          }).marginSymmetric(horizontal: 22.w),
         ),
       ),
     );

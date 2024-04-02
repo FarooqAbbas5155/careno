@@ -78,6 +78,9 @@ dependencies:
   flutter_google_places: any
   google_maps_webservice: ^0.0.20-nullsafety.5
   google_api_headers: ^1.6.0
+#  multi_image_picker: ^4.8.01
+#  flutter_gif: ^0.0.4
+#  gif: ^2.2.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -91,7 +94,7 @@ flutter_icons:
   flutter_native_splash: ^2.4.0
 
 flutter_native_splash:
-  background_image: "assets/images/splash.png"
+  background_image: "assets/gif/GIF.gif"
 
   #  fullScreen: true
 #  android: true
@@ -127,6 +130,7 @@ flutter:
     - assets/images/
     - assets/icons/
     - assets/fonts/
+    - assets/gif/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

@@ -195,7 +195,6 @@ class _ScreenHostAddVehicleLocationState extends State<ScreenHostAddVehicleLocat
                 right: 20,
                 child: CustomButton(title: "Save", onPressed: () async {
                   Get.back(result: true);
-                  controller.update();
                 }, isLoading: false),
               )
             ],

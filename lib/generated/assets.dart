@@ -23,6 +23,7 @@ class Assets {
   static const String iconsBlock = 'assets/icons/block.svg';
   static const String iconsBooking = 'assets/icons/booking.svg';
   static const String iconsCalender = 'assets/icons/calender.svg';
+  static const String iconsCamer = 'assets/icons/camer-.svg';
   static const String iconsCamera = 'assets/icons/camera.svg';
   static const String iconsCancelBlack = 'assets/icons/cancel_black.svg';
   static const String iconsCarInsurance = 'assets/icons/car-insurance.svg';
@@ -33,6 +34,7 @@ class Assets {
   static const String iconsDocuments = 'assets/icons/documents.svg';
   static const String iconsDropIcon = 'assets/icons/drop-icon.svg';
   static const String iconsEarning = 'assets/icons/earning.svg';
+  static const String iconsEditCar = 'assets/icons/edit-car.svg';
   static const String iconsEditProfile = 'assets/icons/edit-profile.svg';
   static const String iconsFav = 'assets/icons/fav.svg';
   static const String iconsFilterChat = 'assets/icons/filter-chat.svg';
@@ -79,6 +81,7 @@ class Assets {
   static const String imagesDetail = 'assets/images/detail.png';
   static const String imagesExploreCar = 'assets/images/explore_car.png';
   static const String imagesExport = 'assets/images/export.svg';
+  static const String imagesGIF = 'assets/images/GIF.gif';
   static const String imagesGoogle = 'assets/images/google.svg';
   static const String imagesGroup = 'assets/images/Group.svg';
   static const String imagesGroup (1) = 'assets/images/Group (1).svg';
@@ -86,6 +89,11 @@ class Assets {
   static const String imagesIcon = 'assets/images/icon.svg';
   static const String imagesIdBack = 'assets/images/id-back.png';
   static const String imagesIdFront = 'assets/images/id-front.png';
+  static const String imagesImage = 'assets/images/image.png';
+  static const String imagesImage1 = 'assets/images/image1.png';
+  static const String imagesImage2 = 'assets/images/image2.png';
+  static const String imagesImage3 = 'assets/images/image3.png';
+  static const String imagesImage4 = 'assets/images/image4.png';
   static const String imagesImageCarDetails = 'assets/images/image_car_details.png';
   static const String imagesInsuranceCertificate = 'assets/images/insurance-certificate.png';
   static const String imagesLine 39 = 'assets/images/Line 39.png';

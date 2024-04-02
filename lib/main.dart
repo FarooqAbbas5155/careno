@@ -8,6 +8,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
+import 'AuthSection/screen_splash.dart';
 import 'constant/colors.dart';
 import 'constant/helpers.dart';
 import 'firebase_options.dart';
@@ -21,18 +22,18 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  await checkUserAndRunApp();
+  runApp(MyApp());
 }
-Future<void> checkUserAndRunApp() async {
-  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-  Widget screen = await getHomeScreen();
-
-  runApp(MyApp(
-    screen: screen,
-  ));
-  FlutterNativeSplash.remove();
-}
+// Future<void> checkUserAndRunApp() async {
+//   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+//   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+//   Widget screen = await getHomeScreen();
+//
+//   runApp(MyApp(
+//     screen: SplashScreen(),
+//   ));
+//   FlutterNativeSplash.remove();
+// }
 
 void colorConfig() {
   MaterialColor appPrimaryColor = MaterialColor(
@@ -52,11 +53,11 @@ void colorConfig() {
   );
 }
 class MyApp extends StatefulWidget {
-  Widget screen;
-
-  MyApp({
-    required this.screen,
-  });
+  // Widget screen;
+  //
+  // MyApp({
+  //   required this.screen,
+  // });
   @override
   State<MyApp> createState() => _MyAppState();
 }
@@ -176,7 +177,7 @@ class _MyAppState extends State<MyApp> {
         builder: (_, child) {
           return GetMaterialApp(
             // home: ScreenAthleteHomePage(),
-            home: widget.screen,
+            home: SplashScreen(),
             locale: Locale('en', 'US'),
             debugShowCheckedModeBanner: false,
             defaultTransition: Transition.fade,

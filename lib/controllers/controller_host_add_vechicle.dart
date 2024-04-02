@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:careno/constant/helpers.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -24,6 +26,7 @@ class ControllerHostAddVechicle extends GetxController {
   RxString vehiclePath = "".obs;
   RxString vehicleRightSidePaths = "".obs;
   RxString vehicleInteriorPaths = "".obs;
+  RxList<String> vehicleMore = RxList([]);
   RxString vehicleRearPaths = "".obs;
   RxString vehicleNumberPlatePath = "".obs;
   RxString vehicleRegistrationProofPath = "".obs;
