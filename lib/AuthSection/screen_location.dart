@@ -199,7 +199,7 @@ class _ScreenLocationState extends State<ScreenLocation> {
                 left: 20,
                 right: 20,
                 child: CustomButton(title: "Save", onPressed: () async {
-                  Get.back();
+                  Get.back(result: true);
                 }, isLoading: false),
               )
             ],
@@ -213,7 +213,7 @@ class _ScreenLocationState extends State<ScreenLocation> {
       // bearing: 192.8334901395799,
         target: LatLng(lat,long),
         // tilt: 59.440717697143555,
-        zoom: 19);
+        zoom: 6);
     final GoogleMapController controller = await _controller.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
   }

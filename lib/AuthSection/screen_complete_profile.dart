@@ -80,8 +80,10 @@ class ScreenCompleteProfile extends StatelessWidget {
                       }
                       var position = snapshot.data!;
                       controller.permissionStatus.value = true;
-                      controller.latitude.value = position.latitude;
-                      controller.longitude.value = position.longitude;
+                      if (controller.longitude.value==0.0) {
+                        controller.latitude.value = position.latitude;
+                        controller.longitude.value = position.longitude;
+                      }
                       return FutureBuilder<String?>(
                           future: getAddressFromCurrentLocation(),
                           builder: (BuildContext context,
@@ -102,7 +104,9 @@ class ScreenCompleteProfile extends StatelessWidget {
                                       child: Text(
                                           'Error loading location,try again')));
                             }
-                            controller.address.value = locationSnapshot.data;
+                            if (controller.address.value=="") {
+                              controller.address.value = locationSnapshot.data;
+                            }
                             return Padding(
                               padding: EdgeInsets.symmetric(horizontal: 20.w),
                               child: SingleChildScrollView(
@@ -135,6 +139,7 @@ class ScreenCompleteProfile extends StatelessWidget {
                                                   width: 1),
                                               shape: BoxShape.circle,
                                               image: DecorationImage(
+                                                fit: BoxFit.cover,
                                                 image: controller
                                                             .images.value ==
                                                         ""
@@ -290,8 +295,11 @@ class ScreenCompleteProfile extends StatelessWidget {
                                       hintColor:
                                           Color(0xff94979F).withOpacity(.7),
                                       suffix: InkWell(
-                                        onTap: () {
-                                          Get.to(ScreenLocation());
+                                        onTap: () async {
+                                          var result=await Get.to(ScreenLocation());
+                                          if (result==true) {
+                                            controller.update();
+                                          }
                                         },
                                         child: SvgPicture.asset(
                                                 "assets/images/location.svg")
