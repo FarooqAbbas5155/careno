@@ -2,7 +2,7 @@ class AddHostVehicle{
   String hostId,vehicleId;
   String vehicleImageComplete,vehicleImageNumberPlate,vehicleImageRightSide,vehicleImageRear,vehicleImageInterior;
   String vehicleModel,vehicleCategory,vehicleYear,vehicleSeats,vehicleTransmission,vehicleFuelType,vehicleNumberPlate,vehicleColor,vehicleLicenseExpiryDate,vehiclePerDayRent,vehiclePerHourRent,vehicleRegistrationImage;
-  String status;
+  String status,vehicleDescription;
   double rating;
   double latitude,longitude;
   List<String> imagesUrl;
@@ -29,6 +29,7 @@ class AddHostVehicle{
     required this.vehiclePerHourRent,
     required this.vehicleRegistrationImage,
     required this.status,
+    required this.vehicleDescription,
     required this.rating,
     required this.latitude,
     required this.longitude,
@@ -60,6 +61,7 @@ class AddHostVehicle{
           vehiclePerHourRent == other.vehiclePerHourRent &&
           vehicleRegistrationImage == other.vehicleRegistrationImage &&
           status == other.status &&
+          vehicleDescription == other.vehicleDescription &&
           rating == other.rating &&
           latitude == other.latitude &&
           longitude == other.longitude &&
@@ -87,6 +89,7 @@ class AddHostVehicle{
       vehiclePerHourRent.hashCode ^
       vehicleRegistrationImage.hashCode ^
       status.hashCode ^
+      vehicleDescription.hashCode ^
       rating.hashCode ^
       latitude.hashCode ^
       longitude.hashCode ^
@@ -115,6 +118,7 @@ class AddHostVehicle{
         ' vehiclePerHourRent: $vehiclePerHourRent,' +
         ' vehicleRegistrationImage: $vehicleRegistrationImage,' +
         ' status: $status,' +
+        ' vehicleDescription: $vehicleDescription,' +
         ' rating: $rating,' +
         ' latitude: $latitude,' +
         ' longitude: $longitude,' +
@@ -143,6 +147,7 @@ class AddHostVehicle{
     String? vehiclePerHourRent,
     String? vehicleRegistrationImage,
     String? status,
+    String? vehicleDescription,
     double? rating,
     double? latitude,
     double? longitude,
@@ -173,6 +178,7 @@ class AddHostVehicle{
       vehicleRegistrationImage:
           vehicleRegistrationImage ?? this.vehicleRegistrationImage,
       status: status ?? this.status,
+      vehicleDescription: vehicleDescription ?? this.vehicleDescription,
       rating: rating ?? this.rating,
       latitude: latitude ?? this.latitude,
       longitude: longitude ?? this.longitude,
@@ -202,6 +208,7 @@ class AddHostVehicle{
       'vehiclePerHourRent': this.vehiclePerHourRent,
       'vehicleRegistrationImage': this.vehicleRegistrationImage,
       'status': this.status,
+      'vehicleDescription': this.vehicleDescription,
       'rating': this.rating,
       'latitude': this.latitude,
       'longitude': this.longitude,
@@ -231,11 +238,11 @@ class AddHostVehicle{
       vehiclePerHourRent: map['vehiclePerHourRent'] as String,
       vehicleRegistrationImage: map['vehicleRegistrationImage'] as String,
       status: map['status'] as String,
+      vehicleDescription: map['vehicleDescription'] as String,
       rating: map['rating'] as double,
       latitude: map['latitude'] as double,
       longitude: map['longitude'] as double,
       imagesUrl: (map['imageList'] as List<dynamic>? ?? []).map((e) => e.toString()).toList(),
-
     );
   }
 

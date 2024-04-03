@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 
 class ScreenHostVehicleMyDetail extends StatelessWidget {
  AddHostVehicle addHostVehicle;
+ String categoryName;
 
 
   @override
@@ -17,7 +18,9 @@ class ScreenHostVehicleMyDetail extends StatelessWidget {
       addHostVehicle.vehicleImageRear,
       addHostVehicle.vehicleImageRightSide,
       addHostVehicle.vehicleImageNumberPlate,
+      ...addHostVehicle.imagesUrl
     ];
+    print("addHostVehicle.imagesUrl ${addHostVehicle.imagesUrl.length}");
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -95,7 +98,7 @@ class ScreenHostVehicleMyDetail extends StatelessWidget {
                   BoxConstraints.loose(Size(Get.width, 231.0.h))),
 
               buildDetail("Make & Model of Vehicle", addHostVehicle.vehicleModel),
-              buildDetail("Category/Type", addHostVehicle.vehicleCategory),
+              buildDetail("Category/Type", categoryName!),
               buildDetail("Year of Vehicle", addHostVehicle.vehicleYear),
               buildDetail("Number of Seats", addHostVehicle.vehicleSeats),
               buildDetail("Transmission", addHostVehicle.vehicleTransmission),
@@ -180,5 +183,6 @@ class ScreenHostVehicleMyDetail extends StatelessWidget {
 
  ScreenHostVehicleMyDetail({
     required this.addHostVehicle,
+    required this.categoryName,
   });
 }

@@ -232,9 +232,15 @@ class ScreenHostAddVehicle extends StatelessWidget {
                   );
                 }).marginSymmetric(
                     vertical: 8.h),
+                CustomTextField(
+                  readOnly: controllerAddVehicle.showLoading.value,
+
+                  controller: controllerAddVehicle.vehicleDescription.value,
+                  hint: "About Vehicle",
+
+                ).marginSymmetric(vertical: 8.h),
 
                 buildRegistrationProof(controllerAddVehicle),
-
                 Obx(() {
                   return CustomButton(
                       title: 'Add',
@@ -380,6 +386,7 @@ class ScreenHostAddVehicle extends StatelessWidget {
   // }
   Widget buildCategoryContainer(ControllerHostAddVechicle controllerAddVehicle,
       BuildContext context) {
+    var categoryName = "";
     return StatefulBuilder(
       builder: (BuildContext context, void Function(void Function()) setState) {
         return StreamBuilder<QuerySnapshot>(
@@ -399,12 +406,12 @@ class ScreenHostAddVehicle extends StatelessWidget {
             var categoryNameList = categories.map((e) => e.name).toList();
 
             return CustomTextField(
-              padding: EdgeInsets.only(left: 18.w, top: 18.h),
+              padding: EdgeInsets.only(left: 18.w, top: 22.h),
               readOnly: true,
-              hint: controllerAddVehicle.selectCategory.value.isEmpty
+              hint: controllerAddVehicle.selectCategoryName.value.isEmpty
                   ? "Select Category/Type"
-                  : controllerAddVehicle.selectCategory.value,
-              hintColor: controllerAddVehicle.selectCategory.value.isEmpty
+                  : controllerAddVehicle.selectCategoryName.value,
+              hintColor: controllerAddVehicle.selectCategoryName.value.isEmpty
                   ? Color(0xff94979F)
                   : Colors.black,
               suffix: PopupMenuButton<Category>(
@@ -428,6 +435,7 @@ class ScreenHostAddVehicle extends StatelessWidget {
                   // Update selected category when an option is chosen
                   setState(() {
                     controllerAddVehicle.selectCategory.value = choice.id.toString();
+                    controllerAddVehicle.selectCategoryName.value = choice.name.toString();
                   });
                 },
               ).marginOnly(top: 4.h),

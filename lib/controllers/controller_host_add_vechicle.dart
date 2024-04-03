@@ -19,19 +19,22 @@ class ControllerHostAddVechicle extends GetxController {
   Rx<TextEditingController> vehicleLicenseExpiryDate = TextEditingController().obs;
   Rx<TextEditingController> vehiclePerDayRent = TextEditingController().obs;
   Rx<TextEditingController> vehiclePerHourRent = TextEditingController().obs;
+  Rx<TextEditingController> vehicleDescription = TextEditingController().obs;
   RxDouble latitude = 0.0.obs;
   RxDouble longitude = 0.0.obs;
   RxString address = ''.obs;
-  // List<String> imageList = [];
+
 
   RxString vehiclePath = "".obs;
   RxString vehicleRightSidePaths = "".obs;
   RxString vehicleInteriorPaths = "".obs;
   RxList<String> vehicleMore = RxList([]);
+  RxList<String> imagesUrl = RxList([]);
   RxString vehicleRearPaths = "".obs;
   RxString vehicleNumberPlatePath = "".obs;
   RxString vehicleRegistrationProofPath = "".obs;
   RxString selectCategory = "".obs;
+  RxString selectCategoryName = "".obs;
   RxString selectFuelType = "".obs;
   RxString selectTransmission = "".obs;
   RxBool showLoading = false.obs;
@@ -55,6 +58,7 @@ class ControllerHostAddVechicle extends GetxController {
         vehicleRegistrationProofPath.value.isEmpty ||
         selectCategory.value.isEmpty ||
         selectFuelType.value.isEmpty ||
+        vehicleDescription.value.text.isEmpty||
         selectTransmission.value.isEmpty) {
       response = "All Fields Required";
     } else {
@@ -76,9 +80,10 @@ class ControllerHostAddVechicle extends GetxController {
       String vehicleRegistrationProofPathUrl = await FirebaseUtils.uploadImage(
           vehicleRegistrationProofPath.value,
           "Host/addVehicle/${userId}/${id}/image/vehicleRegistrationProofPath");
-      String vehicleRearPathsUrl = await FirebaseUtils.uploadImage(
-          vehicleRearPaths.value,
-          "Host/addVehicle/${userId}/${id}/image/vehicleRearPaths");
+      String vehicleRearPathsUrl = await FirebaseUtils.uploadImage(vehicleRearPaths.value, "Host/addVehicle/${userId}/${id}/image/vehicleRearPaths");
+      imagesUrl.value = await FirebaseUtils.uploadMultipleImage(vehicleMore.value, "Host/addVehicle/${userId}/${id}/image/imageList", extension: "png",);
+
+
       AddHostVehicle addHostVehicle = AddHostVehicle(
           hostId: userId,
           vehicleId: id.toString(),
@@ -99,7 +104,7 @@ class ControllerHostAddVechicle extends GetxController {
           vehiclePerHourRent: vehiclePerHourRent.value.text.trim(),
           vehicleRegistrationImage: vehicleRegistrationProofPathUrl,
           status:"Pending",
-          rating: 0.0, latitude: latitude.value,longitude: longitude.value, vehicleFuelType: selectFuelType.value, imagesUrl: vehicleMore.value,
+          rating: 0.0, latitude: latitude.value,longitude: longitude.value, vehicleFuelType: selectFuelType.value, imagesUrl: imagesUrl.value, vehicleDescription: vehicleDescription.value.text.trim(),
       );
       await addVehicleRef
           .doc(id.toString())

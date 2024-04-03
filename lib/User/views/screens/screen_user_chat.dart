@@ -128,7 +128,7 @@ class _ScreenUserChatState extends State<ScreenUserChat> {
 
   @override
   Widget build(BuildContext context) {
-    DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(widget.timeStamp!);
+    DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(widget.user!.timeStamp);
     String formattedDateTime = DateFormat('hh:mm a').format(dateTime);
     return SafeArea(child: Scaffold(
       appBar: AppBar(
@@ -325,8 +325,9 @@ class _ScreenUserChatState extends State<ScreenUserChat> {
 
                 ),
               )),
-              GestureDetector(
-                onTap: (){
+              InkWell(
+                onTap: () async{
+                  print("Allaha");
                   if (isMessageValid) {
                     setState((){
                       if (widget.counter==null) {
@@ -351,7 +352,7 @@ class _ScreenUserChatState extends State<ScreenUserChat> {
                         counter: widget.counter!,
                       );
                       messageController.clear();
-                      sendMessage(message, chatRoomId)
+                   await   sendMessage(message, chatRoomId)
                           .catchError((error) {
                         Get.snackbar("Message", error.toString());
                       }).then((value) {

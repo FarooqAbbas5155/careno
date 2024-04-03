@@ -33,7 +33,31 @@ class FirebaseUtils {
     }
     return url;
   }
+  static Future<List<String>> uploadMultipleImage(
+      List<String> imagesPaths, String firebasePathWithFilenameWithoutExtension,
+      {Function(int which, double progress)? onProgress,
+        required String extension}) async {
+    if (imagesPaths.isEmpty) {
+      return [];
+    }
 
+
+    List<String> urls = [];
+
+    await Future.forEach(imagesPaths, (String path) async {
+      int index = imagesPaths.indexOf(path);
+      var url = await uploadImage(path,
+          "${firebasePathWithFilenameWithoutExtension}_${index}.$extension",
+          onProgress: (progress) {
+            if (onProgress != null) {
+              onProgress(index, progress);
+            }
+          });
+      urls.add(url);
+    });
+
+    return urls;
+  }
   static Future<List<String>> uploadMultipleFiles(
       List<String> imagesPaths, String firebasePathWithFilenameWithoutExtension,
       {Function(int which, double progress)? onProgress,

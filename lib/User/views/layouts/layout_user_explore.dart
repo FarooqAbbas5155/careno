@@ -201,7 +201,7 @@ class _LayoutUserExploreState extends State<LayoutUserExplore> {
                     ),
                   ),
                   Obx(() {
-                    return SizedBox(
+                    return controller.allCategory.value !=null?SizedBox(
                       height: 164.h,
                       child: GridView.builder(
                         padding: EdgeInsets.zero,
@@ -221,12 +221,14 @@ class _LayoutUserExploreState extends State<LayoutUserExplore> {
                           var category = controller.allCategory.value[index];
                           return InkWell(
                               onTap: () {
-                                Get.to(ScreenPreviewCategory());
+                                Get.to(ScreenPreviewCategory(category: category,));
                               },
                               child: ItemLayoutExploreImage(
                                 category: category,));
                         },
                       ).marginOnly(bottom: 4.h),
+                    ):Center(
+                      child: CircularProgressIndicator(color: AppColors.appPrimaryColor,),
                     );
                   }),
                   Row(
@@ -430,7 +432,7 @@ class _LayoutUserExploreState extends State<LayoutUserExplore> {
                   ),
                 ),
                 Obx(() {
-                  return Container(
+                  return controller.allCategory.value !=null? Container(
                       color: Colors.white,
                       height: 140.h,
                       child: GridView.builder(
@@ -451,12 +453,14 @@ class _LayoutUserExploreState extends State<LayoutUserExplore> {
                           var category = controller.allCategory.value[index];
                           return InkWell(
                               onTap: () {
-                                Get.to(ScreenPreviewCategory());
+                                Get.to(ScreenPreviewCategory(category: category,));
                               },
                               child: ItemLayoutExploreImage(
                                 category: category,));
                         },
-                      ));
+                      )):Center(
+                    child: CircularProgressIndicator(color: AppColors.appPrimaryColor,),
+                  );
                 }).marginOnly(bottom: 4.h),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

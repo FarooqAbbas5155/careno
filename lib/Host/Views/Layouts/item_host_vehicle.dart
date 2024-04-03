@@ -9,13 +9,15 @@ import '../../../constant/colors.dart';
 import '../../../constant/helpers.dart';
 
 class ItemHostVehicle extends StatelessWidget {
-AddHostVehicle addHostVehicle;
+AddHostVehicle? addHostVehicle;
+String? categoryName;
 
 @override
   Widget build(BuildContext context) {
+  print(addHostVehicle!.hostId);
     return GestureDetector(
       onTap: (){
-        Get.to(ScreenHostVehicleMyDetail(addHostVehicle: addHostVehicle,));
+        Get.to(ScreenHostVehicleMyDetail(addHostVehicle: addHostVehicle!, categoryName:categoryName!,));
       },
       child: Container(
         alignment: Alignment.center,
@@ -45,7 +47,7 @@ AddHostVehicle addHostVehicle;
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5.r),
                   image: DecorationImage(
-                      image: NetworkImage(addHostVehicle.vehicleImageComplete),
+                      image: NetworkImage(addHostVehicle!.vehicleImageComplete),
                       fit: BoxFit.cover
                   )
               ),
@@ -55,12 +57,12 @@ AddHostVehicle addHostVehicle;
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(addHostVehicle.vehicleModel,style: TextStyle(color: Colors.black,fontSize: 14.sp,fontFamily:"UrbanistBold" ,fontWeight: FontWeight.w700),),
-                  Text(addHostVehicle.vehicleCategory,style: TextStyle(color: Colors.black.withOpacity(.5),fontSize: 10.sp,fontFamily:"Urbanist" ,fontWeight: FontWeight.w500),).marginOnly(bottom: 2.h),
+                  Text(addHostVehicle!.vehicleModel,style: TextStyle(color: Colors.black,fontSize: 14.sp,fontFamily:"UrbanistBold" ,fontWeight: FontWeight.w700),),
+                  Text(categoryName!,style: TextStyle(color: Colors.black.withOpacity(.5),fontSize: 10.sp,fontFamily:"Urbanist" ,fontWeight: FontWeight.w500),).marginOnly(bottom: 2.h),
                   Row(
                     children: [
                       CustomSvg(name:"Star"),
-                      Text("${addHostVehicle.rating}",style: TextStyle(color: Colors.black,fontSize: 13.sp,fontFamily:"UrbanistBold" ,fontWeight: FontWeight.w600),),
+                      Text("${addHostVehicle!.rating}",style: TextStyle(color: Colors.black,fontSize: 13.sp,fontFamily:"UrbanistBold" ,fontWeight: FontWeight.w600),),
                       Text("",style: TextStyle(color: Color(0xffAAAAAA),fontSize: 11.sp,fontFamily:"Urbanist" ,fontWeight: FontWeight.w600),).marginOnly(left: 4.w),
                     ],
                   ),
@@ -72,11 +74,11 @@ AddHostVehicle addHostVehicle;
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  addHostVehicle.status,
+                  addHostVehicle!.status,
                   style: TextStyle(
                       fontWeight: FontWeight.w500,
                       fontStyle: FontStyle.italic,
-                      color: addHostVehicle.status == "Pending"
+                      color: addHostVehicle!.status == "Pending"
                           ? Color(0xFFFB9701)
 
                           : Color(0xFF00A651),
@@ -85,7 +87,7 @@ AddHostVehicle addHostVehicle;
                 ),
                 RichText(
                   text: TextSpan(
-                    text: '\$ ${addHostVehicle.vehiclePerDayRent}',
+                    text: '\$ ${addHostVehicle!.vehiclePerDayRent}',
                     style: TextStyle(color: primaryColor,fontFamily: "UrbanistBold",fontWeight: FontWeight.w800,fontSize: 16.sp),
                     children: <TextSpan>[
                       TextSpan(
@@ -107,6 +109,7 @@ AddHostVehicle addHostVehicle;
   }
 
 ItemHostVehicle({
-    required this.addHostVehicle,
+     this.addHostVehicle,
+     this.categoryName,
   });
 }

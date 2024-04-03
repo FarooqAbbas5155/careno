@@ -21,7 +21,7 @@ class LayoutUserMessages extends StatelessWidget {
   Widget build(BuildContext context) {
     ChatController chatController = Get.put(ChatController());
     return Scaffold(
-      body:      chatController.rooms.value.isEmpty?
+      body:chatController.rooms.value.isEmpty?
       Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

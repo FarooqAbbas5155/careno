@@ -203,7 +203,7 @@ class ScreenCarDetails extends StatelessWidget {
                                   CustomButton(
                                       width: 150.w,
                                       title: "Message", onPressed: (){
-                                    Get.to(ScreenUserChat());
+                                    Get.to(ScreenUserChat(user: user!,));
                                   }).marginSymmetric(vertical: 5.h),
                                 ],
                               ).marginSymmetric(vertical: 4.h),
