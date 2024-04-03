@@ -191,7 +191,7 @@ class ScreenCarDetails extends StatelessWidget {
                               TextWidget("Color", addHostVehicle!.vehicleColor, "Seats", addHostVehicle!.vehicleSeats),
                               TextWidget("Transmisssion", "Automatic", "Fuel Type", addHostVehicle!.vehicleFuelType),
                               Text("Description",style: TextStyle(fontSize: 13.sp,fontWeight: FontWeight.w700,fontFamily: "Urbanist"),).marginOnly(bottom: 4.h,top: 4.h),
-                              Text("The Toyota Camry is a stylish and reliable sedan that offers a comfortable and enjoyable driving experience. With its sleek design and advanced features, the Camry is perfect for both city commuting and long road trips.",style: TextStyle(color: Color(0xff616161).withOpacity(.8),fontFamily: "Urbanist",fontSize: 11.sp,fontWeight: FontWeight.w500),),
+                              Text(addHostVehicle!.vehicleDescription,style: TextStyle(color: Color(0xff616161).withOpacity(.8),fontFamily: "Urbanist",fontSize: 11.sp,fontWeight: FontWeight.w500),),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [

@@ -3,6 +3,8 @@ import 'package:careno/AuthSection/screen_welcome.dart';
 import 'package:careno/Host/Views/Screens/screen_host_home_page.dart';
 import 'package:careno/User/views/screens/screen_user_home.dart';
 import 'package:careno/models/categories.dart';
+import 'package:careno/models/booking.dart';
+import 'package:careno/models/rating.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
@@ -21,13 +23,42 @@ CollectionReference usersRef = dbInstance.collection("users");
 CollectionReference hostIdentityProofRef = dbInstance.collection("identies");
 CollectionReference categoryRef = dbInstance.collection("categories");
 CollectionReference addVehicleRef = dbInstance.collection("vehicles");
+CollectionReference bookingsRef = dbInstance.collection("bookings");
+
 Map<String, User> _allUsersMap = {};
 Map<String,Category> _allCategoryMap = {};
-
+Map<String, Rating> allVehicleRatings = {};
+Map<String, Rating> ratingsMap = {};
 Future<bool> hostProofAlreadyExists(String uid) async {
   final doc = await hostIdentityProofRef.doc(uid).get();
   return doc.exists;
 }
+
+Future<Rating> getRatingByVehicleId(String id) async {
+  if (allVehicleRatings.containsKey(id)) {
+    return allVehicleRatings[id]!;
+  }
+  var bookingsDocs =
+      (await bookingsRef.where("vehicleId", isEqualTo: id).get()).docs;
+  var bookings = bookingsDocs
+      .map((e) => Booking.fromMap(e.data() as Map<String, dynamic>))
+      .toList();
+  double rating = 0;
+  int num = 0;
+  bookings.forEach((e) {
+    rating += e.rating ?? 0;
+    num += e.rating != null ? 1 : 0;
+  });
+  var avgRating = (rating / num);
+  if (num == 0) {
+    avgRating = 0;
+  }
+  var obj = Rating(serviceId: id, avgRating: avgRating, num: num);
+  allVehicleRatings[id] = obj;
+  return obj;
+}
+
+
 Future<Category> getCategory(String id) async{
   var category = _allCategoryMap[id];
   if (category == null) {
