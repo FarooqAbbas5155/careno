@@ -22,7 +22,7 @@ class ControllerHostAddVechicle extends GetxController {
   RxDouble latitude = 0.0.obs;
   RxDouble longitude = 0.0.obs;
   RxString address = ''.obs;
-  List<String> imageList = [];
+  // List<String> imageList = [];
 
   RxString vehiclePath = "".obs;
   RxString vehicleRightSidePaths = "".obs;
@@ -92,7 +92,6 @@ class ControllerHostAddVechicle extends GetxController {
           vehicleCategory: selectCategory.value,
           vehicleYear: vehicleYear.value.text.trim(),
           vehicleTransmission: selectTransmission.value,
-          vehicleFuleType: selectFuelType.value,
           vehicleNumberPlate: vehicleNumberPlate.value.text.trim(),
           vehicleColor: vehicleColor.value.text.trim(),
           vehicleLicenseExpiryDate: vehicleLicenseExpiryDate.value.text.trim(),
@@ -100,7 +99,7 @@ class ControllerHostAddVechicle extends GetxController {
           vehiclePerHourRent: vehiclePerHourRent.value.text.trim(),
           vehicleRegistrationImage: vehicleRegistrationProofPathUrl,
           status:"Pending",
-          rating: 0.0, latitude: latitude.value,longitude: longitude.value
+          rating: 0.0, latitude: latitude.value,longitude: longitude.value, vehicleFuelType: selectFuelType.value, imagesUrl: vehicleMore.value,
       );
       await addVehicleRef
           .doc(id.toString())

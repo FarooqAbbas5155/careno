@@ -1,10 +1,11 @@
 class AddHostVehicle{
   String hostId,vehicleId;
   String vehicleImageComplete,vehicleImageNumberPlate,vehicleImageRightSide,vehicleImageRear,vehicleImageInterior;
-  String vehicleModel,vehicleCategory,vehicleYear,vehicleSeats,vehicleTransmission,vehicleFuleType,vehicleNumberPlate,vehicleColor,vehicleLicenseExpiryDate,vehiclePerDayRent,vehiclePerHourRent,vehicleRegistrationImage;
+  String vehicleModel,vehicleCategory,vehicleYear,vehicleSeats,vehicleTransmission,vehicleFuelType,vehicleNumberPlate,vehicleColor,vehicleLicenseExpiryDate,vehiclePerDayRent,vehiclePerHourRent,vehicleRegistrationImage;
   String status;
   double rating;
   double latitude,longitude;
+  List<String> imagesUrl;
 
 //<editor-fold desc="Data Methods">
   AddHostVehicle({
@@ -20,7 +21,7 @@ class AddHostVehicle{
     required this.vehicleYear,
     required this.vehicleSeats,
     required this.vehicleTransmission,
-    required this.vehicleFuleType,
+    required this.vehicleFuelType,
     required this.vehicleNumberPlate,
     required this.vehicleColor,
     required this.vehicleLicenseExpiryDate,
@@ -31,6 +32,7 @@ class AddHostVehicle{
     required this.rating,
     required this.latitude,
     required this.longitude,
+    required this.imagesUrl,
   });
 
   @override
@@ -50,7 +52,7 @@ class AddHostVehicle{
           vehicleYear == other.vehicleYear &&
           vehicleSeats == other.vehicleSeats &&
           vehicleTransmission == other.vehicleTransmission &&
-          vehicleFuleType == other.vehicleFuleType &&
+          vehicleFuelType == other.vehicleFuelType &&
           vehicleNumberPlate == other.vehicleNumberPlate &&
           vehicleColor == other.vehicleColor &&
           vehicleLicenseExpiryDate == other.vehicleLicenseExpiryDate &&
@@ -60,7 +62,8 @@ class AddHostVehicle{
           status == other.status &&
           rating == other.rating &&
           latitude == other.latitude &&
-          longitude == other.longitude);
+          longitude == other.longitude &&
+          imagesUrl == other.imagesUrl);
 
   @override
   int get hashCode =>
@@ -76,7 +79,7 @@ class AddHostVehicle{
       vehicleYear.hashCode ^
       vehicleSeats.hashCode ^
       vehicleTransmission.hashCode ^
-      vehicleFuleType.hashCode ^
+      vehicleFuelType.hashCode ^
       vehicleNumberPlate.hashCode ^
       vehicleColor.hashCode ^
       vehicleLicenseExpiryDate.hashCode ^
@@ -86,8 +89,8 @@ class AddHostVehicle{
       status.hashCode ^
       rating.hashCode ^
       latitude.hashCode ^
-      longitude.hashCode;
-
+      longitude.hashCode ^
+      imagesUrl.hashCode;
 
   @override
   String toString() {
@@ -104,7 +107,7 @@ class AddHostVehicle{
         ' vehicleYear: $vehicleYear,' +
         ' vehicleSeats: $vehicleSeats,' +
         ' vehicleTransmission: $vehicleTransmission,' +
-        ' vehicleFuleType: $vehicleFuleType,' +
+        ' vehicleFuelType: $vehicleFuelType,' +
         ' vehicleNumberPlate: $vehicleNumberPlate,' +
         ' vehicleColor: $vehicleColor,' +
         ' vehicleLicenseExpiryDate: $vehicleLicenseExpiryDate,' +
@@ -115,9 +118,9 @@ class AddHostVehicle{
         ' rating: $rating,' +
         ' latitude: $latitude,' +
         ' longitude: $longitude,' +
+        ' imagesUrl: $imagesUrl,' +
         '}';
   }
-
 
   AddHostVehicle copyWith({
     String? hostId,
@@ -132,7 +135,7 @@ class AddHostVehicle{
     String? vehicleYear,
     String? vehicleSeats,
     String? vehicleTransmission,
-    String? vehicleFuleType,
+    String? vehicleFuelType,
     String? vehicleNumberPlate,
     String? vehicleColor,
     String? vehicleLicenseExpiryDate,
@@ -143,15 +146,16 @@ class AddHostVehicle{
     double? rating,
     double? latitude,
     double? longitude,
+    List<String>? imagesUrl,
   }) {
     return AddHostVehicle(
       hostId: hostId ?? this.hostId,
       vehicleId: vehicleId ?? this.vehicleId,
       vehicleImageComplete: vehicleImageComplete ?? this.vehicleImageComplete,
-      vehicleImageNumberPlate: vehicleImageNumberPlate ??
-          this.vehicleImageNumberPlate,
-      vehicleImageRightSide: vehicleImageRightSide ??
-          this.vehicleImageRightSide,
+      vehicleImageNumberPlate:
+          vehicleImageNumberPlate ?? this.vehicleImageNumberPlate,
+      vehicleImageRightSide:
+          vehicleImageRightSide ?? this.vehicleImageRightSide,
       vehicleImageRear: vehicleImageRear ?? this.vehicleImageRear,
       vehicleImageInterior: vehicleImageInterior ?? this.vehicleImageInterior,
       vehicleModel: vehicleModel ?? this.vehicleModel,
@@ -159,22 +163,22 @@ class AddHostVehicle{
       vehicleYear: vehicleYear ?? this.vehicleYear,
       vehicleSeats: vehicleSeats ?? this.vehicleSeats,
       vehicleTransmission: vehicleTransmission ?? this.vehicleTransmission,
-      vehicleFuleType: vehicleFuleType ?? this.vehicleFuleType,
+      vehicleFuelType: vehicleFuelType ?? this.vehicleFuelType,
       vehicleNumberPlate: vehicleNumberPlate ?? this.vehicleNumberPlate,
       vehicleColor: vehicleColor ?? this.vehicleColor,
-      vehicleLicenseExpiryDate: vehicleLicenseExpiryDate ??
-          this.vehicleLicenseExpiryDate,
+      vehicleLicenseExpiryDate:
+          vehicleLicenseExpiryDate ?? this.vehicleLicenseExpiryDate,
       vehiclePerDayRent: vehiclePerDayRent ?? this.vehiclePerDayRent,
       vehiclePerHourRent: vehiclePerHourRent ?? this.vehiclePerHourRent,
-      vehicleRegistrationImage: vehicleRegistrationImage ??
-          this.vehicleRegistrationImage,
+      vehicleRegistrationImage:
+          vehicleRegistrationImage ?? this.vehicleRegistrationImage,
       status: status ?? this.status,
       rating: rating ?? this.rating,
       latitude: latitude ?? this.latitude,
       longitude: longitude ?? this.longitude,
+      imagesUrl: imagesUrl ?? this.imagesUrl,
     );
   }
-
 
   Map<String, dynamic> toMap() {
     return {
@@ -190,7 +194,7 @@ class AddHostVehicle{
       'vehicleYear': this.vehicleYear,
       'vehicleSeats': this.vehicleSeats,
       'vehicleTransmission': this.vehicleTransmission,
-      'vehicleFuleType': this.vehicleFuleType,
+      'vehicleFuelType': this.vehicleFuelType,
       'vehicleNumberPlate': this.vehicleNumberPlate,
       'vehicleColor': this.vehicleColor,
       'vehicleLicenseExpiryDate': this.vehicleLicenseExpiryDate,
@@ -201,6 +205,7 @@ class AddHostVehicle{
       'rating': this.rating,
       'latitude': this.latitude,
       'longitude': this.longitude,
+      'imagesUrl': this.imagesUrl,
     };
   }
 
@@ -218,7 +223,7 @@ class AddHostVehicle{
       vehicleYear: map['vehicleYear'] as String,
       vehicleSeats: map['vehicleSeats'] as String,
       vehicleTransmission: map['vehicleTransmission'] as String,
-      vehicleFuleType: map['vehicleFuleType'] as String,
+      vehicleFuelType: map['vehicleFuelType'] as String,
       vehicleNumberPlate: map['vehicleNumberPlate'] as String,
       vehicleColor: map['vehicleColor'] as String,
       vehicleLicenseExpiryDate: map['vehicleLicenseExpiryDate'] as String,
@@ -229,9 +234,10 @@ class AddHostVehicle{
       rating: map['rating'] as double,
       latitude: map['latitude'] as double,
       longitude: map['longitude'] as double,
+      imagesUrl: (map['imageList'] as List<dynamic>? ?? []).map((e) => e.toString()).toList(),
+
     );
   }
-
 
 //</editor-fold>
 }

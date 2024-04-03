@@ -2,6 +2,7 @@ import 'package:careno/AuthSection/screen_login.dart';
 import 'package:careno/AuthSection/screen_welcome.dart';
 import 'package:careno/Host/Views/Screens/screen_host_home_page.dart';
 import 'package:careno/User/views/screens/screen_user_home.dart';
+import 'package:careno/models/categories.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
@@ -21,12 +22,22 @@ CollectionReference hostIdentityProofRef = dbInstance.collection("identies");
 CollectionReference categoryRef = dbInstance.collection("categories");
 CollectionReference addVehicleRef = dbInstance.collection("vehicles");
 Map<String, User> _allUsersMap = {};
+Map<String,Category> _allCategoryMap = {};
 
 Future<bool> hostProofAlreadyExists(String uid) async {
   final doc = await hostIdentityProofRef.doc(uid).get();
   return doc.exists;
 }
+Future<Category> getCategory(String id) async{
+  var category = _allCategoryMap[id];
+  if (category == null) {
+    var doc = await categoryRef.doc(id).get();
+    category = Category.fromMap(doc.data()as Map<String,dynamic>);
+    _allCategoryMap[id] = category;
 
+  }
+  return category;
+}
 Future<User> getUser(String id) async {
   var user = _allUsersMap[id];
 

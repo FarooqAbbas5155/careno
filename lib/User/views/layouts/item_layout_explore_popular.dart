@@ -13,7 +13,7 @@ AddHostVehicle? addHostVehicle;
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: (){
-        Get.to(ScreenCarDetails());
+        Get.to(ScreenCarDetails(addHostVehicle: addHostVehicle!));
       },
       child: Container(
         // height: 81.h,

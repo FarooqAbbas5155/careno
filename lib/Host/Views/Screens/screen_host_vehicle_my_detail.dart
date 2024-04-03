@@ -99,7 +99,7 @@ class ScreenHostVehicleMyDetail extends StatelessWidget {
               buildDetail("Year of Vehicle", addHostVehicle.vehicleYear),
               buildDetail("Number of Seats", addHostVehicle.vehicleSeats),
               buildDetail("Transmission", addHostVehicle.vehicleTransmission),
-              buildDetail("Fuel Type", addHostVehicle.vehicleFuleType),
+              buildDetail("Fuel Type", addHostVehicle.vehicleFuelType),
               buildDetail("Vehicle Plate Number", addHostVehicle.vehicleNumberPlate),
               buildDetail("Vehicle License Expiry Date", addHostVehicle.vehicleLicenseExpiryDate),
               buildDetail("Per Day Rent", "\$ ${addHostVehicle.vehiclePerDayRent}"),
