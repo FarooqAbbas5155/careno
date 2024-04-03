@@ -22,6 +22,7 @@ class ScreenCompleteProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("UserType${controller.userType.value}");
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,

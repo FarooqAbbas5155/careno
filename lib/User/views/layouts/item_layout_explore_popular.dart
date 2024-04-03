@@ -5,9 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-class ItemLayoutExplorePopular extends StatelessWidget {
-  const ItemLayoutExplorePopular({Key? key}) : super(key: key);
+import '../../../models/add_host_vehicle.dart';
 
+class ItemLayoutExplorePopular extends StatelessWidget {
+AddHostVehicle? addHostVehicle;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -44,7 +45,7 @@ class ItemLayoutExplorePopular extends StatelessWidget {
                    decoration: BoxDecoration(
                        borderRadius: BorderRadius.circular(5.r),
                        image: DecorationImage(
-                           image: AssetImage("assets/images/car2.png"),
+                           image: NetworkImage(addHostVehicle!.vehicleImageComplete),
                            fit: BoxFit.fill
                        )
                    ),
@@ -53,16 +54,15 @@ class ItemLayoutExplorePopular extends StatelessWidget {
                    mainAxisAlignment: MainAxisAlignment.start,
                    crossAxisAlignment: CrossAxisAlignment.start,
                    children: [
-                     Text("Tesla Model 3",style: TextStyle(color: Colors.black,fontSize: 14.sp,fontFamily:"Urbanist" ,fontWeight: FontWeight.w700),),
-                     Text("Electric Car",style: TextStyle(color: Color(0xffAAAAAA),fontSize: 10.sp,fontFamily:"Urbanist" ,fontWeight: FontWeight.w500),).marginOnly(bottom: 2.h),
+                     Text(addHostVehicle!.vehicleModel,style: TextStyle(color: Colors.black,fontSize: 14.sp,fontFamily:"Urbanist" ,fontWeight: FontWeight.w700),),
+                     Text(addHostVehicle!.vehicleTransmission,style: TextStyle(color: Color(0xffAAAAAA),fontSize: 10.sp,fontFamily:"Urbanist" ,fontWeight: FontWeight.w500),).marginOnly(bottom: 2.h),
                      Row(
                        children: [
                          Icon(Icons.star,color: AppColors.starColor,),
-                         Text("5.0",style: TextStyle(color: Colors.black,fontSize: 11.sp,fontFamily:"UrbanistBold" ,fontWeight: FontWeight.w600),),
+                         Text(addHostVehicle!.rating.toString(),style: TextStyle(color: Colors.black,fontSize: 11.sp,fontFamily:"UrbanistBold" ,fontWeight: FontWeight.w600),),
                          Text("(528)",style: TextStyle(color: Color(0xffAAAAAA),fontSize: 11.sp,fontFamily:"Urbanist" ,fontWeight: FontWeight.w600),).marginOnly(left: 4.w),
                        ],
                      ),
-
                    ],
                  ).marginOnly(left: 8.w),
                ],
@@ -84,7 +84,7 @@ class ItemLayoutExplorePopular extends StatelessWidget {
                 ).marginOnly(left: 18.w),
                 RichText(
                   text: TextSpan(
-                    text: '\$ 50',
+                    text: '\$ ${addHostVehicle!.vehiclePerDayRent}',
                     style: TextStyle(color: primaryColor,fontFamily: "Urbanist",fontWeight: FontWeight.w700,fontSize: 14.sp),
                     children: <TextSpan>[
                       TextSpan(
@@ -104,4 +104,8 @@ class ItemLayoutExplorePopular extends StatelessWidget {
       ),
     );
   }
+
+ItemLayoutExplorePopular({
+    this.addHostVehicle,
+  });
 }

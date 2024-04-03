@@ -1,6 +1,8 @@
 import 'package:careno/Host/Views/Screens/screen_host_notification.dart';
 import 'package:careno/User/views/screens/screen_search_filter.dart';
+import 'package:careno/constant/colors.dart';
 import 'package:careno/constant/helpers.dart';
+import 'package:careno/controllers/home_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -24,11 +26,13 @@ class _LayoutUserExploreState extends State<LayoutUserExplore> {
 
   @override
   Widget build(BuildContext context) {
+    HomeController controller = Get.put(HomeController());
+    print(controller.addhostvehicle.value.length);
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
         resizeToAvoidBottomInset: true,
-        body:newValue.value == 0?
+        body: newValue.value == 0 ?
         SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -57,7 +61,7 @@ class _LayoutUserExploreState extends State<LayoutUserExplore> {
                         Row(
                           children: [
                             GestureDetector(
-                              onTap: (){
+                              onTap: () {
                                 Get.to(ScreenHostNotification());
                               },
                               child: Container(
@@ -148,7 +152,7 @@ class _LayoutUserExploreState extends State<LayoutUserExplore> {
                           ),
                         ),
                         GestureDetector(
-                          onTap: (){
+                          onTap: () {
                             Get.to(ScreenFilter());
                           },
                           child: Container(
@@ -170,96 +174,104 @@ class _LayoutUserExploreState extends State<LayoutUserExplore> {
               ),
               newValue == 0
                   ? Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Center(
-                          child: Container(
-                            alignment: Alignment.center,
-                            height: 177.h,
-                            width: 345.w,
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(5.r),
-                                image: DecorationImage(
-                                    image: AssetImage("assets/images/car.png"),
-                                    fit: BoxFit.fill)),
-                          ).marginSymmetric(vertical: 14.h),
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Center(
+                    child: Container(
+                      alignment: Alignment.center,
+                      height: 177.h,
+                      width: 345.w,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(5.r),
+                          image: DecorationImage(
+                              image: AssetImage("assets/images/car.png"),
+                              fit: BoxFit.fill)),
+                    ).marginSymmetric(vertical: 14.h),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 3.h),
+                    child: Text(
+                      "Explore Categories",
+                      style: TextStyle(
+                          fontFamily: "Urbanist",
+                          fontSize: 20.sp,
+                          fontWeight: FontWeight.w700),
+                    ),
+                  ),
+                  Obx(() {
+                    return SizedBox(
+                      height: 164.h,
+                      child: GridView.builder(
+                        padding: EdgeInsets.zero,
+                        shrinkWrap: true,
+                        physics: BouncingScrollPhysics(),
+                        scrollDirection: Axis.horizontal,
+                        gridDelegate:
+                        SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 0,
+                            mainAxisSpacing: 0,
+                            childAspectRatio: 1.1
+
                         ),
-                        Padding(
-                          padding: EdgeInsets.only(bottom: 3.h),
-                          child: Text(
-                            "Explore Categories",
+                        itemCount: controller.allCategory.value.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          var category = controller.allCategory.value[index];
+                          return InkWell(
+                              onTap: () {
+                                Get.to(ScreenPreviewCategory());
+                              },
+                              child: ItemLayoutExploreImage(
+                                category: category,));
+                        },
+                      ).marginOnly(bottom: 4.h),
+                    );
+                  }),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Popular Vehicles",
+                        style: TextStyle(
+                            fontFamily: "UrbanistBold",
+                            fontSize: 20.sp,
+                            fontWeight: FontWeight.w700),
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            "See all ",
                             style: TextStyle(
                                 fontFamily: "Urbanist",
-                                fontSize: 20.sp,
-                                fontWeight: FontWeight.w700),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 164.h,
-                          child: GridView.builder(
-                            padding: EdgeInsets.zero,
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            scrollDirection: Axis.horizontal,
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              crossAxisSpacing: 0,
-                              mainAxisSpacing: 0,
-                                  childAspectRatio: 1.1
-                            ),
-                            itemCount: 20,
-                            itemBuilder: (BuildContext context, int index) {
-                              return InkWell(
-                                  onTap: () {
-                                    Get.to(ScreenPreviewCategory());
-                                  },
-                                  child: ItemLayoutExploreImage());
-                            },
-                          ).marginOnly(bottom: 4.h),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "Popular Vehicles",
-                              style: TextStyle(
-                                  fontFamily: "UrbanistBold",
-                                  fontSize: 20.sp,
-                                  fontWeight: FontWeight.w700),
-                            ),
-                            Row(
-                              children: [
-                                Text(
-                                  "See all ",
-                                  style: TextStyle(
-                                      fontFamily: "Urbanist",
-                                      fontSize: 13.sp,
-                                      fontWeight: FontWeight.w600,
-                                      color: primaryColor),
-                                ).marginSymmetric(horizontal: 2.w),
-                                SvgPicture.asset("assets/images/see_all.svg")
-                              ],
-                            ),
-                          ],
-                        ),
-                        ListView.builder(
-                          scrollDirection: Axis.vertical,
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemCount: 30,
-                          itemBuilder: (BuildContext context, int index) {
-                            return ItemLayoutExplorePopular();
-                          },
-                        )
-                      ],
-                    ).marginSymmetric(horizontal: 14.w)
+                                fontSize: 13.sp,
+                                fontWeight: FontWeight.w600,
+                                color: primaryColor),
+                          ).marginSymmetric(horizontal: 2.w),
+                          SvgPicture.asset("assets/images/see_all.svg")
+                        ],
+                      ),
+                    ],
+                  ),
+                  Obx(() =>  controller.addhostvehicle.value != null ? ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: controller.addhostvehicle.value.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      var vehicle =  controller.addhostvehicle.value[index];
+                      return ItemLayoutExplorePopular(addHostVehicle: vehicle,);
+                    },
+                  ):Center(
+                    child: CircularProgressIndicator(color: AppColors.appPrimaryColor,),
+                  ))
+                ],
+              ).marginSymmetric(horizontal: 14.w)
                   : LayoutVehicleGoogleMap(),
             ],
           ),
-        ):Column(
+        ) : Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -371,7 +383,7 @@ class _LayoutUserExploreState extends State<LayoutUserExplore> {
                         ),
                       ),
                       GestureDetector(
-                        onTap: (){
+                        onTap: () {
                           Get.to(ScreenSearchFilter());
                         },
                         child: Container(
@@ -417,29 +429,35 @@ class _LayoutUserExploreState extends State<LayoutUserExplore> {
                         fontWeight: FontWeight.w700),
                   ),
                 ),
-                Container(
-                    color: Colors.white,
-                    height: 140.h,
-                    child: GridView.builder(
-                      scrollDirection: Axis.horizontal,
-                      gridDelegate:
-                      SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        // Adjust the number of items per row
-                        crossAxisSpacing: 2.0,
-                        // Adjust spacing between items horizontally
-                        mainAxisSpacing:
-                        2.0, // Adjust spacing between items vertically
-                      ),
-                      itemCount: 20,
-                      itemBuilder: (BuildContext context, int index) {
-                        return InkWell(
-                            onTap: () {
-                              Get.to(ScreenPreviewCategory());
-                            },
-                            child: ItemLayoutExploreImage());
-                      },
-                    )).marginOnly(bottom: 4.h),
+                Obx(() {
+                  return Container(
+                      color: Colors.white,
+                      height: 140.h,
+                      child: GridView.builder(
+                        scrollDirection: Axis.horizontal,
+                        physics: BouncingScrollPhysics(),
+
+                        gridDelegate:
+                        SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          // Adjust the number of items per row
+                          crossAxisSpacing: 2.0,
+                          // Adjust spacing between items horizontally
+                          mainAxisSpacing:
+                          2.0, // Adjust spacing between items vertically
+                        ),
+                        itemCount: controller.allCategory.value.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          var category = controller.allCategory.value[index];
+                          return InkWell(
+                              onTap: () {
+                                Get.to(ScreenPreviewCategory());
+                              },
+                              child: ItemLayoutExploreImage(
+                                category: category,));
+                        },
+                      ));
+                }).marginOnly(bottom: 4.h),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -465,14 +483,18 @@ class _LayoutUserExploreState extends State<LayoutUserExplore> {
                     ),
                   ],
                 ),
-                ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemCount: 30,
-                  itemBuilder: (BuildContext context, int index) {
-                    return ItemLayoutExplorePopular();
-                  },
-                )
+               Obx(() =>  controller.addhostvehicle.value != null ? ListView.builder(
+                 scrollDirection: Axis.vertical,
+                 shrinkWrap: true,
+                 physics: NeverScrollableScrollPhysics(),
+                 itemCount: controller.addhostvehicle.value.length,
+                 itemBuilder: (BuildContext context, int index) {
+                   var vehicle =  controller.addhostvehicle.value[index];
+                   return ItemLayoutExplorePopular(addHostVehicle: vehicle,);
+                 },
+               ):Center(
+                 child: CircularProgressIndicator(color: AppColors.appPrimaryColor,),
+               ))
               ],
             ).marginSymmetric(horizontal: 14.w)
                 : LayoutVehicleGoogleMap(),

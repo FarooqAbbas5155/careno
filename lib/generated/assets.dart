@@ -15,6 +15,7 @@ class Assets {
   static const String fontsQuicksandRegular = 'assets/fonts/Quicksand-Regular.ttf';
   static const String fontsUrbanistBold = 'assets/fonts/Urbanist-Bold.ttf';
   static const String fontsUrbanistRegular = 'assets/fonts/Urbanist-Regular.ttf';
+  static const String gifGIF = 'assets/gif/GIF.gif';
   static const String iconsAddCircle = 'assets/icons/add-circle.svg';
   static const String iconsArrow = 'assets/icons/arrow.svg';
   static const String iconsArrowForward = 'assets/icons/arrow-forward.svg';
@@ -105,6 +106,7 @@ class Assets {
   static const String imagesMarker = 'assets/images/marker.png';
   static const String imagesMePaisa = 'assets/images/me_paisa.png';
   static const String imagesMessages = 'assets/images/messages.svg';
+  static const String imagesNothing = 'assets/images/nothing.png';
   static const String imagesPicker = 'assets/images/picker.svg';
   static const String imagesProfile = 'assets/images/profile.png';
   static const String imagesQ = 'assets/images/Q.png';

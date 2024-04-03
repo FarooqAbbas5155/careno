@@ -4,13 +4,18 @@ import 'package:careno/widgets/custom_svg.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import '../../../constant/fcm.dart';
 import '../../../constant/firebase_utils.dart';
 import '../../../constant/helpers.dart';
-import '../../../widgets/bubble_special_three.dart';
+import '../../../models/message.dart';
 import 'package:careno/models/user.dart' as model;
+
+import '../../../widgets/not_found.dart';
+import '../layouts/item_user_chat.dart';
 class ScreenUserChat extends StatefulWidget {
   model.User? user;
   int? counter;
@@ -185,40 +190,110 @@ class _ScreenUserChatState extends State<ScreenUserChat> {
       body: Column(
         children: [
           Expanded(
-            child: Column(
-              children: <Widget>[
-                BubbleSpecialThree(
-                  text: 'Added iMessage shape bubbles',
-                  tail: true,
-                  seen: true,
-                  sent: true,
-                time: '10:15  AM',
-                ),
-                BubbleSpecialThree(
-                  text: 'Please try and give some feedback on it!',
-                  tail: true,
-                  seen: true,
+            child: Container(
+              padding: EdgeInsets.symmetric(vertical: 5),
+              child: StreamBuilder<DatabaseEvent>(
+                stream: stream,
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData || snapshot.data == null) {
+                    return Center(
+                      child: CircularProgressIndicator.adaptive(
+                        backgroundColor: AppColors.appPrimaryColor,
+                        strokeWidth: 1,
+                      ),
+                    );
+                  }
 
-                  time: '10:15  AM',
-                ),
-                BubbleSpecialThree(
-                  text: 'Sure',
-                  tail: true,
-                  isSender: false, time: '10:15  AM',
-                ),
-                BubbleSpecialThree(
-                  text: "I tried. It's awesome!!!",
-                  tail: true,
-                  isSender: false, time: '10:15  AM',
-                ),
-                BubbleSpecialThree(
-                  text: "Thanks",
-                  tail: true,
-                  isSender: false, time: '10:15  AM',
-                )
-              ],
+                  var data = snapshot.data!.snapshot.value;
+                  if (data == null) {
+                    return Center(
+                      child: NotFound(
+                        message: "No Messages",
+                        color: AppColors.appPrimaryColor,
+                      ),
+                    );
+                  }
+                  clearCounter();
+                  List<Message> messages = snapshot.data!.snapshot.children
+                      .map((e) => Message.fromMap(
+                    Map<String, dynamic>.from(e.value as dynamic),
+                  ))
+                      .toList();
+                  messages.sort((b, a) => a.timestamp.compareTo(b.timestamp));
+                  return (messages.isNotEmpty)
+                      ? Builder(
+                    builder: (context) {
+                      // Group messages by date
+                      Map<String, List<Message>> groupedMessages =
+                      groupMessagesByDate(messages);
+
+                      return ListView.builder(
+                        controller: _scrollController,
+                        itemCount: groupedMessages.length + 1,
+                        reverse: true,
+                        itemBuilder: (context, index) {
+                          if (index == groupedMessages.length) {
+                            return SizedBox(
+                              height: 10,
+                            );
+                          }
+
+                          // Get messages for the current date group
+                          String currentDate = groupedMessages.keys.elementAt(index);
+                          List<Message> currentMessages = groupedMessages[currentDate]!;
+                          var message = currentMessages.last; // Get the last message in the group
+
+                          // Determine the display date based on the last message
+                          String displayDate = getDisplayDate(DateTime.fromMillisecondsSinceEpoch(message.timestamp));
+
+                          return  Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.symmetric(
+                                  vertical: 8,
+                                  horizontal: 16,
+                                ),
+                                child: Text(
+                                  displayDate,
+                                  style: TextStyle(
+                                    color: Colors.black.withOpacity(0.6),
+                                  ),
+                                ),
+                              ),
+                              ListView.builder(
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemCount: currentMessages.length,
+                                itemBuilder: (context, messageIndex) {
+                                  var message = currentMessages.reversed.toList()[messageIndex];
+                                  return GestureDetector(
+                                    onTap: () {
+                                      // Handle tap on chat message
+                                    },
+                                    child: ItemUserChat(message: message, displayDate: displayDate),
+                                  );
+                                },
+                              ),
+                            ],
+                          );
+
+                        },
+                      );
+
+                    },
+                  )
+                      : Center(
+                    child: Text(
+                      "No Messages",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  );
+                },
+              ),
             ),
           ),
+
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
@@ -244,26 +319,154 @@ class _ScreenUserChatState extends State<ScreenUserChat> {
 
                       borderRadius: BorderRadius.circular(8.r),
                     ),
+                    errorText: isMessageValid ? null :"Sharing contact not allowed",
+
                   ),
+
                 ),
               )),
-              Container(
-                height: 48.h,
-                  margin: EdgeInsets.only(left: 10.w
-                  ),
-                  width: 48.w,
-                  // padding: EdgeInsets.all(10.r),
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: AppColors.appPrimaryColor,
-                    borderRadius: BorderRadius.circular(8.r)
-                  ),
-                  child: CustomSvg(name: "ic_Send",)),
+              GestureDetector(
+                onTap: (){
+                  if (isMessageValid) {
+                    setState((){
+                      if (widget.counter==null) {
+                        widget.counter=1;
+                      }
+                      else{
+                        widget.counter=widget.counter!+ 1;
+
+                      }
+                    });
+                    String text = messageController.text;
+                    int timestamp =
+                        DateTime.now().millisecondsSinceEpoch;
+                    if (text.isNotEmpty) {
+                      var message = Message(
+                        id: timestamp.toString(),
+                        timestamp: timestamp,
+                        text: text,
+                        sender_id: FirebaseUtils.myId,
+                        receiver_id: widget.user!.uid,
+                        message_type: "text",
+                        counter: widget.counter!,
+                      );
+                      messageController.clear();
+                      sendMessage(message, chatRoomId)
+                          .catchError((error) {
+                        Get.snackbar("Message", error.toString());
+                      }).then((value) {
+                        animateToLastMessage(300);
+
+                        FCM.sendMessageSingle(
+                            "New Message",
+                            message.text,
+                            widget.user!.notificationToken.toString(),
+                            {});
+                      }).then((value) {
+                        print(value);
+                      });
+                    }
+                  }
+
+                },
+                child: Container(
+                    height: 48.h,
+                    margin: EdgeInsets.only(left: 10.w
+                    ),
+                    width: 48.w,
+                    // padding: EdgeInsets.all(10.r),
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                        color: AppColors.appPrimaryColor,
+                        borderRadius: BorderRadius.circular(8.r)
+                    ),
+                    child: CustomSvg(name: "ic_Send",)),
+              ),
             ],
           ).marginOnly(bottom: 16.h,left: 16.w,right: 16.w),
+
         ],
       ),
     ));
   }
+  bool isMessageValid = true;
+
+  void validateMessage(String message) {
+    setState(() {
+      isMessageValid = ChatValidator.isMessageValid(message);
+    });
+  }
+
+  void animateToLastMessage(int animateMillis) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_scrollController.hasClients) {
+        final lastMessageOffset = _scrollController.position.minScrollExtent;
+        _scrollController.animateTo(
+          lastMessageOffset,
+          duration: Duration(milliseconds: animateMillis),
+          curve: Curves.easeInOut,
+        );
+      }
+    });
+  }
+  Map<String, List<Message>> groupMessagesByDate(List<Message> messages) {
+    Map<String, List<Message>> groupedMessages = {};
+
+    for (var message in messages) {
+      // Convert timestamp to DateTime object
+      DateTime dateTime =
+      DateTime.fromMillisecondsSinceEpoch(message.timestamp);
+
+      // Format the date (e.g., "2023-07-12")
+      String formattedDate = "${dateTime.year}-${dateTime.month}-${dateTime.day}";
+
+      // Add the message to the corresponding date group
+      if (groupedMessages.containsKey(formattedDate)) {
+        groupedMessages[formattedDate]!.add(message);
+      } else {
+        groupedMessages[formattedDate] = [message];
+      }
+    }
+
+    return groupedMessages;
+  }
+
+  String getDisplayDate(DateTime dateTime) {
+    DateTime now = DateTime.now();
+    DateTime today = DateTime(now.year, now.month, now.day);
+    DateTime yesterday = DateTime(now.year, now.month, now.day - 1);
+
+    if (dateTime.isAfter(today)) {
+      return "Today";
+    } else if (dateTime.isAfter(yesterday)) {
+      return "Yesterday";
+    } else {
+      return DateFormat('MMM dd, yyyy').format(dateTime);
+    }
+  }
+
+}
+class ChatValidator {
+  static final List<RegExp> blockPatterns = [
+    RegExp(
+        r'\b(Facebook|Instagram|Twitter|LinkedIn|Snapchat|whatsApp|Telegram|Discord|WeChat|Skype|Zoom|TikTok|Pinterest|Reddit|Tumblr|Viber|LINE|Kik|Signal|Google Hangouts|Email|Phone|Phone Number|Contact Number|Cell Phone|Cell Phone Number)\b',
+        caseSensitive: false),
+    RegExp(r'\b(call|phone)\b', caseSensitive: false),
+    RegExp(r'\b(\d{4})\b'),
+    // Matches 4-digit numbers
+    RegExp(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b'),
+    // Email pattern
+    // Add more regex patterns as needed
+  ];
+
+  static bool isMessageValid(String message) {
+    for (RegExp pattern in blockPatterns) {
+      if (pattern.hasMatch(message)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
 }
 

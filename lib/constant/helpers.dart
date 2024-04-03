@@ -3,8 +3,10 @@ import 'package:careno/AuthSection/screen_welcome.dart';
 import 'package:careno/Host/Views/Screens/screen_host_home_page.dart';
 import 'package:careno/User/views/screens/screen_user_home.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
 
 import '../Host/Views/Screens/screen_host_add_ident_identity_proof.dart';
 import '../models/user.dart';
@@ -74,7 +76,28 @@ Future<Widget> getHomeScreen() async {
     } else {
       screen = ScreenUserHome();
     }
+
   }
 
   return screen;
+}
+Future<FilePickerResult?> PickFile(List<String> type) async {
+  FilePickerResult? result = await FilePicker.platform.pickFiles(
+    type: FileType.custom,
+    allowMultiple: true,
+    allowedExtensions: type,
+  );
+  var files = [];
+  if (result != null) {
+    PlatformFile file = result.files.first;
+    print(file.name);
+    print(file.bytes);
+    print(files);
+    print(file.size);
+    print(file.extension);
+    print(file.path);
+  } else {
+    Get.snackbar("Alert", "No File Pick");
+  }
+  return result;
 }

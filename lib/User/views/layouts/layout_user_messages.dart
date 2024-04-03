@@ -12,6 +12,7 @@ import '../../../constant/firebase_utils.dart';
 import '../../../constant/helpers.dart';
 import '../../../models/last_message.dart';
 import '../../../models/user.dart';
+import '../../../widgets/not_found.dart';
 import 'item_user_list.dart';
 
 class LayoutUserMessages extends StatelessWidget {
@@ -20,9 +21,25 @@ class LayoutUserMessages extends StatelessWidget {
   Widget build(BuildContext context) {
     ChatController chatController = Get.put(ChatController());
     return Scaffold(
-      body:      chatController.rooms.value.isEmpty?Center(
-        child: Text("No message user yet"),
-      ):Column(
+      body:      chatController.rooms.value.isEmpty?
+      Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              "assets/images/nothing.png",
+              color:  AppColors.appPrimaryColor,
+              height:  MediaQuery.of(context).size.height * 0.1,
+              width:  MediaQuery.of(context).size.height * 0.1,
+            ),
+            Text(
+              "No Messages",
+              style: TextStyle(color: AppColors.appPrimaryColor,fontFamily: "Urbanist",fontWeight: FontWeight.w600),
+            ),
+          ],
+        )
+      )
+          :Column(
 
         children: [
           Container(

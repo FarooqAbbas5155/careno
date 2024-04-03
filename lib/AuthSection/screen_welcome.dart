@@ -7,10 +7,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class ScreenWelcome extends StatelessWidget {
-  ControllerUpdateProfile controller = Get.put(ControllerUpdateProfile());
 
   @override
   Widget build(BuildContext context) {
+    ControllerUpdateProfile controller = Get.put(ControllerUpdateProfile());
+
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -85,6 +87,8 @@ class ScreenWelcome extends StatelessWidget {
                             groupValue: controller.userType.value,
                             onChanged: (String? value) {
                               controller.userType.value = value!;
+                              print("UserType${controller.userType.value}");
+
                             });
                       }),
                       Obx(() {
@@ -103,6 +107,8 @@ class ScreenWelcome extends StatelessWidget {
                             groupValue: controller.userType.value,
                             onChanged: (String? value) {
                               controller.userType.value = value!;
+                              print("UserType${controller.userType.value}");
+
                             });
                       }),
                       Center(

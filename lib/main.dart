@@ -6,18 +6,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
 import 'AuthSection/screen_splash.dart';
 import 'constant/colors.dart';
-import 'constant/helpers.dart';
 import 'firebase_options.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
-
-
+import 'package:careno/controllers/controller_payments.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Future.delayed(Duration(seconds: 1));
+  Stripe.publishableKey = PaymentsController.stripePublishableKey;
   colorConfig();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,

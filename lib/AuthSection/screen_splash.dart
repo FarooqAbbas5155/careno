@@ -11,7 +11,7 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future.delayed(Duration(seconds: 5), () async {
+    Future.delayed(Duration(seconds: 8), () async {
       Widget screen = await getHomeScreen();
       Get.offAll(screen);
 

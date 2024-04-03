@@ -95,9 +95,19 @@ class ScreenHostAddVehicle extends StatelessWidget {
                               .value)));
                     }),
                     addVehicle(() async {
-                      var path =
-                      await FilePick().pickImage(ImageSource.gallery);
-                      controllerAddVehicle.vehicleMore.value.add(path);
+                      var path = await PickFile([
+                        'png',
+                        'jpg',
+                        'jpeg'
+                      ]).then((value) {
+                        controllerAddVehicle.vehicleMore.value =
+                            value!.paths
+                                .map((e) =>
+                                e
+                                    .toString())
+                                .toList();
+
+                      });
                       controller.update();
                     }, "Add More Images",
                         RxString(''))
@@ -126,7 +136,6 @@ class ScreenHostAddVehicle extends StatelessWidget {
                       },),
                   );
                 }),
-
                 // buildVehicleContainer(controllerAddVehicle)
                 //     .marginSymmetric(horizontal: 40.w, vertical: 20.h),
                 Text(
@@ -398,28 +407,27 @@ class ScreenHostAddVehicle extends StatelessWidget {
               hintColor: controllerAddVehicle.selectCategory.value.isEmpty
                   ? Color(0xff94979F)
                   : Colors.black,
-              suffix: PopupMenuButton<String>(
+              suffix: PopupMenuButton<Category>(
                 icon: Icon(Icons.expand_more),
                 color: Theme
                     .of(context)
                     .primaryColor,
                 itemBuilder: (BuildContext context) {
-                  return categoryNameList.map((choice) {
-                    return PopupMenuItem<String>(
-                      value: choice.toString(),
+                  return categories.map((choice) {
+                    return PopupMenuItem<Category>(
+                      value: choice,
                       child: Text(
-                        choice,
+                        choice.name,
                         style: TextStyle(
                             color: Colors.white, fontFamily: "Urbanist"),
                       ),
                     );
                   }).toList();
                 },
-                onSelected: (String choice) {
+                onSelected: (Category choice) {
                   // Update selected category when an option is chosen
                   setState(() {
-                    controllerAddVehicle.selectCategory.value =
-                        choice.toString();
+                    controllerAddVehicle.selectCategory.value = choice.id.toString();
                   });
                 },
               ).marginOnly(top: 4.h),

@@ -1,3 +1,4 @@
+import 'package:careno/models/categories.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -6,8 +7,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:get/get.dart';
 
 class ItemLayoutExploreImage extends StatelessWidget {
-  const ItemLayoutExploreImage({Key? key}) : super(key: key);
-
+Category category;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -15,19 +15,18 @@ class ItemLayoutExploreImage extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Container(
-          height: 50.h,
-          width: 50.w,
-
+          height: 50,
+          width: 50,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            // color: Colors.red,
             image: DecorationImage(
-              image: AssetImage("assets/images/car.png",),
-              fit: BoxFit.cover
-            )
-          )
-
+              // Replace 'imageUrl' with the URL of the image from Firebase Storage
+              image: NetworkImage(category.image),
+              fit: BoxFit.cover,
+            ),
+          ),
         ),
+
         // CircleAvatar(
         //   radius: 35.r,
         //   backgroundColor: Colors.red,
@@ -36,7 +35,7 @@ class ItemLayoutExploreImage extends StatelessWidget {
         // ),
         Expanded(
           child: Text(
-            "Luxury car",
+            category.name,
             style: TextStyle(
                 color: Colors.black,
                 fontFamily: "Urbanist",
@@ -50,4 +49,8 @@ class ItemLayoutExploreImage extends StatelessWidget {
       ],
     ).marginSymmetric(horizontal: 5.w);
   }
+
+ItemLayoutExploreImage({
+    required this.category,
+  });
 }

@@ -3,7 +3,10 @@ import 'dart:io';
 
 import 'package:careno/constant/colors.dart';
 import 'package:careno/constant/helpers.dart';
+import 'package:careno/models/add_host_vehicle.dart';
+import 'package:careno/models/categories.dart';
 import 'package:careno/models/user.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -32,13 +35,23 @@ class HomeController extends GetxController {
   Rx<String> CarFuelType = 'Gasoline'.obs;
   Rx<String> CarSeatsCapacity = '04'.obs;
   Rx<String> CarLocation = 'Central park New York'.obs;
+  RxList<Category> allCategory= RxList<Category>([]);
+  RxList<AddHostVehicle> addhostvehicle= RxList<AddHostVehicle>([]);
+  Stream<QuerySnapshot>? categoriesSnapshot;
+  Stream<QuerySnapshot>? vehicleSnapshot;
+
 
 // DateTime? dateTime;
   @override
   void onInit() {
 updateToken();
 UserStream();
+vehicleSnapshot = addVehicleRef.snapshots();
 
+categoriesSnapshot = categoryRef.snapshots();
+addhostvehicle.bindStream(vehicleSnapshot!.map((vehicle) => vehicle.docs.map((e) => AddHostVehicle.fromMap(e.data() as Map<String, dynamic>)).toList()));
+
+allCategory.bindStream(categoriesSnapshot!.map((category) => category.docs.map((e) => Category.fromMap(e.data() as Map<String, dynamic>)).toList()));
 super.onInit();
   }
   String uid = FirebaseAuth.instance.currentUser!.uid;
@@ -56,4 +69,6 @@ super.onInit();
   }
   Rx<model.User?> user = Rx<model.User?>(null);
 
+
 }
+

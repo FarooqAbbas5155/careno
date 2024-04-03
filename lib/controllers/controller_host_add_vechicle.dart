@@ -22,6 +22,7 @@ class ControllerHostAddVechicle extends GetxController {
   RxDouble latitude = 0.0.obs;
   RxDouble longitude = 0.0.obs;
   RxString address = ''.obs;
+  List<String> imageList = [];
 
   RxString vehiclePath = "".obs;
   RxString vehicleRightSidePaths = "".obs;
