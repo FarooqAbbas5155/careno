@@ -141,6 +141,10 @@ class ScreenBooking extends StatelessWidget {
                       ? CalendarDatePicker2(
                     config: CalendarDatePicker2Config(
                       centerAlignModePicker: true,
+                      firstDate: DateTime.now(),
+                      currentDate: DateTime.now(),
+                      lastDate: DateTime(2050),
+
                       lastMonthIcon: Container(
                           padding: EdgeInsets.all(8.r),
                           decoration: BoxDecoration(
@@ -168,6 +172,7 @@ class ScreenBooking extends StatelessWidget {
                       calendarType: CalendarDatePicker2Type.range,
                     ),
                     value: controller.dates,
+
                     onValueChanged: (dates) {
                       controller.dates = dates;
                       controller.bookingStartDate.value = dates[0];
@@ -180,6 +185,11 @@ class ScreenBooking extends StatelessWidget {
                       : CalendarDatePicker2(
                     config: CalendarDatePicker2Config(
                       centerAlignModePicker: true,
+                      firstDate: DateTime.now(),
+                      currentDate: DateTime.now(),
+                      lastDate: DateTime(2050),
+
+
                       lastMonthIcon: Container(
                           padding: EdgeInsets.all(8.r),
                           decoration: BoxDecoration(
