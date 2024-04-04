@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../constant/colors.dart';
 import '../../../constant/helpers.dart';
 import 'item_host_vehicle.dart';
 
@@ -40,15 +39,15 @@ class LayoutHostPendingVehicle extends StatelessWidget {
                 style: TextStyle(color: Colors.black),
               ))
             : ListView.builder(
+                padding: EdgeInsets.only(top: 15.h),
                 itemCount: vehicleList.length,
                 itemBuilder: (context, index) {
                   return FutureBuilder(
                     future: getCategory(vehicleList[index].vehicleCategory),
-                    builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                    builder: (BuildContext context,
+                        AsyncSnapshot<dynamic> snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(
-                            child: CircularProgressIndicator(color: AppColors.appPrimaryColor,)
-                        );
+                        return Center(child: SizedBox());
                       }
                       var category = snapshot.data!;
                       return ItemHostVehicle(

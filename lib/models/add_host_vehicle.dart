@@ -1,5 +1,5 @@
 class AddHostVehicle{
-  String hostId,vehicleId;
+  String hostId,vehicleId,address;
   String vehicleImageComplete,vehicleImageNumberPlate,vehicleImageRightSide,vehicleImageRear,vehicleImageInterior;
   String vehicleModel,vehicleCategory,vehicleYear,vehicleSeats,vehicleTransmission,vehicleFuelType,vehicleNumberPlate,vehicleColor,vehicleLicenseExpiryDate,vehiclePerDayRent,vehiclePerHourRent,vehicleRegistrationImage;
   String status,vehicleDescription;
@@ -11,6 +11,7 @@ class AddHostVehicle{
   AddHostVehicle({
     required this.hostId,
     required this.vehicleId,
+    required this.address,
     required this.vehicleImageComplete,
     required this.vehicleImageNumberPlate,
     required this.vehicleImageRightSide,
@@ -43,6 +44,7 @@ class AddHostVehicle{
           runtimeType == other.runtimeType &&
           hostId == other.hostId &&
           vehicleId == other.vehicleId &&
+          address == other.address &&
           vehicleImageComplete == other.vehicleImageComplete &&
           vehicleImageNumberPlate == other.vehicleImageNumberPlate &&
           vehicleImageRightSide == other.vehicleImageRightSide &&
@@ -71,6 +73,7 @@ class AddHostVehicle{
   int get hashCode =>
       hostId.hashCode ^
       vehicleId.hashCode ^
+      address.hashCode ^
       vehicleImageComplete.hashCode ^
       vehicleImageNumberPlate.hashCode ^
       vehicleImageRightSide.hashCode ^
@@ -100,6 +103,7 @@ class AddHostVehicle{
     return 'AddHostVehicle{' +
         ' hostId: $hostId,' +
         ' vehicleId: $vehicleId,' +
+        ' address: $address,' +
         ' vehicleImageComplete: $vehicleImageComplete,' +
         ' vehicleImageNumberPlate: $vehicleImageNumberPlate,' +
         ' vehicleImageRightSide: $vehicleImageRightSide,' +
@@ -129,6 +133,7 @@ class AddHostVehicle{
   AddHostVehicle copyWith({
     String? hostId,
     String? vehicleId,
+    String? address,
     String? vehicleImageComplete,
     String? vehicleImageNumberPlate,
     String? vehicleImageRightSide,
@@ -156,6 +161,7 @@ class AddHostVehicle{
     return AddHostVehicle(
       hostId: hostId ?? this.hostId,
       vehicleId: vehicleId ?? this.vehicleId,
+      address: address ?? this.address,
       vehicleImageComplete: vehicleImageComplete ?? this.vehicleImageComplete,
       vehicleImageNumberPlate:
           vehicleImageNumberPlate ?? this.vehicleImageNumberPlate,
@@ -190,6 +196,7 @@ class AddHostVehicle{
     return {
       'hostId': this.hostId,
       'vehicleId': this.vehicleId,
+      'address': this.address,
       'vehicleImageComplete': this.vehicleImageComplete,
       'vehicleImageNumberPlate': this.vehicleImageNumberPlate,
       'vehicleImageRightSide': this.vehicleImageRightSide,
@@ -220,6 +227,7 @@ class AddHostVehicle{
     return AddHostVehicle(
       hostId: map['hostId'] as String,
       vehicleId: map['vehicleId'] as String,
+      address: map['address'] as String,
       vehicleImageComplete: map['vehicleImageComplete'] as String,
       vehicleImageNumberPlate: map['vehicleImageNumberPlate'] as String,
       vehicleImageRightSide: map['vehicleImageRightSide'] as String,

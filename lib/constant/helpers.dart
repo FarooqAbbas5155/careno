@@ -2,8 +2,8 @@ import 'package:careno/AuthSection/screen_login.dart';
 import 'package:careno/AuthSection/screen_welcome.dart';
 import 'package:careno/Host/Views/Screens/screen_host_home_page.dart';
 import 'package:careno/User/views/screens/screen_user_home.dart';
-import 'package:careno/models/categories.dart';
 import 'package:careno/models/booking.dart';
+import 'package:careno/models/categories.dart';
 import 'package:careno/models/rating.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
@@ -15,7 +15,8 @@ import '../Host/Views/Screens/screen_host_add_ident_identity_proof.dart';
 import '../models/user.dart';
 
 var uid = auth.FirebaseAuth.instance.currentUser!.uid;
-String image_url = "https://phito.be/wp-content/uploads/2020/01/placeholder.png";
+String image_url =
+    "https://phito.be/wp-content/uploads/2020/01/placeholder.png";
 String googleApiKey = 'AIzaSyCjxRhtdw74nJ9YdYaGjvY5IZUEA5Ux0JA';
 
 var dbInstance = FirebaseFirestore.instance;
@@ -24,51 +25,58 @@ CollectionReference hostIdentityProofRef = dbInstance.collection("identies");
 CollectionReference categoryRef = dbInstance.collection("categories");
 CollectionReference addVehicleRef = dbInstance.collection("vehicles");
 CollectionReference bookingsRef = dbInstance.collection("bookings");
+CollectionReference reviewRef = dbInstance.collection("reviews");
 
 Map<String, User> _allUsersMap = {};
-Map<String,Category> _allCategoryMap = {};
+Map<String, Category> _allCategoryMap = {};
 Map<String, Rating> allVehicleRatings = {};
 Map<String, Rating> ratingsMap = {};
+
 Future<bool> hostProofAlreadyExists(String uid) async {
   final doc = await hostIdentityProofRef.doc(uid).get();
   return doc.exists;
 }
 
-Future<Rating> getRatingByVehicleId(String id) async {
-  if (allVehicleRatings.containsKey(id)) {
-    return allVehicleRatings[id]!;
-  }
-  var bookingsDocs =
-      (await bookingsRef.where("vehicleId", isEqualTo: id).get()).docs;
-  var bookings = bookingsDocs
-      .map((e) => Booking.fromMap(e.data() as Map<String, dynamic>))
-      .toList();
-  double rating = 0;
-  int num = 0;
-  bookings.forEach((e) {
-    rating += e.rating ?? 0;
-    num += e.rating != null ? 1 : 0;
-  });
-  var avgRating = (rating / num);
-  if (num == 0) {
-    avgRating = 0;
-  }
-  var obj = Rating(serviceId: id, avgRating: avgRating, num: num);
-  allVehicleRatings[id] = obj;
-  return obj;
-}
+// Future<Rating> getRatingByVehicleId(String id) async {
+//   if (allVehicleRatings.containsKey(id)) {
+//     return allVehicleRatings[id]!;
+//   }
+//   var bookingsDocs =
+//       (await bookingsRef.where("vehicleId", isEqualTo: id).get()).docs;
+//   var bookings = bookingsDocs
+//       .map((e) => Booking.fromMap(e.data() as Map<String, dynamic>))
+//       .toList();
+//   double rating = 0;
+//   int num = 0;
+//   bookings.forEach((e) {
+//     rating += e.rating ?? 0;
+//     num += e.rating != null ? 1 : 0;
+//   });
+//   var avgRating = (rating / num);
+//   if (num == 0) {
+//     avgRating = 0;
+//   }
+//   var obj = Rating(
+//       serviceId: id,
+//       avgRating: avgRating,
+//       num: num,
+//       vehicleId: '',
+//       userId: '',
+//       timeStamp: DateTime.now().millisecondsSinceEpoch);
+//   allVehicleRatings[id] = obj;
+//   return obj;
+// }
 
-
-Future<Category> getCategory(String id) async{
+Future<Category> getCategory(String id) async {
   var category = _allCategoryMap[id];
   if (category == null) {
     var doc = await categoryRef.doc(id).get();
-    category = Category.fromMap(doc.data()as Map<String,dynamic>);
+    category = Category.fromMap(doc.data() as Map<String, dynamic>);
     _allCategoryMap[id] = category;
-
   }
   return category;
 }
+
 Future<User> getUser(String id) async {
   var user = _allUsersMap[id];
 
@@ -80,6 +88,7 @@ Future<User> getUser(String id) async {
 
   return user;
 }
+
 User defaultUser = User(
   userType: "",
   phoneNumber: "phoneNumber",
@@ -118,11 +127,11 @@ Future<Widget> getHomeScreen() async {
     } else {
       screen = ScreenUserHome();
     }
-
   }
 
   return screen;
 }
+
 Future<FilePickerResult?> PickFile(List<String> type) async {
   FilePickerResult? result = await FilePicker.platform.pickFiles(
     type: FileType.custom,

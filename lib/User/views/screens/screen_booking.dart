@@ -1,10 +1,12 @@
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:careno/User/views/screens/screen_booking_review.dart';
+import 'package:careno/constant/MyFonts.dart';
 import 'package:careno/constant/colors.dart';
 import 'package:careno/controllers/booking_controller.dart';
+import 'package:careno/models/add_host_vehicle.dart';
 import 'package:careno/widgets/custom_button.dart';
 import 'package:careno/widgets/custom_svg.dart';
-import 'package:custom_date_range_picker/custom_date_range_picker.dart';
+import 'package:careno/widgets/custom_textfiled.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,16 +14,14 @@ import 'package:get/get.dart';
 
 import '../../../constant/helpers.dart';
 
-class ScreenBooking extends StatefulWidget {
-  @override
-  State<ScreenBooking> createState() => _ScreenBookingState();
-}
+class ScreenBooking extends StatelessWidget {
+  AddHostVehicle addHostVehicle;
 
-class _ScreenBookingState extends State<ScreenBooking> {
   final BookingController controller = Get.put(BookingController());
 
   @override
   Widget build(BuildContext context) {
+    // controller.priceController=addHostVehicle.
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -56,170 +56,169 @@ class _ScreenBookingState extends State<ScreenBooking> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Bookings as",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 24.sp,
-                      fontWeight: FontWeight.w700,
-                      fontFamily: "UrbanistBold",
-                    ),
+                    "Booked As",
+                    style: MyFont.heading18,
                   ),
                   Obx(
-                    () => Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
+                        () =>
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Radio(
-                              activeColor: primaryColor,
-                              value: "Per day",
-                              groupValue: controller.BookingSelection.value,
-                              onChanged: (String? value) {
-                                print("Radio button changed to: $value");
-                                controller.BookingSelection.value = value!;
-                              },
+                            Row(
+                              children: [
+                                Radio(
+                                  activeColor: primaryColor,
+                                  value: "Per day",
+                                  groupValue: controller.bookingType.value,
+                                  onChanged: (String? value) {
+                                    print("Radio button changed to: $value");
+                                    controller.bookingType.value = value!;
+                                    controller.endMinTime.value=0.0;
+                                  },
+                                ),
+                                Text(
+                                  "Per Day",
+                                  style: MyFont.heading16,
+                                )
+                              ],
                             ),
                             Text(
-                              "Per Day",
-                              style: TextStyle(
-                                  fontSize: 16.sp,
-                                  fontWeight: FontWeight.w600,
-                                  fontFamily: "UrbanistBold"),
+                              "\$ ${addHostVehicle.vehiclePerDayRent}",
+                              style: MyFont.heading18
+                                  .copyWith(color: AppColors.appPrimaryColor),
                             )
                           ],
                         ),
-                        Text(
-                          "\$ 50",
-                          style: TextStyle(
-                              fontSize: 20.sp,
-                              fontWeight: FontWeight.w700,
-                              color: primaryColor),
-                        )
-                      ],
-                    ),
                   ),
                   Obx(
-                    () => Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
+                        () =>
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Radio(
-                              activeColor: primaryColor,
-                              value: "Per hour",
-                              groupValue: controller.BookingSelection.value,
-                              onChanged: (String? value) {
-                                controller.BookingSelection.value = value!;
-                              },
+                            Row(
+                              children: [
+                                Radio(
+                                  activeColor: primaryColor,
+                                  value: "Per hour",
+                                  groupValue: controller.bookingType.value,
+                                  onChanged: (String? value) {
+                                    controller.bookingType.value = value!;
+                                  },
+                                ),
+                                Text(
+                                  "Per Hour",
+                                  style: MyFont.heading16,
+                                )
+                              ],
                             ),
                             Text(
-                              "Per Hour",
-                              style: TextStyle(
-                                  fontSize: 16.sp,
-                                  fontWeight: FontWeight.w600,
-                                  fontFamily: "UrbanistBold"),
+                              "\$ ${addHostVehicle.vehiclePerHourRent}",
+                              style: MyFont.heading18
+                                  .copyWith(color: AppColors.appPrimaryColor),
                             )
                           ],
                         ),
-                        Text(
-                          "\$ 150",
-                          style: TextStyle(
-                              fontSize: 20.sp,
-                              fontWeight: FontWeight.w700,
-                              color: primaryColor),
-                        )
-                      ],
-                    ),
                   ),
+                  Obx(() {
+                    return Text("Booking Price ${controller.bookingType.value}",
+                        style: MyFont.heading18);
+                  }).marginSymmetric(vertical: 5.h),
+                  Obx(() {
+                    return CustomTextField(
+                      controller: controller.priceController
+                        ..text = controller.bookingType.value == "Per day"
+                            ? "${addHostVehicle.vehiclePerDayRent}"
+                            : "${addHostVehicle.vehiclePerHourRent}",
+                      // text: ,
+                    );
+                  }).marginSymmetric(vertical: 5.h),
                   Text(
                     "Select Date or Day",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 20.sp,
-                      fontWeight: FontWeight.w700,
-                      fontFamily: "UrbanistBold",
-                    ),
-                  ),
-                  Obx(() => controller.BookingSelection.value == "Per day"
+                    style: MyFont.heading18,
+                  ).marginSymmetric(vertical: 5.h),
+                  Obx(() =>
+                  controller.bookingType.value == "Per day"
                       ? CalendarDatePicker2(
-                          config: CalendarDatePicker2Config(
-                            centerAlignModePicker: true,
-                            lastMonthIcon: Container(
-                                padding: EdgeInsets.all(8.r),
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    border:
-                                        Border.all(color: AppColors.appPrimaryColor)),
-                                child: CustomSvg(
-                                  name: "back",
-                                )),
-                            nextMonthIcon: Container(
-                                padding: EdgeInsets.all(8.r),
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    border:
-                                        Border.all(color: AppColors.appPrimaryColor)),
-                                child: CustomSvg(
-                                  name: "next",
-                                )),
-                            yearTextStyle: TextStyle(
-                                fontWeight: FontWeight.w700, fontSize: 15.sp),
-                            dayTextStyle: TextStyle(
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.w600,
-                                color: Color(0xFF1A1B1B)),
-                            calendarType: CalendarDatePicker2Type.range,
-                          ),
-                          value: controller.dates,
-                          onValueChanged: (dates) => controller.dates = dates,
-                        )
+                    config: CalendarDatePicker2Config(
+                      centerAlignModePicker: true,
+                      lastMonthIcon: Container(
+                          padding: EdgeInsets.all(8.r),
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                  color: AppColors.appPrimaryColor)),
+                          child: CustomSvg(
+                            name: "back",
+                          )),
+                      nextMonthIcon: Container(
+                          padding: EdgeInsets.all(8.r),
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                  color: AppColors.appPrimaryColor)),
+                          child: CustomSvg(
+                            name: "next",
+                          )),
+                      yearTextStyle: TextStyle(
+                          fontWeight: FontWeight.w700, fontSize: 15.sp),
+                      dayTextStyle: TextStyle(
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xFF1A1B1B)),
+                      calendarType: CalendarDatePicker2Type.range,
+                    ),
+                    value: controller.dates,
+                    onValueChanged: (dates) {
+                      controller.dates = dates;
+                      controller.bookingStartDate.value = dates[0];
+                      controller.bookingEndDate.value = dates[1];
+                      int difference = dates[1]!.difference(dates[0]!).inDays;
+                      controller.bookingPrice.value = double.tryParse(
+                          "${controller.priceController.text}")! * difference;
+                    },
+                  )
                       : CalendarDatePicker2(
-                          config: CalendarDatePicker2Config(
-                            centerAlignModePicker: true,
-                            lastMonthIcon: Container(
-                                padding: EdgeInsets.all(8.r),
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    border:
-                                        Border.all(color: AppColors.appPrimaryColor)),
-                                child: CustomSvg(
-                                  name: "back",
-                                )),
-                            nextMonthIcon: Container(
-                                padding: EdgeInsets.all(8.r),
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    border:
-                                        Border.all(color: AppColors.appPrimaryColor)),
-                                child: CustomSvg(
-                                  name: "next",
-                                )),
-                            yearTextStyle: TextStyle(
-                                fontWeight: FontWeight.w700, fontSize: 15.sp),
-                            dayTextStyle: TextStyle(
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.w600,
-                                color: Color(0xFF1A1B1B)),
-                            calendarType: CalendarDatePicker2Type.single,
-                          ),
-                          value: controller.selectDates,
-                          onValueChanged: (dates) => controller.selectDates = dates,
-                        )),
+                    config: CalendarDatePicker2Config(
+                      centerAlignModePicker: true,
+                      lastMonthIcon: Container(
+                          padding: EdgeInsets.all(8.r),
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                  color: AppColors.appPrimaryColor)),
+                          child: CustomSvg(
+                            name: "back",
+                          )),
+                      nextMonthIcon: Container(
+                          padding: EdgeInsets.all(8.r),
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                  color: AppColors.appPrimaryColor)),
+                          child: CustomSvg(
+                            name: "next",
+                          )),
+                      yearTextStyle: TextStyle(
+                          fontWeight: FontWeight.w700, fontSize: 15.sp),
+                      dayTextStyle: TextStyle(
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xFF1A1B1B)),
+                      calendarType: CalendarDatePicker2Type.single,
+                    ),
+                    value: controller.selectDates,
+                    onValueChanged: (dates) =>
+                    controller.selectDates = dates,
+                  )),
                   Text(
                     "Select Time",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 20.sp,
-                      fontWeight: FontWeight.w700,
-                      fontFamily: "UrbanistBold",
-                    ),
+                    style: MyFont.heading18,
                   ),
-
                 ],
               ).marginSymmetric(horizontal: 19.w, vertical: 10.h),
               Container(
                 margin: EdgeInsets.only(top: 10.h),
-                padding: EdgeInsets.symmetric(vertical: 15.h,horizontal: 19.w),
+                padding: EdgeInsets.symmetric(vertical: 15.h, horizontal: 19.w),
                 decoration:
                 BoxDecoration(color: Color(0xFFD9D9D9).withOpacity(.15)),
                 child: Column(
@@ -228,25 +227,34 @@ class _ScreenBookingState extends State<ScreenBooking> {
                       children: [
                         Text(
                           "Pick-Up",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 12.sp,
-                              color: Color(0xFF1A1B1B).withOpacity(.6)),
+                          style: MyFont.heading12,
                         ),
                         Expanded(
                           child: Obx(() {
                             return Slider(
-                                min: 0,
-                                max: 12,
-                                value: controller.startTime.value,
-                                onChanged: (value) {
+                              min: 1,
+                              max: 24,
+                              divisions: 24,
+                              value: controller.startTime.value.clamp(1, 24), // Clamp value within range
+                              onChanged: (value) {
                                   controller.startTime.value = value;
-                                });
+                                  if (controller.bookingType.value == "Per day") {
+                                    controller.endTime.value = controller.startTime.value;
+                                  } else {
+                                    controller.endMinTime.value = controller.startTime.value + 1;
+                                    // Ensure endMinTime.value remains within range
+                                    if (controller.endMinTime.value > 23) {
+                                      controller.endMinTime.value = 23;
+                                    }
+                                  }
+                              },
+                            );
                           }),
                         ),
                         Obx(() {
                           return Text(
-                            "${controller.startTime.value.toStringAsFixed(0)}:00 AM",
+                            "${controller.startTime.value.toStringAsFixed(
+                                0)}:00 ",
                             style: TextStyle(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 12.sp,
@@ -259,29 +267,39 @@ class _ScreenBookingState extends State<ScreenBooking> {
                       children: [
                         Text(
                           "Drop-off",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 12.sp,
-                              color: Color(0xFF1A1B1B).withOpacity(.6)),
+                          style: MyFont.heading12,
                         ),
                         Expanded(
                           child: Obx(() {
                             return Slider(
-                                min: 0,
-                                max: 12,
-                                value: controller.endTime.value,
-                                onChanged: (value) {
-                                  controller.endTime.value = value;
-                                });
+                              min: controller.endMinTime.value.clamp(1, 24), // Clamp min within range
+                              max: 24,
+                              divisions: 24,
+                              value: controller.endTime.value.clamp(controller.endMinTime.value, 24), // Clamp value within range
+                              onChanged: (value) {
+                                  if (controller.bookingType.value=="Per day") {
+
+                                  }
+                                  else{
+                                    controller.endTime.value = value;
+                                    int endTime = int.tryParse("${controller.endTime.value.toStringAsFixed(0)}")!;
+                                    int startTime = int.tryParse("${controller.startTime.value.toStringAsFixed(0)}")!;
+                                    controller.bookingPrice.value = double.tryParse("${controller.priceController.text}")! * endTime-startTime;
+                                  }
+                              },
+                            );
                           }),
                         ),
-                        Text(
-                          "${controller.endTime.value.toStringAsFixed(0)}:00 PM",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 12.sp,
-                              color: Color(0xFF1A1B1B)),
-                        ),
+                        Obx(() {
+                          return Text(
+                            "${controller.endTime.value.toStringAsFixed(
+                                0)}:00 ",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 12.sp,
+                                color: Color(0xFF1A1B1B)),
+                          );
+                        }),
                       ],
                     ),
                   ],
@@ -296,25 +314,30 @@ class _ScreenBookingState extends State<ScreenBooking> {
                 dashColor: Color(0xFFCFCFCF),
                 dashRadius: 0.0,
                 dashGapLength: 4.0,
-
                 dashGapColor: Colors.transparent,
                 dashGapRadius: 0.0,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-
-                  Text("Subtotal Price",style: TextStyle(
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.w600
-                ),),
-                  Text("\$ 350",style: TextStyle(
-                  fontSize: 22.sp,
-                  fontWeight: FontWeight.w700,
-                    color: AppColors.appPrimaryColor
-                ),)
+                  Text(
+                    "Subtotal Price",
+                    style:
+                    TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w600),
+                  ),
+                  Obx(() {
+                    return Text(
+                      "\$ ${
+                          controller.bookingPrice.value.toStringAsFixed(0)
+                      }",
+                      style: TextStyle(
+                          fontSize: 22.sp,
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.appPrimaryColor),
+                    );
+                  })
                 ],
-              ).marginSymmetric(horizontal: 20.w,vertical: 15.h),
+              ).marginSymmetric(horizontal: 20.w, vertical: 15.h),
               CustomButton(
                   title: "Next",
                   onPressed: () {
@@ -327,30 +350,7 @@ class _ScreenBookingState extends State<ScreenBooking> {
     );
   }
 
-  void _showDateRangePicker(BuildContext context) {
-    showCustomDateRangePicker(
-      context,
-      dismissible: true,
-      minimumDate: DateTime.now().subtract(const Duration(days: 30)),
-      maximumDate: DateTime.now().add(const Duration(days: 30)),
-      endDate: controller.endDate.value,
-      // Assuming endDate is an observable in the controller
-      startDate: controller.startDate.value,
-      // Assuming startDate is an observable in the controller
-      backgroundColor: Colors.white,
-      primaryColor: Colors.green,
-      onApplyClick: (start, end) {
-        controller.endDate.value =
-            end; // Assuming endDate is an observable in the controller
-        controller.startDate.value =
-            start; // Assuming startDate is an observable in the controller
-      },
-      onCancelClick: () {
-        controller.endDate.value =
-            null; // Assuming endDate is an observable in the controller
-        controller.startDate.value =
-            null; // Assuming startDate is an observable in the controller
-      },
-    );
-  }
+  ScreenBooking({
+    required this.addHostVehicle,
+  });
 }

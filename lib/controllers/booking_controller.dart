@@ -1,11 +1,16 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 class BookingController extends GetxController {
-  Rx<String> BookingSelection = "Per day".obs;
+  Rx<String> bookingType = "Per day".obs;
+
   RxDouble startTime=1.0.obs;
   RxDouble endTime=1.0.obs;
-  Rx<DateTime?> endDate = Rx<DateTime?>(null);
-  Rx<DateTime?> startDate = Rx<DateTime?>(null);
+  RxDouble endMinTime=0.0.obs;
+  RxDouble bookingPrice=1.0.obs;
+  TextEditingController priceController=TextEditingController();
+  Rx<DateTime?> bookingEndDate = Rx<DateTime?>(null);
+  Rx<DateTime?> bookingStartDate = Rx<DateTime?>(null);
   Rx<String >paymentType = "CreditCard".obs;
   List<DateTime?> dates = [
     DateTime.now(),

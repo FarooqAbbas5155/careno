@@ -58,6 +58,7 @@ class ControllerHostAddVechicle extends GetxController {
         vehicleRegistrationProofPath.value.isEmpty ||
         selectCategory.value.isEmpty ||
         selectFuelType.value.isEmpty ||
+        address.value.isEmpty ||
         vehicleDescription.value.text.isEmpty||
         selectTransmission.value.isEmpty) {
       response = "All Fields Required";
@@ -86,6 +87,7 @@ class ControllerHostAddVechicle extends GetxController {
 
       AddHostVehicle addHostVehicle = AddHostVehicle(
           hostId: userId,
+          address: address.value,
           vehicleId: id.toString(),
           vehicleImageComplete: vehiclePathUrl,
           vehicleImageNumberPlate: vehicleNumberPlatePathUrl,
