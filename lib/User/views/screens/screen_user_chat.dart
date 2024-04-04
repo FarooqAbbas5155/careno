@@ -34,23 +34,36 @@ class ScreenUserChat extends StatefulWidget {
 
 class _ScreenUserChatState extends State<ScreenUserChat> {
 
-  late TextEditingController messageController = TextEditingController();
+   TextEditingController messageController = TextEditingController();
   final _scrollController = ScrollController();
-  late var chatRoomId = "";
+   var chatRoomId = "";
   // late Stream<DatabaseEvent> stream;
   bool isActive=false;
-  late Stream<DatabaseEvent> stream = Stream.empty();
+   Stream<DatabaseEvent> stream = Stream.empty();
 
   @override
   void initState() {
-    stream = chatref
-        .child(chatRoomId)
-        .onValue;
-    // _subscription = stream?.listen((event) {});
+    checkCondition().then((value) {
+      stream = chatref
+          .child(chatRoomId)
+          .onValue;
+      // _subscription = stream?.listen((event) {});
 
-    print("chatRoom: $chatRoomId");
-    setState(() {});
+      print("chatRoom: $chatRoomId");
+      setState(() {});
+
+    });
     super.initState();
+
+    // if (widget.chatRoomId == null) {
+    //   roomId().then((value) => {chatRoomId = value});
+    //   stream = chatref.child(chatRoomId).onValue;
+    //   // clearCounter();
+    // } else {
+    //   chatRoomId = widget.chatRoomId!;
+    //   stream = chatref.child(chatRoomId).onValue;
+    //   // clearCounter();
+    // }
     clearCounter();
   }
     Future<bool> checkUser() async {
@@ -247,7 +260,7 @@ class _ScreenUserChatState extends State<ScreenUserChat> {
                           String displayDate = getDisplayDate(DateTime.fromMillisecondsSinceEpoch(message.timestamp));
 
                           return  Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Padding(
                                 padding: EdgeInsets.symmetric(
@@ -297,36 +310,37 @@ class _ScreenUserChatState extends State<ScreenUserChat> {
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Expanded(child: SizedBox(
-                height: 48.h,
-                child: TextFormField(
-                  decoration: InputDecoration(
-                    hintText: "Write something...",
-                    hintStyle: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 16.sp,
-                        color: Color(0xFFC6C4CC)
-                    ),
-                    border: InputBorder.none,
-                    fillColor: Color(0xFFF2F2F2),
-                    filled: true,
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.transparent),
-                      borderRadius: BorderRadius.circular(8.r),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.transparent),
-
-                      borderRadius: BorderRadius.circular(8.r),
-                    ),
-                    errorText: isMessageValid ? null :"Sharing contact not allowed",
-
+              Expanded(child: TextField(
+                maxLines: 6,
+                minLines: 1,
+                controller: messageController,
+                decoration: InputDecoration(
+                  hintText: "Write something...",
+                  hintStyle: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 16.sp,
+                      color: Color(0xFFC6C4CC)
                   ),
+                  border: InputBorder.none,
+                  fillColor: Color(0xFFF2F2F2),
+                  filled: true,
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.transparent),
+                    borderRadius: BorderRadius.circular(8.r),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.transparent),
+
+                    borderRadius: BorderRadius.circular(8.r),
+                  ),
+                  errorText: isMessageValid ? null :"Sharing contact not allowed",
 
                 ),
+
               )),
               InkWell(
                 onTap: () async{
+
                   print("Allaha");
                   if (isMessageValid) {
                     setState((){
@@ -338,37 +352,39 @@ class _ScreenUserChatState extends State<ScreenUserChat> {
 
                       }
                     });
-                    String text = messageController.text;
-                    int timestamp =
-                        DateTime.now().millisecondsSinceEpoch;
-                    if (text.isNotEmpty) {
-                      var message = Message(
-                        id: timestamp.toString(),
-                        timestamp: timestamp,
-                        text: text,
-                        sender_id: FirebaseUtils.myId,
-                        receiver_id: widget.user!.uid,
-                        message_type: "text",
-                        counter: widget.counter!,
-                      );
-                      messageController.clear();
-                   await   sendMessage(message, chatRoomId)
-                          .catchError((error) {
-                        Get.snackbar("Message", error.toString());
-                      }).then((value) {
-                        animateToLastMessage(300);
 
-                        FCM.sendMessageSingle(
-                            "New Message",
-                            message.text,
-                            widget.user!.notificationToken.toString(),
-                            {});
-                      }).then((value) {
-                        print(value);
-                      });
-                    }
                   }
+                  String text = messageController.text.trim();
+                  print("Allaha ${text}");
 
+                  int timestamp = DateTime.now().millisecondsSinceEpoch;
+                  if (text.isNotEmpty) {
+                    var message = Message(
+                      id: timestamp.toString(),
+                      timestamp: timestamp,
+                      text: text,
+                      sender_id: FirebaseUtils.myId,
+                      receiver_id: widget.user!.uid,
+                      message_type: "text",
+                      counter: widget.counter ?? 0,
+                    );
+                    messageController.clear();
+                       sendMessage(message, chatRoomId)
+                        .catchError((error) {
+                      Get.snackbar("Message", error.toString());
+                      print(error.toString());
+                    }).then((value) {
+                      animateToLastMessage(300);
+
+                      FCM.sendMessageSingle(
+                          "New Message",
+                          message.text,
+                          widget.user!.notificationToken.toString(),
+                          {});
+                    }).then((value) {
+                      print(value);
+                    });
+                  }
                 },
                 child: Container(
                     height: 48.h,
