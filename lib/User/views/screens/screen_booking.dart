@@ -1,7 +1,9 @@
+import 'dart:developer';
 import 'dart:ffi';
 
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:careno/User/views/screens/screen_booking_review.dart';
+import 'package:careno/User/views/screens/slider_test.dart';
 import 'package:careno/constant/MyFonts.dart';
 import 'package:careno/constant/colors.dart';
 import 'package:careno/controllers/booking_controller.dart';
@@ -10,11 +12,13 @@ import 'package:careno/widgets/custom_button.dart';
 import 'package:careno/widgets/custom_svg.dart';
 import 'package:careno/widgets/custom_textfiled.dart';
 import 'package:dotted_line/dotted_line.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 
 import '../../../constant/helpers.dart';
 
@@ -25,14 +29,16 @@ class ScreenBooking extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // controller.priceController=addHostVehicle.
+    controller.price.value =double.tryParse( addHostVehicle.vehiclePerDayRent)!;
+    print("controller.price.value ${controller.price.value}");
     if (controller.bookingType.value == "Per day") {
-      controller.bookingPrice.value =
-          double.parse(addHostVehicle.vehiclePerDayRent);
+      controller.priceController.text = addHostVehicle.vehiclePerDayRent.toString();
+      controller.price.value = double.tryParse(addHostVehicle.vehiclePerDayRent)!;
     }
-    controller.bookingPrice.value =
-        double.parse(addHostVehicle.vehiclePerHourRent);
-
+    if (controller.bookingType.value == "Per hour") {
+      controller.priceController.text = addHostVehicle.vehiclePerHourRent.toString();
+      controller.price.value = double.tryParse(addHostVehicle.vehiclePerHourRent)!;
+    }
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -71,70 +77,68 @@ class ScreenBooking extends StatelessWidget {
                     style: MyFont.heading18,
                   ),
                   Obx(
-                    () => Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
+                        () =>
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Radio(
-                              activeColor: primaryColor,
-                              value: "Per day",
-                              groupValue: controller.bookingType.value,
-                              onChanged: (String? value) {
-                                print("Radio button changed to: $value");
-                                controller.bookingType.value = value!;
-                                controller.endMinTime.value = 0.0;
-                                controller.bookingPrice.value = double.parse(
-                                    addHostVehicle.vehiclePerDayRent);
-
-                                controller.update();
-                              },
+                            Row(
+                              children: [
+                                Radio(
+                                  activeColor: primaryColor,
+                                  value: "Per day",
+                                  groupValue: controller.bookingType.value,
+                                  onChanged: (String? value) {
+                                    print("Radio button changed to: $value");
+                                    controller.bookingType.value = value!;
+                                    controller.price.value =
+                                    double.tryParse(addHostVehicle.vehiclePerDayRent)!;
+                                    controller.endMinTime.value = 0.0;
+                                  },
+                                ),
+                                Text(
+                                  "Per Day",
+                                  style: MyFont.heading16,
+                                )
+                              ],
                             ),
                             Text(
-                              "Per Day",
-                              style: MyFont.heading16,
+                              "\$ ${addHostVehicle.vehiclePerDayRent}",
+                              style: MyFont.heading18
+                                  .copyWith(color: AppColors.appPrimaryColor),
                             )
                           ],
                         ),
-                        Text(
-                          "\$ ${addHostVehicle.vehiclePerDayRent}",
-                          style: MyFont.heading18
-                              .copyWith(color: AppColors.appPrimaryColor),
-                        )
-                      ],
-                    ),
                   ),
                   Obx(
-                    () => Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
+                        () =>
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Radio(
-                              activeColor: primaryColor,
-                              value: "Per hour",
-                              groupValue: controller.bookingType.value,
-                              onChanged: (String? value) {
-                                controller.bookingType.value = value!;
-                                controller.bookingPrice.value = double.parse(
-                                    addHostVehicle.vehiclePerHourRent);
-
-                                controller.update();
-                              },
+                            Row(
+                              children: [
+                                Radio(
+                                  activeColor: primaryColor,
+                                  value: "Per hour",
+                                  groupValue: controller.bookingType.value,
+                                  onChanged: (String? value) {
+                                    print("Radio button changed to: $value");
+                                    controller.price.value = double.tryParse(addHostVehicle.vehiclePerHourRent)!;
+                                    controller.bookingType.value = value!;
+                                  },
+                                ),
+                                Text(
+                                  "Per Hour",
+                                  style: MyFont.heading16,
+                                )
+                              ],
                             ),
                             Text(
-                              "Per Hour",
-                              style: MyFont.heading16,
+                              "\$ ${addHostVehicle.vehiclePerHourRent}",
+                              style: MyFont.heading18
+                                  .copyWith(color: AppColors.appPrimaryColor),
                             )
                           ],
                         ),
-                        Text(
-                          "\$ ${addHostVehicle.vehiclePerHourRent}",
-                          style: MyFont.heading18
-                              .copyWith(color: AppColors.appPrimaryColor),
-                        )
-                      ],
-                    ),
                   ),
                   Obx(() {
                     return Text("Booking Price ${controller.bookingType.value}",
@@ -142,10 +146,11 @@ class ScreenBooking extends StatelessWidget {
                   }).marginSymmetric(vertical: 5.h),
                   Obx(() {
                     return CustomTextField(
-                      controller: controller.priceController
-                        ..text = controller.bookingType.value == "Per day"
-                            ? "${addHostVehicle.vehiclePerDayRent}"
-                            : "${addHostVehicle.vehiclePerHourRent}",
+                      keyboardType: TextInputType.number,
+                      onChange: (value) {
+                        controller.price.value = double.tryParse(value!)!;
+                      },
+                      controller: controller.priceController..text = controller.bookingType.value == "Per day" ? "${addHostVehicle.vehiclePerDayRent}" : "${addHostVehicle.vehiclePerHourRent}",
                       // text: ,
                     );
                   }).marginSymmetric(vertical: 5.h),
@@ -153,87 +158,88 @@ class ScreenBooking extends StatelessWidget {
                     "Select Date or Day",
                     style: MyFont.heading18,
                   ).marginSymmetric(vertical: 5.h),
-                  Obx(() => controller.bookingType.value == "Per day"
+                  Obx(() =>
+                  controller.bookingType.value == "Per day"
                       ? CalendarDatePicker2(
-                          config: CalendarDatePicker2Config(
-                            centerAlignModePicker: true,
-                            firstDate: DateTime.now(),
-                            currentDate: DateTime.now(),
-                            lastDate: DateTime(2050),
-                            lastMonthIcon: Container(
-                                padding: EdgeInsets.all(8.r),
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    border: Border.all(
-                                        color: AppColors.appPrimaryColor)),
-                                child: CustomSvg(
-                                  name: "back",
-                                )),
-                            nextMonthIcon: Container(
-                                padding: EdgeInsets.all(8.r),
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    border: Border.all(
-                                        color: AppColors.appPrimaryColor)),
-                                child: CustomSvg(
-                                  name: "next",
-                                )),
-                            yearTextStyle: TextStyle(
-                                fontWeight: FontWeight.w700, fontSize: 15.sp),
-                            dayTextStyle: TextStyle(
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.w600,
-                                color: Color(0xFF1A1B1B)),
-                            calendarType: CalendarDatePicker2Type.range,
-                          ),
-                          value: controller.dates,
-                          onValueChanged: (dates) {
-                            controller.dates = dates;
-                            controller.bookingStartDate.value = dates[0];
-                            controller.bookingEndDate.value = dates[1];
-                            int difference =
-                                dates[1]!.difference(dates[0]!).inDays;
-                            controller.bookingPrice.value = double.tryParse(
-                                    "${controller.priceController.text}")! *
-                                difference;
-                          },
-                        )
+                    config: CalendarDatePicker2Config(
+                      centerAlignModePicker: true,
+                      firstDate: DateTime.now(),
+                      currentDate: DateTime.now(),
+                      lastDate: DateTime(2050),
+                      lastMonthIcon: Container(
+                          padding: EdgeInsets.all(8.r),
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                  color: AppColors.appPrimaryColor)),
+                          child: CustomSvg(
+                            name: "back",
+                          )),
+                      nextMonthIcon: Container(
+                          padding: EdgeInsets.all(8.r),
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                  color: AppColors.appPrimaryColor)),
+                          child: CustomSvg(
+                            name: "next",
+                          )),
+                      yearTextStyle: TextStyle(
+                          fontWeight: FontWeight.w700, fontSize: 15.sp),
+                      dayTextStyle: TextStyle(
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xFF1A1B1B)),
+                      calendarType: CalendarDatePicker2Type.range,
+                    ),
+                    value: controller.dates,
+                    onValueChanged: (dates) {
+                      controller.dates = dates;
+                      controller.bookingStartDate.value = dates[0];
+                      // controller.bookingPrice.value = double.tryParse(controller.priceController.text)!;
+                      controller.bookingEndDate.value = dates[1];
+                      int difference = dates[1]!.difference(dates[0]!).inDays;
+                      print("difference  ${difference}");
+                      controller.price.value = double.tryParse("${addHostVehicle.vehiclePerDayRent}")! * difference;
+                      print("Price ${controller.price.value}");
+                    },
+                  )
                       : CalendarDatePicker2(
-                          config: CalendarDatePicker2Config(
-                            centerAlignModePicker: true,
-                            firstDate: DateTime.now(),
-                            currentDate: DateTime.now(),
-                            lastDate: DateTime(2050),
-                            lastMonthIcon: Container(
-                                padding: EdgeInsets.all(8.r),
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    border: Border.all(
-                                        color: AppColors.appPrimaryColor)),
-                                child: CustomSvg(
-                                  name: "back",
-                                )),
-                            nextMonthIcon: Container(
-                                padding: EdgeInsets.all(8.r),
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    border: Border.all(
-                                        color: AppColors.appPrimaryColor)),
-                                child: CustomSvg(
-                                  name: "next",
-                                )),
-                            yearTextStyle: TextStyle(
-                                fontWeight: FontWeight.w700, fontSize: 15.sp),
-                            dayTextStyle: TextStyle(
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.w600,
-                                color: Color(0xFF1A1B1B)),
-                            calendarType: CalendarDatePicker2Type.single,
-                          ),
-                          value: controller.selectDates,
-                          onValueChanged: (dates) =>
-                              controller.selectDates = dates,
-                        )),
+                    config: CalendarDatePicker2Config(
+                      centerAlignModePicker: true,
+                      firstDate: DateTime.now(),
+                      currentDate: DateTime.now(),
+                      lastDate: DateTime(2050),
+                      lastMonthIcon: Container(
+                          padding: EdgeInsets.all(8.r),
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                  color: AppColors.appPrimaryColor)),
+                          child: CustomSvg(
+                            name: "back",
+                          )),
+                      nextMonthIcon: Container(
+                          padding: EdgeInsets.all(8.r),
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                  color: AppColors.appPrimaryColor)),
+                          child: CustomSvg(
+                            name: "next",
+                          )),
+                      yearTextStyle: TextStyle(
+                          fontWeight: FontWeight.w700, fontSize: 15.sp),
+                      dayTextStyle: TextStyle(
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xFF1A1B1B)),
+                      calendarType: CalendarDatePicker2Type.single,
+                    ),
+                    value: controller.selectDates,
+                    onValueChanged: (dates) =>
+                    controller.selectDates = dates,
+                  )),
                   Text(
                     "Select Time",
                     style: MyFont.heading18,
@@ -244,7 +250,7 @@ class ScreenBooking extends StatelessWidget {
                 margin: EdgeInsets.only(top: 10.h),
                 padding: EdgeInsets.symmetric(vertical: 15.h, horizontal: 19.w),
                 decoration:
-                    BoxDecoration(color: Color(0xFFD9D9D9).withOpacity(.15)),
+                BoxDecoration(color: Color(0xFFD9D9D9).withOpacity(.15)),
                 child: Column(
                   children: [
                     Row(
@@ -255,46 +261,26 @@ class ScreenBooking extends StatelessWidget {
                         ),
                         Expanded(
                           child: Obx(() {
-                            return Slider(
+                            return
+                              Slider(
                               min: controller.MinTime.value,
                               max: 24,
-                              divisions: 24,
-                              value: controller.startTime.value.clamp(1, 24),
+                              divisions: 23,
+                              value: controller.startTime.value,
                               // Clamp value within range
                               onChanged: (value) {
-                                controller.startTime.value = value;
-                                startTime = int.parse(controller.startTime.value
-                                    .toStringAsFixed(0));
-                                if (EndTime > startTime) {
-                                  controller.NewTime.value =
-                                      (EndTime - startTime).toDouble();
-                                  controller.TotalBookingPrice.value =
-                                      controller.bookingPrice.value *
-                                          controller.NewTime.value;
-                                  print(
-                                      "New Booking price   ${controller.TotalBookingPrice.value.toStringAsFixed(0)}");
-                                  return;
-                                } else {
-                                  controller.NewTime.value =
-                                      startTime - EndTime.toDouble();
-                                  controller.TotalBookingPrice.value =
-                                      controller.bookingPrice.value *
-                                          controller.NewTime.value;
-                                  print(
-                                      "New Booking price${controller.TotalBookingPrice.value.toStringAsFixed(0)}");
-                                  return;
+
+                                if (controller.bookingType.value=="Per day") {
+
+                                  }
+                               else{
+                                  controller.startTime.value = value;
+                                  startTime = int.parse(controller.startTime.value.toStringAsFixed(0));
+                                  controller.calculateHoursDifference();
+                                    controller.price.value =double.tryParse(addHostVehicle.vehiclePerHourRent)! * controller.hoursDifference.value.roundToDouble();
+
                                 }
 
-                                // controller.startTime.value = value;
-                                // if (controller.bookingType.value == "Per day") {
-                                //   controller.endTime.value = controller.startTime.value;
-                                // } else {
-                                //   controller.endMinTime.value = controller.startTime.value + 1;
-                                //   // Ensure endMinTime.value remains within range
-                                //   if (controller.endMinTime.value > 23) {
-                                //     controller.endMinTime.value = 23;
-                                //   }
-                                // }
                               },
                             );
                           }),
@@ -303,47 +289,18 @@ class ScreenBooking extends StatelessWidget {
                           return Row(
                             children: [
                               Text(
-                                "${controller.startTime.value.toStringAsFixed(0)}:00 ",
+                                "${controller.startTime.value.toStringAsFixed(
+                                    0)}:00 ",
                                 style: TextStyle(
                                     fontWeight: FontWeight.w600,
                                     fontSize: 12.sp,
                                     color: Color(0xFF1A1B1B)),
                               ),
-                              Container(
-                                height: 40.h,
-                                width: 50.w,
-                                child: Row(
-                                  children: [
-                                    Expanded(child: Text(controller.StarttimeDimension.value)),
-                                    Expanded(
-                                      child: PopupMenuButton(
-                                        icon: Icon(Icons.expand_more),
-                                        color: Theme.of(context).primaryColor,
-                                        itemBuilder: (BuildContext context) {
-                                          return [
-                                            'AM',
-                                            'PM',
-                                          ].map((String choice) {
-                                            return PopupMenuItem<String>(
-                                              value: choice,
-                                              child: Text(
-                                                choice,
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontFamily: "Urbanist"),
-                                              ),
-                                            );
-                                          }).toList();
-                                        },
-                                        onSelected: (String choice) {
-                                          // Update selected gender when an option is chosen
-                                          controller.StarttimeDimension.value = choice;
-                                        },
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                              Text(controller.startTime.value>12?"PM":"AM",  style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 12.sp,
+                                  color: Color(0xFF1A1B1B)),),
+
                             ],
                           );
                         }),
@@ -357,97 +314,47 @@ class ScreenBooking extends StatelessWidget {
                         ),
                         Expanded(
                           child: Obx(() {
-                            return Slider(
+                            return
+                              Slider(
                               min: controller.endMinTime.value,
-                              // controller.endMinTime.value.clamp(1, 24), // Clamp min within range
                               max: 24,
                               divisions: 24,
-                              value: controller.endTime.value.clamp(1, 24),
-                              // Clamp value within range
+                              value: controller.endTime.value,
                               onChanged: (value) {
-                                controller.endTime.value = value;
-                                EndTime = int.parse(controller.endTime.value
-                                    .toStringAsFixed(0));
-                                if (EndTime > startTime) {
-                                  controller.NewTime.value =
-                                      (EndTime - startTime).toDouble();
-                                  controller.TotalBookingPrice.value =
-                                      controller.bookingPrice.value *
-                                          controller.NewTime.value;
-                                  print(
-                                      "New Booking price   ${controller.TotalBookingPrice.value.toStringAsFixed(0)}");
-                                  return;
-                                } else {
-                                  controller.NewTime.value =
-                                      startTime - EndTime.toDouble();
-                                  controller.TotalBookingPrice.value =
-                                      controller.bookingPrice.value *
-                                          controller.NewTime.value;
-                                  print(
-                                      "New Booking price${controller.TotalBookingPrice.value.toStringAsFixed(0)}");
-                                  return;
+                             // Reverse the value
+                                if (controller.bookingType.value == "Per day") {
+                                  // Handle per day booking
                                 }
-                                //   if (controller.bookingType.value=="Per day") {
-                                //
-                                //   }
-                                //   else{
-                                //     controller.endTime.value = value;
-                                //     int endTime = int.tryParse("${controller.endTime.value.toStringAsFixed(0)}")!;
-                                //     int startTime = int.tryParse("${controller.startTime.value.toStringAsFixed(0)}")!;
-                                //     controller.bookingPrice.value = double.tryParse("${controller.priceController.text}")! * endTime-startTime;
-                                // print(controller.startTime.value.toStringAsFixed(0));
-                                //   }
+                                else {
+                                  controller.endTime.value = value;
+                                  controller.calculateHoursDifference();
+                                  print("controller.hoursDifference.value ${controller.hoursDifference.value}");
+                                  controller.price.value =double.tryParse(addHostVehicle.vehiclePerHourRent)! * controller.hoursDifference.value.roundToDouble();
+
+
+                                }
                               },
                             );
                           }),
+
                         ),
                         Obx(() {
-                          return Row(
-                            children: [
-                              Text(
+                          return
+                            Row(
+                              children: [
+                                Text(
                                 "${controller.endTime.value.toStringAsFixed(0)}:00 ",
                                 style: TextStyle(
                                     fontWeight: FontWeight.w600,
                                     fontSize: 12.sp,
                                     color: Color(0xFF1A1B1B)),
-                              ),
-                              Container(
-                                height: 40.h,
-                                width: 50.w,
-                                child: Row(
-                                  children: [
-                                    Expanded(child: Text(controller.EndtimeDimension.value)),
-                                    Expanded(
-                                      child: PopupMenuButton(
-                                        icon: Icon(Icons.expand_more),
-                                        color: Theme.of(context).primaryColor,
-                                        itemBuilder: (BuildContext context) {
-                                          return [
-                                            'AM',
-                                            'PM',
-                                          ].map((String choice) {
-                                            return PopupMenuItem<String>(
-                                              value: choice,
-                                              child: Text(
-                                                choice,
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontFamily: "Urbanist"),
-                                              ),
-                                            );
-                                          }).toList();
-                                        },
-                                        onSelected: (String choice) {
-                                          // Update selected gender when an option is chosen
-                                          controller.EndtimeDimension.value = choice;
-                                        },
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          );
+                                                          ),
+                          Text(controller.endTime.value>12?"PM":"AM",  style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 12.sp,
+                              color: Color(0xFF1A1B1B)),)
+                              ],
+                            );
                         }),
                       ],
                     ),
@@ -472,30 +379,13 @@ class ScreenBooking extends StatelessWidget {
                   Text(
                     "Subtotal Price",
                     style:
-                        TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w600),
+                    TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w600),
                   ),
                   Obx(() {
                     return Text(
-                      "\$ ${controller.bookingPrice.value.toStringAsFixed(0)}",
-                      style: TextStyle(
-                          fontSize: 22.sp,
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.appPrimaryColor),
-                    );
-                  })
-                ],
-              ).marginSymmetric(horizontal: 20.w, vertical: 15.h),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    "Subtotal Price",
-                    style:
-                        TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w600),
-                  ),
-                  Obx(() {
-                    return Text(
-                      "\$ ${controller.TotalBookingPrice.value.toStringAsFixed(0)}",
+                      "\$ ${controller.bookingType == "Per day"
+                          ? controller.price.value
+                          : controller.price.value.roundToDouble()}",
                       style: TextStyle(
                           fontSize: 22.sp,
                           fontWeight: FontWeight.w700,
@@ -507,6 +397,7 @@ class ScreenBooking extends StatelessWidget {
               CustomButton(
                   title: "Next",
                   onPressed: () {
+                    // Get.to(TimePickerSliderDemo());
                     Get.to(ScreenBookingReview());
                   }).marginSymmetric(vertical: 10.h)
             ],
@@ -515,11 +406,9 @@ class ScreenBooking extends StatelessWidget {
       ),
     );
   }
-
   int startTime = 0;
   int EndTime = 0;
-
   ScreenBooking({
-    required this.addHostVehicle,
+  required this.addHostVehicle
   });
 }
