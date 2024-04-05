@@ -10,6 +10,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import '../Host/Views/Screens/screen_host_add_ident_identity_proof.dart';
 import '../models/user.dart';
@@ -151,4 +152,10 @@ Future<FilePickerResult?> PickFile(List<String> type) async {
     Get.snackbar("Alert", "No File Pick");
   }
   return result;
+}
+
+String dateFormat(DateTime dateTime,) {
+  // Use DateFormat class from intl package to format the date
+  final formatter = DateFormat('d MMMM yyyy');
+  return formatter.format(dateTime);
 }

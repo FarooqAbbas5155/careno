@@ -1,6 +1,7 @@
 import 'package:careno/User/views/screens/screen_add_card.dart';
 import 'package:careno/constant/colors.dart';
 import 'package:careno/controllers/booking_controller.dart';
+import 'package:careno/extensions/num_extensions.dart';
 import 'package:careno/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -138,10 +139,67 @@ BookingController controller = Get.put(BookingController());
                   ),
                 ),
               ),
-              BookingSummary("Start Date", "14 March 2024"),
-              BookingSummary("End Date", "20 March 2024"),
-              BookingSummary("Pick-up Time", "10:00 AM"),
-              BookingSummary("Drop-off Time", "20:00 AM"),
+              controller.bookingType.value == "Per Day"?  Column(
+                children: [
+                  BookingSummary("Start Date",dateFormat(controller.bookingStartDate.value!)),
+                  BookingSummary("End Date", dateFormat(controller.bookingEndDate.value!)),
+                ],
+              ): BookingSummary("Start Date",dateFormat(controller.bookingStartDateHour.value!)),
+
+              Obx(() {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("Pick-up Time",style: TextStyle(color: Color(0xff484848).withOpacity(.7),fontSize: 15.sp,fontWeight: FontWeight.w500,),),
+
+                    Row(
+                      children: [
+                        controller.bookingType.value == "Per hour"?Text(
+                          "${controller.startTime.value.toStringAsFixed(
+                              0)}:00 ",
+                          style: TextStyle(color: Colors.black,fontSize: 16.sp,fontWeight: FontWeight.w600,fontFamily: "UrbanistBold"),
+                        ):Text(
+                          "${controller.EndTimeDay1.value.toStringAsFixed(
+                              0)}:00 ",
+                          style: TextStyle(color: Colors.black,fontSize: 16.sp,fontWeight: FontWeight.w600,fontFamily: "UrbanistBold"),
+                        ),
+                        controller.bookingType.value == "Per hour"?   Text(
+                          controller.startTime.value>12?"PM":"AM",  style: TextStyle(color: Colors.black,fontSize: 16.sp,fontWeight: FontWeight.w600,fontFamily: "UrbanistBold"),):Text(
+                          controller.EndTimeDay1.value>12?"PM":"AM", style: TextStyle(color: Colors.black,fontSize: 16.sp,fontWeight: FontWeight.w600,fontFamily: "UrbanistBold"),),
+
+                      ],
+                    ),
+                  ],
+                );
+              }).marginSymmetric(horizontal:12.w,vertical: 4.h),
+             // controller.bookingType.value == "Per hour"? BookingSummary("Pick-up Time", "10:00 AM"),
+          Obx(() {
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("Drop-off Time",style: TextStyle(color: Color(0xff484848).withOpacity(.7),fontSize: 15.sp,fontWeight: FontWeight.w500,),),
+
+                Row(
+                  children: [
+                    controller.bookingType.value == "Per hour"?Text(
+                      "${controller.endMinTime.value.toStringAsFixed(
+                          0)}:00 ",
+                      style: TextStyle(color: Colors.black,fontSize: 16.sp,fontWeight: FontWeight.w600,fontFamily: "UrbanistBold"),
+                    ):Text(
+                      "${controller.EndTimeDay2.value.toStringAsFixed(
+                          0)}:00 ",
+                      style: TextStyle(color: Colors.black,fontSize: 16.sp,fontWeight: FontWeight.w600,fontFamily: "UrbanistBold"),
+                    ),
+                    controller.bookingType.value == "Per hour"?   Text(
+                      controller.endMinTime.value>12?"PM":"AM",  style: TextStyle(color: Colors.black,fontSize: 16.sp,fontWeight: FontWeight.w600,fontFamily: "UrbanistBold"),):Text(
+                      controller.EndTimeDay2.value>12?"PM":"AM", style: TextStyle(color: Colors.black,fontSize: 16.sp,fontWeight: FontWeight.w600,fontFamily: "UrbanistBold"),),
+
+                  ],
+                ),
+              ],
+            );
+          }).marginSymmetric(horizontal:12.w,vertical: 4.h),
+
               Divider(
                 indent: 1,
                 endIndent: 1,
@@ -161,7 +219,7 @@ BookingController controller = Get.put(BookingController());
                   ),
                 ),
               ),
-              BookingSummary("Subtotal", "\$350"),
+              BookingSummary("Subtotal", "\$${controller.price.value.toStringAsFixed(0)}"),
               BookingSummary("Service Fee", "\$15"),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

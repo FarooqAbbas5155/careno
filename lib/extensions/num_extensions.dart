@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/cupertino.dart';
+import 'package:intl/intl.dart';
 
 extension NumExtensions on double {
   double roundToNum(int x) {
@@ -37,9 +38,9 @@ extension Democontext on BuildContext{
 
 }
 
-// extension dateTimeFormates on DateTime{
-//   String dateTimeFormate(){
-//     return DateFormat.yMMMMEEEEd().format(this);
-//   }
-// }
+extension dateTimeFormates on DateTime{
+  String dateTimeFormate(){
+    return DateFormat.yMMMMEEEEd().format(this);
+  }
+}
 

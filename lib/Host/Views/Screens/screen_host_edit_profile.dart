@@ -91,10 +91,8 @@ class ScreenHostEditProfile extends StatelessWidget {
               text: controller.user.value!.email,
             ),
             Obx(() {
-              DateTime dobDateTime = DateTime.fromMillisecondsSinceEpoch(
-                  controller.user.value!.dob);
-              String formattedDate = DateFormat('d MMMM yyyy ').format(
-                  dobDateTime);
+              DateTime dobDateTime = DateTime.fromMillisecondsSinceEpoch(controller.user.value!.dob);
+              String formattedDate = DateFormat('d MMMM yyyy ').format(dobDateTime);
 
               return CustomEditTextField(
 
