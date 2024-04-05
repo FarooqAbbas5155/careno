@@ -15,13 +15,13 @@ class LastMessage {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is LastMessage &&
-          runtimeType == other.runtimeType &&
-          sender == other.sender &&
-          lastMessage == other.lastMessage &&
-          timestamp == other.timestamp &&
-          counter == other.counter &&
-          chatRoomId == other.chatRoomId);
+          (other is LastMessage &&
+              runtimeType == other.runtimeType &&
+              sender == other.sender &&
+              lastMessage == other.lastMessage &&
+              timestamp == other.timestamp &&
+              counter == other.counter &&
+              chatRoomId == other.chatRoomId);
 
   @override
   int get hashCode =>

@@ -1,5 +1,7 @@
+
 import 'package:careno/constant/colors.dart';
 import 'package:careno/constant/database_utils.dart';
+import 'package:careno/controllers/chat_controller.dart';
 import 'package:careno/widgets/custom_svg.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -25,7 +27,7 @@ class ScreenUserChat extends StatefulWidget {
   State<ScreenUserChat> createState() => _ScreenUserChatState();
 
   ScreenUserChat({
-     this.user,
+    this.user,
     this.counter,
     this.chatRoomId,
     this.timeStamp,
@@ -33,13 +35,13 @@ class ScreenUserChat extends StatefulWidget {
 }
 
 class _ScreenUserChatState extends State<ScreenUserChat> {
-
-   TextEditingController messageController = TextEditingController();
+ChatController controller = Get.put(ChatController());
+  TextEditingController messageController = TextEditingController();
   final _scrollController = ScrollController();
-   var chatRoomId = "";
+  var chatRoomId = "";
   // late Stream<DatabaseEvent> stream;
   bool isActive=false;
-   Stream<DatabaseEvent> stream = Stream.empty();
+  Stream<DatabaseEvent> stream = Stream.empty();
 
   @override
   void initState() {
@@ -66,78 +68,78 @@ class _ScreenUserChatState extends State<ScreenUserChat> {
     // }
     clearCounter();
   }
-    Future<bool> checkUser() async {
-      var exist = await usersRef.doc(FirebaseUtils.myId)
-          .collection('chats')
-          .doc("${widget.user!.uid}_${FirebaseUtils.myId}")
-          .get();
-      return exist.exists;
-    }
+  Future<bool> checkUser() async {
+    var exist = await usersRef.doc(FirebaseUtils.myId)
+        .collection('chats')
+        .doc("${widget.user!.uid}_${FirebaseUtils.myId}")
+        .get();
+    return exist.exists;
+  }
 
-    Future<void> checkCondition() async {
-      if (chatRoomId == '') {
-        bool userExists = await checkUser();
-        if (userExists) {
-          chatRoomId = "${widget.user!.uid}_${FirebaseUtils.myId}";
-          // clearCounter();
+  Future<void> checkCondition() async {
+    if (chatRoomId == '') {
+      bool userExists = await checkUser();
+      if (userExists) {
+        chatRoomId = "${widget.user!.uid}_${FirebaseUtils.myId}";
+        // clearCounter();
 
-        } else {
-          chatRoomId = "${FirebaseUtils.myId}_${widget.user!.uid}";
-        }
       } else {
-        chatRoomId = widget.chatRoomId!;
+        chatRoomId = "${FirebaseUtils.myId}_${widget.user!.uid}";
       }
+    } else {
+      chatRoomId = widget.chatRoomId!;
     }
-    //
-    // Future<String> roomId() async {
-    //   String _roomId = '';
-    //   bool check = await checkRoomId();
-    //   if (check) {
-    //     _roomId = "${widget.user.uid}_${FirebaseUtils.myId}";
-    //   } else {
-    //     _roomId = "${FirebaseUtils.myId}_${widget.user.uid}";
-    //   }
-    //   return _roomId;
-    // }
-    //
-    // Future<bool> checkRoomId() async {
-    //   DocumentSnapshot userSnapshot=await usersRef
-    //       .doc(FirebaseUtils.myId)
-    //       .collection("chats")
-    //       .doc("${widget.user.uid}_${FirebaseUtils.myId}")
-    //       .get();
-    //   DocumentSnapshot mySnapshot=await usersRef
-    //       .doc(FirebaseUtils.myId)
-    //       .collection("chats")
-    //       .doc("${FirebaseUtils.myId}_${widget.user.uid}")
-    //       .get();
-    //   if (userSnapshot.exists) {
-    //     return userSnapshot.exists;
-    //   }
-    //
-    //   return mySnapshot.exists;
-    // }
+  }
+  //
+  // Future<String> roomId() async {
+  //   String _roomId = '';
+  //   bool check = await checkRoomId();
+  //   if (check) {
+  //     _roomId = "${widget.user.uid}_${FirebaseUtils.myId}";
+  //   } else {
+  //     _roomId = "${FirebaseUtils.myId}_${widget.user.uid}";
+  //   }
+  //   return _roomId;
+  // }
+  //
+  // Future<bool> checkRoomId() async {
+  //   DocumentSnapshot userSnapshot=await usersRef
+  //       .doc(FirebaseUtils.myId)
+  //       .collection("chats")
+  //       .doc("${widget.user.uid}_${FirebaseUtils.myId}")
+  //       .get();
+  //   DocumentSnapshot mySnapshot=await usersRef
+  //       .doc(FirebaseUtils.myId)
+  //       .collection("chats")
+  //       .doc("${FirebaseUtils.myId}_${widget.user.uid}")
+  //       .get();
+  //   if (userSnapshot.exists) {
+  //     return userSnapshot.exists;
+  //   }
+  //
+  //   return mySnapshot.exists;
+  // }
 
-    Future<void> clearCounter() async {
-      try {
-        DocumentReference chatRef = usersRef
-            .doc(FirebaseUtils.myId)
-            .collection("chats")
-            .doc(chatRoomId);
+  Future<void> clearCounter() async {
+    try {
+      DocumentReference chatRef = usersRef
+          .doc(FirebaseUtils.myId)
+          .collection("chats")
+          .doc(chatRoomId);
 
-        DocumentSnapshot chatSnapshot = await chatRef.get();
+      DocumentSnapshot chatSnapshot = await chatRef.get();
 
-        if (chatSnapshot.exists) {
-          await chatRef.update({"counter": 0});
-        } else {
-          // Handle case when document is not found
-          print("Document not found: $chatRoomId");
-        }
-      } catch (error) {
-        // Handle error
-        print("Error clearing counter: $error");
+      if (chatSnapshot.exists) {
+        await chatRef.update({"counter": 0});
+      } else {
+        // Handle case when document is not found
+        print("Document not found: $chatRoomId");
       }
+    } catch (error) {
+      // Handle error
+      print("Error clearing counter: $error");
     }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -159,8 +161,8 @@ class _ScreenUserChatState extends State<ScreenUserChat> {
 
               Expanded(
                 child: CircleAvatar(
-                  radius: 20.r,
-                  backgroundImage: NetworkImage(widget.user!.imageUrl)
+                    radius: 20.r,
+                    backgroundImage: NetworkImage(widget.user!.imageUrl)
                 ),
               ),
 
@@ -172,13 +174,13 @@ class _ScreenUserChatState extends State<ScreenUserChat> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(widget.user!.name,style: TextStyle(
-              fontWeight: FontWeight.w700,
-              fontSize: 20.sp
+                fontWeight: FontWeight.w700,
+                fontSize: 20.sp
             ),),
             Text("Last Seen ${formattedDateTime}",style: TextStyle(
-              fontSize: 12.sp,
-              fontWeight: FontWeight.w500,
-              color: Colors.black.withOpacity(.4)
+                fontSize: 12.sp,
+                fontWeight: FontWeight.w500,
+                color: Colors.black.withOpacity(.4)
             ),),
           ],
         ),
@@ -369,7 +371,8 @@ class _ScreenUserChatState extends State<ScreenUserChat> {
                       counter: widget.counter ?? 0,
                     );
                     messageController.clear();
-                       sendMessage(message, chatRoomId)
+                    controller.update();
+                    sendMessage(message, chatRoomId)
                         .catchError((error) {
                       Get.snackbar("Message", error.toString());
                       print(error.toString());
@@ -486,4 +489,3 @@ class ChatValidator {
   }
 
 }
-

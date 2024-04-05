@@ -11,6 +11,7 @@ class ChatController extends GetxController{
 
     super.onInit();
   }
+  RxString userId = "".obs;
   RxList<LastMessage> rooms = RxList<LastMessage>([]);
   void listenToChatRooms() {
     usersRef.doc(uid).collection("chats").snapshots().listen((snapshot) {

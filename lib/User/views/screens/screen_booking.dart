@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:careno/User/views/screens/screen_booking_review.dart';
 import 'package:careno/constant/MyFonts.dart';
@@ -22,6 +24,12 @@ class ScreenBooking extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // controller.priceController=addHostVehicle.
+    if (controller.bookingType.value == "Per day") {
+      controller.bookingPrice.value = double.parse(addHostVehicle.vehiclePerDayRent);
+
+    }
+    controller.bookingPrice.value = double.parse(addHostVehicle.vehiclePerHourRent);
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -74,6 +82,10 @@ class ScreenBooking extends StatelessWidget {
                                     print("Radio button changed to: $value");
                                     controller.bookingType.value = value!;
                                     controller.endMinTime.value=0.0;
+                                    controller.bookingPrice.value = double.parse(addHostVehicle.vehiclePerDayRent);
+
+                                    controller.update();
+
                                   },
                                 ),
                                 Text(
@@ -103,6 +115,9 @@ class ScreenBooking extends StatelessWidget {
                                   groupValue: controller.bookingType.value,
                                   onChanged: (String? value) {
                                     controller.bookingType.value = value!;
+                                    controller.bookingPrice.value = double.parse(addHostVehicle.vehiclePerHourRent);
+
+                                    controller.update();
                                   },
                                 ),
                                 Text(
@@ -242,21 +257,36 @@ class ScreenBooking extends StatelessWidget {
                         Expanded(
                           child: Obx(() {
                             return Slider(
-                              min: 1,
+                              min: controller.MinTime.value,
                               max: 24,
                               divisions: 24,
                               value: controller.startTime.value.clamp(1, 24), // Clamp value within range
                               onChanged: (value) {
-                                  controller.startTime.value = value;
-                                  if (controller.bookingType.value == "Per day") {
-                                    controller.endTime.value = controller.startTime.value;
-                                  } else {
-                                    controller.endMinTime.value = controller.startTime.value + 1;
-                                    // Ensure endMinTime.value remains within range
-                                    if (controller.endMinTime.value > 23) {
-                                      controller.endMinTime.value = 23;
-                                    }
-                                  }
+                                controller.startTime.value = value;
+                                startTime = int.parse(controller.startTime.value.toStringAsFixed(0));
+                                if (EndTime > startTime) {
+                                  controller.NewTime.value = (EndTime - startTime).toDouble();
+                                  controller.TotalBookingPrice.value = controller.bookingPrice.value * controller.NewTime.value ;
+                                  print("New Booking price   ${controller.TotalBookingPrice.value .toStringAsFixed(0)}");
+                                  return;
+                                }
+                                else{
+                                  controller.NewTime.value  = startTime-EndTime.toDouble();
+                                  controller.TotalBookingPrice.value = controller.bookingPrice.value * controller.NewTime.value ;
+                                  print("New Booking price${controller.TotalBookingPrice.value .toStringAsFixed(0)}");
+                                  return;
+                                }
+
+                                // controller.startTime.value = value;
+                                  // if (controller.bookingType.value == "Per day") {
+                                  //   controller.endTime.value = controller.startTime.value;
+                                  // } else {
+                                  //   controller.endMinTime.value = controller.startTime.value + 1;
+                                  //   // Ensure endMinTime.value remains within range
+                                  //   if (controller.endMinTime.value > 23) {
+                                  //     controller.endMinTime.value = 23;
+                                  //   }
+                                  // }
                               },
                             );
                           }),
@@ -282,20 +312,36 @@ class ScreenBooking extends StatelessWidget {
                         Expanded(
                           child: Obx(() {
                             return Slider(
-                              min: controller.endMinTime.value.clamp(1, 24), // Clamp min within range
+                              min:controller.endMinTime.value,
+                              // controller.endMinTime.value.clamp(1, 24), // Clamp min within range
                               max: 24,
                               divisions: 24,
-                              value: controller.endTime.value.clamp(controller.endMinTime.value, 24), // Clamp value within range
+                              value:controller.endTime.value.clamp(1, 24), // Clamp value within range
                               onChanged: (value) {
-                                  if (controller.bookingType.value=="Per day") {
-
-                                  }
-                                  else{
-                                    controller.endTime.value = value;
-                                    int endTime = int.tryParse("${controller.endTime.value.toStringAsFixed(0)}")!;
-                                    int startTime = int.tryParse("${controller.startTime.value.toStringAsFixed(0)}")!;
-                                    controller.bookingPrice.value = double.tryParse("${controller.priceController.text}")! * endTime-startTime;
-                                  }
+                                controller.endTime.value = value;
+                                EndTime = int.parse(controller.endTime.value.toStringAsFixed(0));
+                                if (EndTime > startTime) {
+                                  controller.NewTime.value = (EndTime - startTime).toDouble();
+                                  controller.TotalBookingPrice.value = controller.bookingPrice.value * controller.NewTime.value ;
+                                  print("New Booking price   ${controller.TotalBookingPrice.value .toStringAsFixed(0)}");
+                                  return;
+                                }
+                                else{
+                                  controller.NewTime.value  = startTime-EndTime.toDouble();
+                                  controller.TotalBookingPrice.value = controller.bookingPrice.value * controller.NewTime.value ;
+                                  print("New Booking price${controller.TotalBookingPrice.value .toStringAsFixed(0)}");
+                                  return;
+                                }
+                                //   if (controller.bookingType.value=="Per day") {
+                                //
+                                //   }
+                                //   else{
+                                //     controller.endTime.value = value;
+                                //     int endTime = int.tryParse("${controller.endTime.value.toStringAsFixed(0)}")!;
+                                //     int startTime = int.tryParse("${controller.startTime.value.toStringAsFixed(0)}")!;
+                                //     controller.bookingPrice.value = double.tryParse("${controller.priceController.text}")! * endTime-startTime;
+                                // print(controller.startTime.value.toStringAsFixed(0));
+                                //   }
                               },
                             );
                           }),
@@ -348,6 +394,27 @@ class ScreenBooking extends StatelessWidget {
                   })
                 ],
               ).marginSymmetric(horizontal: 20.w, vertical: 15.h),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    "Subtotal Price",
+                    style:
+                    TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w600),
+                  ),
+                  Obx(() {
+                    return Text(
+                      "\$ ${
+                          controller.TotalBookingPrice.value.toStringAsFixed(0)
+                      }",
+                      style: TextStyle(
+                          fontSize: 22.sp,
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.appPrimaryColor),
+                    );
+                  })
+                ],
+              ).marginSymmetric(horizontal: 20.w, vertical: 15.h),
               CustomButton(
                   title: "Next",
                   onPressed: () {
@@ -359,7 +426,8 @@ class ScreenBooking extends StatelessWidget {
       ),
     );
   }
-
+int startTime = 0;
+int EndTime = 0;
   ScreenBooking({
     required this.addHostVehicle,
   });

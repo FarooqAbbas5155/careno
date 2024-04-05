@@ -53,6 +53,10 @@ class ItemUserList extends StatelessWidget {
                     fontWeight: FontWeight.w600,
                     fontSize: 18.sp
                   ),),
+                  Text(user.status,style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 18.sp
+                  ),),
                   Text(lastMessage,style: TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 15.sp,
