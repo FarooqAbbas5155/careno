@@ -144,9 +144,6 @@ class LayoutUserMessages extends StatelessWidget {
                           itemBuilder: (BuildContext context, int index) {
                             var lastMessageObj =
                             chatController.rooms.value[index];
-                            var newId = lastMessageObj.chatRoomId.replaceAll(FirebaseUtils.myId, "").replaceAll("_", "").trim();
-                            print("newId ${newId}");
-                            print("newId ${lastMessageObj.chatRoomId}");
                             return FutureBuilder<User>(
                               future: getUser(
                                 get2ndUserId(
@@ -166,6 +163,7 @@ class LayoutUserMessages extends StatelessWidget {
                                   timestamp: lastMessageObj.timestamp,
                                   lastMessage: lastMessageObj.lastMessage,
                                   counter: lastMessageObj.counter,
+                                  userBlock: lastMessageObj.isBlocked,
                                 );
                               },
                             );

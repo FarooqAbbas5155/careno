@@ -15,6 +15,7 @@ class ItemUserList extends StatelessWidget {
   String lastMessage;
   int timestamp,counter;
   String roomId;
+  bool userBlock;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +25,7 @@ class ItemUserList extends StatelessWidget {
 
     return GestureDetector(
       onTap: (){
-        Get.to(ScreenUserChat(user: user,counter: counter,chatRoomId: roomId,timeStamp: timestamp,));
+        Get.to(ScreenUserChat(user: user,counter: counter,chatRoomId: roomId,timeStamp: timestamp,userblock: userBlock,));
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
@@ -99,5 +100,6 @@ class ItemUserList extends StatelessWidget {
     required this.timestamp,
     required this.counter,
     required this.roomId,
+    required this.userBlock,
   });
 }

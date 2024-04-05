@@ -1,4 +1,5 @@
 
+import 'package:careno/User/views/layouts/layout_user_messages.dart';
 import 'package:careno/constant/colors.dart';
 import 'package:careno/constant/database_utils.dart';
 import 'package:careno/controllers/chat_controller.dart';
@@ -16,6 +17,7 @@ import '../../../constant/helpers.dart';
 import '../../../models/message.dart';
 import 'package:careno/models/user.dart' as model;
 
+import '../../../widgets/custom_button.dart';
 import '../../../widgets/not_found.dart';
 import '../layouts/item_user_chat.dart';
 class ScreenUserChat extends StatefulWidget {
@@ -23,6 +25,7 @@ class ScreenUserChat extends StatefulWidget {
   int? counter;
   String? chatRoomId;
   int? timeStamp;
+  bool? userblock;
   @override
   State<ScreenUserChat> createState() => _ScreenUserChatState();
 
@@ -31,6 +34,7 @@ class ScreenUserChat extends StatefulWidget {
     this.counter,
     this.chatRoomId,
     this.timeStamp,
+    this.userblock,
   });
 }
 
@@ -47,7 +51,7 @@ ChatController controller = Get.put(ChatController());
   void initState() {
     checkCondition().then((value) {
       stream = chatref
-          .child(chatRoomId)
+          .child(chatRoomId).child(FirebaseUtils.myId)
           .onValue;
       // _subscription = stream?.listen((event) {});
 
@@ -140,6 +144,22 @@ ChatController controller = Get.put(ChatController());
       print("Error clearing counter: $error");
     }
   }
+void clearChat() {
+  chatref
+      .child(chatRoomId)
+      .child(FirebaseUtils.myId)
+      .remove()
+      .then((_) {
+    setState(() {
+
+    });
+    print("Chat cleared successfully");
+  })
+      .catchError((error) {
+    print("Error clearing chat: $error");
+  });
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -186,20 +206,37 @@ ChatController controller = Get.put(ChatController());
         ),
         actions: [
           PopupMenuButton(
-            icon:CustomSvg(name: "more",),
+            icon: CustomSvg(name: "more"),
             color: Colors.white,
             itemBuilder: (BuildContext context) {
-              return ['Block User', 'Clear Chat',].map((String choice) {
+              return ['Block User', 'Clear Chat'].map((String choice) {
                 return PopupMenuItem<String>(
                   value: choice,
-                  child: Text(choice,style: TextStyle(color: Color(0xFF272727),fontFamily: "Urbanist",fontSize: 11.sp,fontWeight: FontWeight.w600),),
+                  child: Text(
+                    choice,
+                    style: TextStyle(
+                      color: Color(0xFF272727),
+                      fontFamily: "Urbanist",
+                      fontSize: 11.sp,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
                 );
               }).toList();
             },
-            onSelected: (String choice) {
+            onSelected: (String choice)async {
+              if (choice == 'Block User') {
+            await    usersRef.doc(FirebaseUtils.myId).collection("chats").doc(chatRoomId).update({""
+                    "isBlocked":true}).then((value) {
+                      Get.offAll(LayoutUserMessages());
+            });
 
+              } else if (choice == 'Clear Chat') {
+                clearChat();
+              }
             },
           )
+
         ],
       ),
       body: Column(
@@ -309,7 +346,7 @@ ChatController controller = Get.put(ChatController());
             ),
           ),
 
-          Row(
+     widget.userblock == false?Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Expanded(child: TextField(
@@ -343,7 +380,6 @@ ChatController controller = Get.put(ChatController());
               InkWell(
                 onTap: () async{
 
-                  print("Allaha");
                   if (isMessageValid) {
                     setState((){
                       if (widget.counter==null) {
@@ -357,8 +393,6 @@ ChatController controller = Get.put(ChatController());
 
                   }
                   String text = messageController.text.trim();
-                  print("Allaha ${text}");
-
                   int timestamp = DateTime.now().millisecondsSinceEpoch;
                   if (text.isNotEmpty) {
                     var message = Message(
@@ -403,7 +437,97 @@ ChatController controller = Get.put(ChatController());
                     child: CustomSvg(name: "ic_Send",)),
               ),
             ],
-          ).marginOnly(bottom: 16.h,left: 16.w,right: 16.w),
+          ).marginOnly(bottom: 16.h,left: 16.w,right: 16.w):Center(
+       child: GestureDetector(
+         onTap: (){
+           Get.defaultDialog(
+               title: '',
+               content: GestureDetector(
+                 onTap: () {
+                   Get.back();
+                 },
+                 child: Align(
+                   alignment: Alignment.topRight,
+                   child: Container(
+                       padding: EdgeInsets.all(12.sp),
+                       margin: EdgeInsets.symmetric(
+                           horizontal: 12.sp),
+                       decoration: BoxDecoration(
+                           color: Color(0xFFF0F0F0),
+                           shape: BoxShape.circle
+                       ),
+                       child: Icon(
+                         Icons.clear, color: Colors.black,)),
+                 ),
+               ),
+               actions: [
+                 Column(
+                   children: [
+                     Container(
+                       height: 55.h,
+                       width: 55.w,
+                       padding: EdgeInsets.all(12.sp),
+                       decoration: BoxDecoration(
+                           color: Color(0xFFF0F0F0),
+                           borderRadius: BorderRadius.circular(
+                               20.r)),
+                       child: CustomSvg(
+                         name: "logout2",
+                         color: primaryColor,
+                       ),
+                     ),
+                     SizedBox(
+                       height: 10.sp,
+                     ),
+                     Text(
+                       "UnBlock User",
+                       style: TextStyle(color: Colors.black,
+                         fontSize: 22.sp,
+                         fontWeight: FontWeight.w700,
+                         fontFamily: "UrbanistBold",),
+                     ),
+                     SizedBox(
+                       height: 13.sp,
+                     ),
+                     SizedBox(
+                       height: 36.h,
+                       width: 230.w,
+                       child: Text(
+                         textAlign: TextAlign.center,
+                         "Are you sure you want to UnBlock User?",
+                         style: TextStyle(color: Colors.black,
+                           fontSize: 15.sp,
+                           fontWeight: FontWeight.w600,
+                           fontFamily: "UrbanistBold",),
+                       ),
+                     ),
+                     CustomButton(
+                         width: 193.w,
+                         title: "Yes",
+                         onPressed: () async{
+                           await    usersRef.doc(FirebaseUtils.myId).collection("chats").doc(chatRoomId).update({""
+                               "isBlocked":false}).then((value) {
+                             Get.offAll(LayoutUserMessages());
+                             Get.back();
+                           });
+                         }).marginSymmetric(vertical: 20.h)
+                   ],
+                 )
+               ]);
+
+         },
+         child: Container(
+           alignment: Alignment.center,
+           padding: EdgeInsets.all(15.h),
+           width: Get.width,
+           margin: EdgeInsets.symmetric(vertical: 8.h,horizontal: 14.w),
+           decoration: BoxDecoration(
+             borderRadius: BorderRadius.circular(10.r),
+             border: Border.all(color: AppColors.appPrimaryColor)
+           ),
+             child: Text("User Block",style: TextStyle(color: Colors.red,fontSize: 20.sp,fontWeight: FontWeight.bold,fontFamily: "Nunito"),)),
+       ),
+     ),
 
         ],
       ),

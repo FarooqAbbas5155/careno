@@ -2,6 +2,7 @@ class LastMessage {
   String sender, lastMessage;
   int timestamp,counter;
   String chatRoomId;
+  bool isBlocked;
 
 //<editor-fold desc="Data Methods">
   LastMessage({
@@ -10,18 +11,20 @@ class LastMessage {
     required this.timestamp,
     required this.counter,
     required this.chatRoomId,
+    required this.isBlocked,
   });
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          (other is LastMessage &&
-              runtimeType == other.runtimeType &&
-              sender == other.sender &&
-              lastMessage == other.lastMessage &&
-              timestamp == other.timestamp &&
-              counter == other.counter &&
-              chatRoomId == other.chatRoomId);
+      (other is LastMessage &&
+          runtimeType == other.runtimeType &&
+          sender == other.sender &&
+          lastMessage == other.lastMessage &&
+          timestamp == other.timestamp &&
+          counter == other.counter &&
+          chatRoomId == other.chatRoomId &&
+          isBlocked == other.isBlocked);
 
   @override
   int get hashCode =>
@@ -29,7 +32,8 @@ class LastMessage {
       lastMessage.hashCode ^
       timestamp.hashCode ^
       counter.hashCode ^
-      chatRoomId.hashCode;
+      chatRoomId.hashCode ^
+      isBlocked.hashCode;
 
   @override
   String toString() {
@@ -39,6 +43,7 @@ class LastMessage {
         ' timestamp: $timestamp,' +
         ' counter: $counter,' +
         ' chatRoomId: $chatRoomId,' +
+        ' isBlocked: $isBlocked,' +
         '}';
   }
 
@@ -48,6 +53,7 @@ class LastMessage {
     int? timestamp,
     int? counter,
     String? chatRoomId,
+    bool? isBlocked,
   }) {
     return LastMessage(
       sender: sender ?? this.sender,
@@ -55,6 +61,7 @@ class LastMessage {
       timestamp: timestamp ?? this.timestamp,
       counter: counter ?? this.counter,
       chatRoomId: chatRoomId ?? this.chatRoomId,
+      isBlocked: isBlocked ?? this.isBlocked,
     );
   }
 
@@ -65,6 +72,7 @@ class LastMessage {
       'timestamp': this.timestamp,
       'counter': this.counter,
       'chatRoomId': this.chatRoomId,
+      'isBlocked': this.isBlocked,
     };
   }
 
@@ -75,6 +83,7 @@ class LastMessage {
       timestamp: map['timestamp'] as int,
       counter: map['counter'] as int,
       chatRoomId: map['chatRoomId'] as String,
+      isBlocked: map['isBlocked'] as bool,
     );
   }
 
