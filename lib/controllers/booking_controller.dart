@@ -12,7 +12,8 @@ class BookingController extends GetxController {
   RxDouble endMinTime=0.0.obs;
   RxDouble bookingPrice=1.0.obs;
   RxDouble TotalBookingPrice=0.0.obs;
-
+  RxString StarttimeDimension = "AM".obs;
+  RxString EndtimeDimension = "AM".obs;
   TextEditingController priceController=TextEditingController();
   Rx<DateTime?> bookingEndDate = Rx<DateTime?>(null);
   Rx<DateTime?> bookingStartDate = Rx<DateTime?>(null);

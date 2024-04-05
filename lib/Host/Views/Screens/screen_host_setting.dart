@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../../constant/helpers.dart';
+import '../../../controllers/home_controller.dart';
 import '../../../widgets/custom_button.dart';
 import '../../../widgets/custom_svg.dart';
 
@@ -13,6 +14,8 @@ class ScreenHostSetting extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    HomeController controller = Get.put(HomeController());
+   isNotification.value =controller.user.value!.notification;
     return SafeArea(child: Scaffold(
       appBar: AppBar(
         title: Text("Setting"),
@@ -39,8 +42,11 @@ class ScreenHostSetting extends StatelessWidget {
             ),),
             trailing: Obx(() {
               return Switch(
-                value: isNotification.value, onChanged: (bool value) {
-                isNotification.value = value;
+                value: isNotification.value, onChanged: (bool value) async{
+                isNotification.value= value;
+                await usersRef.doc(controller.user.value!.uid).update({
+                  "notification": isNotification.value,
+                });
               },);
             }),
           ),
