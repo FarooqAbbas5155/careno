@@ -233,7 +233,7 @@ class ScreenBookingReview extends StatelessWidget {
                           Row(
                             children: [
                               controller.bookingType.value == "Per hour" ? Text(
-                                "${controller.endMinTime.value.toStringAsFixed(
+                                "${controller.endTime.value.toStringAsFixed(
                                     0)}:00 ",
                                 style: TextStyle(color: Colors.black,
                                     fontSize: 16.sp,
