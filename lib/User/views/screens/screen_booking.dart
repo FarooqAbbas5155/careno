@@ -428,7 +428,7 @@ class ScreenBooking extends StatelessWidget {
                   title: "Next",
                   onPressed: () {
                     // Get.to(TimePickerSliderDemo());
-                    Get.to(ScreenBookingReview());
+                    Get.to(ScreenBookingReview(addHostVehicle: addHostVehicle,));
                   }).marginSymmetric(vertical: 10.h)
             ],
           ),

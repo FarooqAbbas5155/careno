@@ -16,6 +16,8 @@ class BookingController extends GetxController {
   RxDouble EndTimeDay1 = 1.0.obs;
   RxDouble EndMinTimeDay = 1.0.obs;
   RxDouble EndTimeDay2 = 24.0.obs;
+  RxInt percentage = 15.obs;
+  RxDouble TotalVehicleRent = 0.0.obs;
 
   RxDouble price = 0.0.obs;
   // RxDouble bookingPrice=1.0.obs;

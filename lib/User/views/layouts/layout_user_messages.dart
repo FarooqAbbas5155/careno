@@ -142,8 +142,7 @@ class LayoutUserMessages extends StatelessWidget {
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),
                           itemBuilder: (BuildContext context, int index) {
-                            var lastMessageObj =
-                            chatController.rooms.value[index];
+                            var lastMessageObj = chatController.rooms.value[index];
                             return FutureBuilder<User>(
                               future: getUser(
                                 get2ndUserId(
@@ -152,11 +151,8 @@ class LayoutUserMessages extends StatelessWidget {
                                 ),
                               ),
                               builder: (context, snapshot) {
-                                User user = snapshot.connectionState ==
-                                    ConnectionState.waiting
-                                    ? defaultUser
+                                User user = snapshot.connectionState == ConnectionState.waiting ? defaultUser
                                     : snapshot.data!;
-
                                 return ItemUserList(
                                   user: user,
                                   roomId: lastMessageObj.chatRoomId,

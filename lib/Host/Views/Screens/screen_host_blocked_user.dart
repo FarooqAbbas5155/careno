@@ -1,8 +1,12 @@
 import 'package:careno/Host/Views/Layouts/item_blocked_users.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+
+import '../../../controllers/chat_controller.dart';
 
 class ScreenHostBlockedUser extends StatelessWidget {
-  const ScreenHostBlockedUser({Key? key}) : super(key: key);
+  ChatController chatController = Get.put(ChatController());
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +16,7 @@ class ScreenHostBlockedUser extends StatelessWidget {
         title: Text("Blocked Users"),
       ),
       body: ListView.builder(
-        itemCount: 10,
+        itemCount: chatController.rooms.length,
         itemBuilder: (BuildContext context, int index) {
         return ItemBlockedUsers();
       },)

@@ -11,12 +11,13 @@ import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
 import 'AuthSection/screen_splash.dart';
 import 'constant/colors.dart';
+import 'controllers/payment_controller_2nd.dart';
 import 'firebase_options.dart';
-import 'package:careno/controllers/controller_payments.dart';
+// import 'package:careno/controllers/controller_payments.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Future.delayed(Duration(seconds: 1));
-  Stripe.publishableKey = PaymentsController.stripePublishableKey;
+  Stripe.publishableKey = PaymentsController2.stripePublishableKey;
   colorConfig();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,

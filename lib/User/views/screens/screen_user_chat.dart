@@ -1,8 +1,11 @@
 
+import 'package:careno/Host/Views/Screens/screen_host_home_page.dart';
 import 'package:careno/User/views/layouts/layout_user_messages.dart';
+import 'package:careno/User/views/screens/screen_user_home.dart';
 import 'package:careno/constant/colors.dart';
 import 'package:careno/constant/database_utils.dart';
 import 'package:careno/controllers/chat_controller.dart';
+import 'package:careno/controllers/home_controller.dart';
 import 'package:careno/widgets/custom_svg.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -14,6 +17,7 @@ import 'package:intl/intl.dart';
 import '../../../constant/fcm.dart';
 import '../../../constant/firebase_utils.dart';
 import '../../../constant/helpers.dart';
+import '../../../models/last_message.dart';
 import '../../../models/message.dart';
 import 'package:careno/models/user.dart' as model;
 
@@ -39,16 +43,26 @@ class ScreenUserChat extends StatefulWidget {
 }
 
 class _ScreenUserChatState extends State<ScreenUserChat> {
-ChatController controller = Get.put(ChatController());
+// ChatController controller = Get.put(ChatController());
+HomeController homeController = Get.put(HomeController());
   TextEditingController messageController = TextEditingController();
   final _scrollController = ScrollController();
   var chatRoomId = "";
   // late Stream<DatabaseEvent> stream;
   bool isActive=false;
   Stream<DatabaseEvent> stream = Stream.empty();
-
+RxList<LastMessage> rooms = RxList<LastMessage>([]);
+void listenToChatRooms() {
+  usersRef.doc(uid).collection("chats").snapshots().listen((snapshot) {
+    List<LastMessage> newRooms = snapshot.docs.map((doc) {
+      return LastMessage.fromMap(doc.data() as Map<String, dynamic>);
+    }).toList();
+    rooms.value = newRooms;
+  });
+}
   @override
   void initState() {
+    listenToChatRooms();
     checkCondition().then((value) {
       stream = chatref
           .child(chatRoomId).child(FirebaseUtils.myId)
@@ -228,7 +242,15 @@ void clearChat() {
               if (choice == 'Block User') {
             await    usersRef.doc(FirebaseUtils.myId).collection("chats").doc(chatRoomId).update({""
                     "isBlocked":true}).then((value) {
-                      Get.offAll(LayoutUserMessages());
+                      if (homeController.user.value!.userType == "user") {
+                        Get.back();
+                        Get.offAll(ScreenUserHome);
+                      }
+                      else{
+                        Get.back();
+                        Get.offAll(ScreenHostHomePage());
+
+                      }
             });
 
               } else if (choice == 'Clear Chat') {
@@ -346,7 +368,7 @@ void clearChat() {
             ),
           ),
 
-     widget.userblock == false?Row(
+          widget.userblock == false?Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Expanded(child: TextField(
@@ -405,7 +427,7 @@ void clearChat() {
                       counter: widget.counter ?? 0,
                     );
                     messageController.clear();
-                    controller.update();
+                    // controller.update();
                     sendMessage(message, chatRoomId)
                         .catchError((error) {
                       Get.snackbar("Message", error.toString());
@@ -438,96 +460,104 @@ void clearChat() {
               ),
             ],
           ).marginOnly(bottom: 16.h,left: 16.w,right: 16.w):Center(
-       child: GestureDetector(
-         onTap: (){
-           Get.defaultDialog(
-               title: '',
-               content: GestureDetector(
-                 onTap: () {
-                   Get.back();
-                 },
-                 child: Align(
-                   alignment: Alignment.topRight,
-                   child: Container(
-                       padding: EdgeInsets.all(12.sp),
-                       margin: EdgeInsets.symmetric(
-                           horizontal: 12.sp),
-                       decoration: BoxDecoration(
-                           color: Color(0xFFF0F0F0),
-                           shape: BoxShape.circle
-                       ),
-                       child: Icon(
-                         Icons.clear, color: Colors.black,)),
-                 ),
-               ),
-               actions: [
-                 Column(
-                   children: [
-                     Container(
-                       height: 55.h,
-                       width: 55.w,
-                       padding: EdgeInsets.all(12.sp),
-                       decoration: BoxDecoration(
-                           color: Color(0xFFF0F0F0),
-                           borderRadius: BorderRadius.circular(
-                               20.r)),
-                       child: CustomSvg(
-                         name: "logout2",
-                         color: primaryColor,
-                       ),
-                     ),
-                     SizedBox(
-                       height: 10.sp,
-                     ),
-                     Text(
-                       "UnBlock User",
-                       style: TextStyle(color: Colors.black,
-                         fontSize: 22.sp,
-                         fontWeight: FontWeight.w700,
-                         fontFamily: "UrbanistBold",),
-                     ),
-                     SizedBox(
-                       height: 13.sp,
-                     ),
-                     SizedBox(
-                       height: 36.h,
-                       width: 230.w,
-                       child: Text(
-                         textAlign: TextAlign.center,
-                         "Are you sure you want to UnBlock User?",
-                         style: TextStyle(color: Colors.black,
-                           fontSize: 15.sp,
-                           fontWeight: FontWeight.w600,
-                           fontFamily: "UrbanistBold",),
-                       ),
-                     ),
-                     CustomButton(
-                         width: 193.w,
-                         title: "Yes",
-                         onPressed: () async{
-                           await    usersRef.doc(FirebaseUtils.myId).collection("chats").doc(chatRoomId).update({""
-                               "isBlocked":false}).then((value) {
-                             Get.offAll(LayoutUserMessages());
-                             Get.back();
-                           });
-                         }).marginSymmetric(vertical: 20.h)
-                   ],
-                 )
-               ]);
+            child: GestureDetector(
+              onTap: (){
+                Get.defaultDialog(
+                    title: '',
+                    content: GestureDetector(
+                      onTap: () {
+                        Get.back();
+                      },
+                      child: Align(
+                        alignment: Alignment.topRight,
+                        child: Container(
+                            padding: EdgeInsets.all(12.sp),
+                            margin: EdgeInsets.symmetric(
+                                horizontal: 12.sp),
+                            decoration: BoxDecoration(
+                                color: Color(0xFFF0F0F0),
+                                shape: BoxShape.circle
+                            ),
+                            child: Icon(
+                              Icons.clear, color: Colors.black,)),
+                      ),
+                    ),
+                    actions: [
+                      Column(
+                        children: [
+                          Container(
+                            height: 55.h,
+                            width: 55.w,
+                            padding: EdgeInsets.all(12.sp),
+                            decoration: BoxDecoration(
+                                color: Color(0xFFF0F0F0),
+                                borderRadius: BorderRadius.circular(
+                                    20.r)),
+                            child: CustomSvg(
+                              name: "logout2",
+                              color: primaryColor,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10.sp,
+                          ),
+                          Text(
+                            "UnBlock User",
+                            style: TextStyle(color: Colors.black,
+                              fontSize: 22.sp,
+                              fontWeight: FontWeight.w700,
+                              fontFamily: "UrbanistBold",),
+                          ),
+                          SizedBox(
+                            height: 13.sp,
+                          ),
+                          SizedBox(
+                            height: 36.h,
+                            width: 230.w,
+                            child: Text(
+                              textAlign: TextAlign.center,
+                              "Are you sure you want to UnBlock User?",
+                              style: TextStyle(color: Colors.black,
+                                fontSize: 15.sp,
+                                fontWeight: FontWeight.w600,
+                                fontFamily: "UrbanistBold",),
+                            ),
+                          ),
+                          CustomButton(
+                              width: 193.w,
+                              title: "Yes",
+                              onPressed: () async{
+                                await usersRef.doc(FirebaseUtils.myId).collection("chats").doc(chatRoomId).update({""
+                                    "isBlocked":false}).then((value) {
+                                  setState(() {
+                                    if (homeController.user.value!.userType == "user") {
+                                      Get.back();
+                                      Get.offAll(ScreenUserHome);
+                                    }
+                                    else{
+                                      Get.back();
+                                      Get.offAll(ScreenHostHomePage());
+                                    }
+                                  });
+                                });
+                              }).marginSymmetric(vertical: 20.h)
+                        ],
+                      )
+                    ]);
 
-         },
-         child: Container(
-           alignment: Alignment.center,
-           padding: EdgeInsets.all(15.h),
-           width: Get.width,
-           margin: EdgeInsets.symmetric(vertical: 8.h,horizontal: 14.w),
-           decoration: BoxDecoration(
-             borderRadius: BorderRadius.circular(10.r),
-             border: Border.all(color: AppColors.appPrimaryColor)
-           ),
-             child: Text("User Block",style: TextStyle(color: Colors.red,fontSize: 20.sp,fontWeight: FontWeight.bold,fontFamily: "Nunito"),)),
-       ),
-     ),
+              },
+              child: Container(
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.all(15.h),
+                  width: Get.width,
+                  margin: EdgeInsets.symmetric(vertical: 8.h,horizontal: 14.w),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.r),
+                      border: Border.all(color: AppColors.appPrimaryColor)
+                  ),
+                  child: Text("User Block",style: TextStyle(color: Colors.red,fontSize: 20.sp,fontWeight: FontWeight.bold,fontFamily: "Nunito"),)),
+            ),
+          ),
 
         ],
       ),
