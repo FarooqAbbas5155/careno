@@ -164,7 +164,8 @@ class ScreenBookingReview extends StatelessWidget {
                         ),
                       ),
                     ),
-                    controller.bookingType.value == "Per Day" ? Column(
+                    // controller.bookingType.value == "Per Day" ?
+                    Column(
                       children: [
                         BookingSummary("Start Date", dateFormat(controller
                             .bookingStartDate.value!)),
@@ -172,8 +173,9 @@ class ScreenBookingReview extends StatelessWidget {
                             .bookingEndDate
                             .value!)),
                       ],
-                    ) : BookingSummary("Start Date",
-                        dateFormat(controller.bookingStartDateHour.value!)),
+                    ),
+                        // : BookingSummary("Start Date",
+                        // dateFormat(controller.bookingStartDateHour.value!)),
 
                     Obx(() {
                       return Row(

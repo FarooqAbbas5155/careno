@@ -23,7 +23,7 @@ class BookingController extends GetxController {
   // RxDouble bookingPrice=1.0.obs;
   TextEditingController priceController=TextEditingController();
   Rx<DateTime?> bookingEndDate = Rx<DateTime?>(null);
-  Rx<DateTime?> bookingStartDate = Rx<DateTime?>(null);
+  Rx<DateTime?> bookingStartDate = Rx<DateTime?>(DateTime.now());
   Rx<DateTime?> bookingStartDateHour = Rx<DateTime?>(DateTime.now());
   Rx<String >paymentType = "CreditCard".obs;
   List<DateTime?> dates = [

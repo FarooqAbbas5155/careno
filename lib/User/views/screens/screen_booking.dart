@@ -149,6 +149,26 @@ class ScreenBooking extends StatelessWidget {
                       keyboardType: TextInputType.number,
                       onChange: (value) {
                         controller.price.value = double.tryParse(value!)!;
+                        if (controller.bookingType=="Per day") {
+                          int difference = controller.dates[1]!.difference(controller.dates[0]!).inDays;
+                          print("difference  ${difference}");
+                          controller.price.value = double.tryParse("${value}")! * difference;
+                        }
+                        else{
+                          DateTime endDate = controller.bookingStartDate.value!.add(Duration(hours:controller.hoursDifference.value.toInt()));
+
+                          // Check if the end time is crossing into the next day
+                          if (controller.endTime.value < controller.startTime.value) {
+                            // Add an extra day if end time transitions to the next day
+                            endDate = endDate.add(Duration(days: 1));
+                          }
+
+                          // Update the booking end date in the controller
+                          controller.bookingEndDate.value = endDate;
+
+                          controller.price.value =double.tryParse(addHostVehicle.vehiclePerHourRent)! * controller.hoursDifference.value.roundToDouble();
+
+                        }
                       },
                       controller: controller.priceController..text = controller.bookingType.value == "Per day" ? "${addHostVehicle.vehiclePerDayRent}" : "${addHostVehicle.vehiclePerHourRent}",
                       // text: ,
@@ -240,6 +260,7 @@ class ScreenBooking extends StatelessWidget {
                     onValueChanged: (dates) {
                       controller.selectDates = dates;
                       controller.bookingStartDateHour.value = dates[0];
+                      controller.bookingStartDate.value=dates[0];
                      print( dateFormat( controller.bookingStartDateHour.value!));
                     }
 
@@ -282,7 +303,16 @@ class ScreenBooking extends StatelessWidget {
                                   controller.startTime.value = value;
                                   startTime = int.parse(controller.startTime.value.toStringAsFixed(0));
                                   controller.calculateHoursDifference();
-                                    controller.price.value =double.tryParse(addHostVehicle.vehiclePerHourRent)! * controller.hoursDifference.value.roundToDouble();
+                                  DateTime endDate = controller.bookingStartDate.value!.add(Duration(hours:controller.hoursDifference.value.toInt()));
+
+                                  // Check if the end time is crossing into the next day
+                                  if (controller.endTime.value < controller.startTime.value) {
+                                    // Add an extra day if end time transitions to the next day
+                                    endDate = endDate.add(Duration(days: 1));
+                                  }
+
+                                  // Update the booking end date in the controller
+                                  controller.bookingEndDate.value = endDate;                                    controller.price.value =double.tryParse(addHostVehicle.vehiclePerHourRent)! * controller.hoursDifference.value.roundToDouble();
 
                                 }
 
@@ -348,6 +378,17 @@ class ScreenBooking extends StatelessWidget {
                                   controller.endTime.value = value;
                                   controller.calculateHoursDifference();
                                   print("controller.hoursDifference.value ${controller.hoursDifference.value}");
+                                  DateTime endDate = controller.bookingStartDate.value!.add(Duration(hours:controller.hoursDifference.value.toInt()));
+
+                                  // Check if the end time is crossing into the next day
+                                  if (controller.endTime.value < controller.startTime.value) {
+                                    // Add an extra day if end time transitions to the next day
+                                    endDate = endDate.add(Duration(days: 1));
+                                  }
+
+                                  // Update the booking end date in the controller
+                                  controller.bookingEndDate.value = endDate;
+
                                   controller.price.value =double.tryParse(addHostVehicle.vehiclePerHourRent)! * controller.hoursDifference.value.roundToDouble();
 
 
