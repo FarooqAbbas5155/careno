@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:careno/User/views/screens/screen_add_card.dart';
+import 'package:careno/User/views/screens/screen_user_home.dart';
 import 'package:careno/constant/colors.dart';
 import 'package:careno/controllers/booking_controller.dart';
 import 'package:careno/controllers/controller_payments.dart';
@@ -311,11 +314,9 @@ class ScreenBookingReview extends StatelessWidget {
                                 print(infoData);
                               }, onError: (error) {
                             return;
-                          }).then((value) {
+                          }).then((value) async{
                             int id = DateTime.now().millisecondsSinceEpoch;
                             DateTime startTimeDate = DateTime(controller.bookingStartDate.value!.year,controller.bookingStartDate.value!.month,controller.bookingStartDate.value!.day);
-
-
                             Booking booking = Booking(bookingId: id.toString(),
                                 vehicleId: addHostVehicle.vehicleId,
                                 userId: user!.uid,
@@ -329,6 +330,11 @@ class ScreenBookingReview extends StatelessWidget {
                                 startTime: controller.startTime.value.toInt(),
                                 EndTime: controller.endTime.value.toInt(),
                                 price: controller.price.value);
+                            await bookingsRef.doc(id.toString()).set(booking).then((value){
+                              showBottomSheet(context);
+                            });
+                          }).catchError((error){
+                            print(error.toString());
                           });
 
                           // Get.to(ScreenAddCard());
@@ -351,7 +357,46 @@ class ScreenBookingReview extends StatelessWidget {
     required this.addHostVehicle,
   });
 }
-
+Future<void> showBottomSheet(BuildContext context){
+  return    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(20.0),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Image.asset(
+            "assets/images/successful_purchase.png",
+            width: 140,
+            height: 140,
+          ),
+          SizedBox(height: 6.h),
+          Text(
+            "Congratulations!",
+            style: TextStyle(
+              fontSize: 20,
+              color: primaryColor,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          SizedBox(height: 2.h),
+          Text(
+            "Your request has been sent to the driver. You will be notified once it is accepted.",
+            textAlign: TextAlign.center,
+          ),
+          Padding(
+            padding:  EdgeInsets.symmetric(horizontal: 20.w,vertical: 14.h),
+            child: CustomButton(title: "Back Home", onPressed: (){
+              Get.to(ScreenUserHome());
+            }),
+          )
+        ],
+      ),
+    );
+   }
+  );
+}
 Widget BookingSummary(String title, description) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
