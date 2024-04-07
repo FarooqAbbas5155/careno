@@ -1,7 +1,7 @@
 import 'host_identity.dart';
 
 class User{
-   String uid,userType,phoneNumber,imageUrl,name,email,profileDescription,gender,notificationToken,status;
+   String uid,userType,phoneNumber,imageUrl,address,name,email,profileDescription,gender,notificationToken,status;
    int dob,timeStamp;
    HostIdentity?  hostIdentity;
    double lat,lng;
@@ -13,6 +13,7 @@ class User{
     required this.userType,
     required this.phoneNumber,
     required this.imageUrl,
+    required this.address,
     required this.name,
     required this.email,
     required this.profileDescription,
@@ -38,6 +39,7 @@ class User{
           userType == other.userType &&
           phoneNumber == other.phoneNumber &&
           imageUrl == other.imageUrl &&
+          address == other.address &&
           name == other.name &&
           email == other.email &&
           profileDescription == other.profileDescription &&
@@ -59,6 +61,7 @@ class User{
       userType.hashCode ^
       phoneNumber.hashCode ^
       imageUrl.hashCode ^
+      address.hashCode ^
       name.hashCode ^
       email.hashCode ^
       profileDescription.hashCode ^
@@ -81,6 +84,7 @@ class User{
         ' userType: $userType,' +
         ' phoneNumber: $phoneNumber,' +
         ' imageUrl: $imageUrl,' +
+        ' address: $address,' +
         ' name: $name,' +
         ' email: $email,' +
         ' profileDescription: $profileDescription,' +
@@ -103,6 +107,7 @@ class User{
     String? userType,
     String? phoneNumber,
     String? imageUrl,
+    String? address,
     String? name,
     String? email,
     String? profileDescription,
@@ -123,6 +128,7 @@ class User{
       userType: userType ?? this.userType,
       phoneNumber: phoneNumber ?? this.phoneNumber,
       imageUrl: imageUrl ?? this.imageUrl,
+      address: address ?? this.address,
       name: name ?? this.name,
       email: email ?? this.email,
       profileDescription: profileDescription ?? this.profileDescription,
@@ -146,6 +152,7 @@ class User{
       'userType': this.userType,
       'phoneNumber': this.phoneNumber,
       'imageUrl': this.imageUrl,
+      'address': this.address,
       'name': this.name,
       'email': this.email,
       'profileDescription': this.profileDescription,
@@ -169,6 +176,7 @@ class User{
       userType: map['userType'] as String,
       phoneNumber: map['phoneNumber'] as String,
       imageUrl: map['imageUrl'] as String,
+      address: map['address'] as String,
       name: map['name'] as String,
       email: map['email'] as String,
       profileDescription: map['profileDescription'] as String,

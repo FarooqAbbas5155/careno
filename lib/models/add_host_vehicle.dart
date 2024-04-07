@@ -250,7 +250,7 @@ class AddHostVehicle{
       rating: map['rating'] as double,
       latitude: map['latitude'] as double,
       longitude: map['longitude'] as double,
-      imagesUrl: (map['imageList'] as List<dynamic>? ?? []).map((e) => e.toString()).toList(),
+      imagesUrl: (map['imagesUrl']as List<dynamic>).cast<String>(),
     );
   }
 

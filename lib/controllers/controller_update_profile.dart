@@ -73,6 +73,7 @@ class ControllerUpdateProfile extends GetxController {
         "email": userEmail,
         "profileDescription": description,
         "imageUrl": url,
+        "address": address.value,
         "dob": Dob.value!.millisecondsSinceEpoch,
         "gender": selectedGender.value,
         "lat": latitude.value,

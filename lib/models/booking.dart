@@ -1,8 +1,14 @@
 class Booking {
-  String bookingId, vehicleId, userId, hostId,bookingStatus;
+  String bookingId,
+      vehicleId,
+      userId,
+      hostId,
+      bookingStatus,
+      cancelBY,
+      cancelDetail;
   String paymentStatus;
   String bookingType;
-  int bookingStartDate,bookingEndDate;
+  int bookingStartDate, bookingEndDate;
   bool completed;
   int startTime, EndTime;
   double price;
@@ -15,6 +21,8 @@ class Booking {
     required this.userId,
     required this.hostId,
     required this.bookingStatus,
+    required this.cancelBY,
+    required this.cancelDetail,
     required this.paymentStatus,
     required this.bookingType,
     required this.bookingStartDate,
@@ -36,6 +44,8 @@ class Booking {
           userId == other.userId &&
           hostId == other.hostId &&
           bookingStatus == other.bookingStatus &&
+          cancelBY == other.cancelBY &&
+          cancelDetail == other.cancelDetail &&
           paymentStatus == other.paymentStatus &&
           bookingType == other.bookingType &&
           bookingStartDate == other.bookingStartDate &&
@@ -53,6 +63,8 @@ class Booking {
       userId.hashCode ^
       hostId.hashCode ^
       bookingStatus.hashCode ^
+      cancelBY.hashCode ^
+      cancelDetail.hashCode ^
       paymentStatus.hashCode ^
       bookingType.hashCode ^
       bookingStartDate.hashCode ^
@@ -71,6 +83,8 @@ class Booking {
         ' userId: $userId,' +
         ' hostId: $hostId,' +
         ' bookingStatus: $bookingStatus,' +
+        ' cancelBY: $cancelBY,' +
+        ' cancelDetail: $cancelDetail,' +
         ' paymentStatus: $paymentStatus,' +
         ' bookingType: $bookingType,' +
         ' bookingStartDate: $bookingStartDate,' +
@@ -89,6 +103,8 @@ class Booking {
     String? userId,
     String? hostId,
     String? bookingStatus,
+    String? cancelBY,
+    String? cancelDetail,
     String? paymentStatus,
     String? bookingType,
     int? bookingStartDate,
@@ -105,6 +121,8 @@ class Booking {
       userId: userId ?? this.userId,
       hostId: hostId ?? this.hostId,
       bookingStatus: bookingStatus ?? this.bookingStatus,
+      cancelBY: cancelBY ?? this.cancelBY,
+      cancelDetail: cancelDetail ?? this.cancelDetail,
       paymentStatus: paymentStatus ?? this.paymentStatus,
       bookingType: bookingType ?? this.bookingType,
       bookingStartDate: bookingStartDate ?? this.bookingStartDate,
@@ -124,6 +142,8 @@ class Booking {
       'userId': this.userId,
       'hostId': this.hostId,
       'bookingStatus': this.bookingStatus,
+      'cancelBY': this.cancelBY,
+      'cancelDetail': this.cancelDetail,
       'paymentStatus': this.paymentStatus,
       'bookingType': this.bookingType,
       'bookingStartDate': this.bookingStartDate,
@@ -138,20 +158,22 @@ class Booking {
 
   factory Booking.fromMap(Map<String, dynamic> map) {
     return Booking(
-      bookingId: map['bookingId'] as String,
-      vehicleId: map['vehicleId'] as String,
-      userId: map['userId'] as String,
-      hostId: map['hostId'] as String,
-      bookingStatus: map['bookingStatus'] as String,
-      paymentStatus: map['paymentStatus'] as String,
-      bookingType: map['bookingType'] as String,
-      bookingStartDate: map['bookingStartDate'] as int,
-      bookingEndDate: map['bookingEndDate'] as int,
-      completed: map['completed'] as bool,
-      startTime: map['startTime'] as int,
-      EndTime: map['EndTime'] as int,
-      price: map['price'] as double,
-      withdrawn: map['withdrawn'] as bool,
+      bookingId: map['bookingId'] as String? ?? '',
+      vehicleId: map['vehicleId'] as String? ?? '',
+      userId: map['userId'] as String? ?? '',
+      hostId: map['hostId'] as String? ?? '',
+      cancelBY: map['cancelBY'] as String,
+      cancelDetail: map['cancelDetail'] as String,
+      bookingStatus: map['bookingStatus'] as String? ?? '',
+      paymentStatus: map['paymentStatus'] as String? ?? '',
+      bookingType: map['bookingType'] as String? ?? '',
+      bookingStartDate: map['bookingStartDate'] as int? ?? 0,
+      bookingEndDate: map['bookingEndDate'] as int? ?? 0,
+      completed: map['completed'] as bool? ?? false,
+      startTime: map['startTime'] as int? ?? 0,
+      EndTime: map['EndTime'] as int? ?? 0,
+      price: map['price'] as double? ?? 0.0,
+      withdrawn: map['withdrawn'] as bool? ?? false,
     );
   }
 

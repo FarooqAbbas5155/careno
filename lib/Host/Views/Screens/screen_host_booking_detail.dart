@@ -1,16 +1,26 @@
+import 'package:careno/User/views/screens/screen_user_chat.dart';
+import 'package:careno/models/categories.dart';
 import 'package:careno/widgets/custom_button.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../../constant/colors.dart';
 import '../../../constant/helpers.dart';
+import '../../../models/add_host_vehicle.dart';
+import '../../../models/booking.dart';
+import '../../../models/user.dart';
 
 class ScreenHostBookingDetail extends StatelessWidget {
-  String status;
+  Booking booking;
+  User user;
+  AddHostVehicle vehicle;
 
   @override
   Widget build(BuildContext context) {
+    var percentageValue = booking.price / 100 * 15;
+    var totalRent = percentageValue + booking.price;
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -21,20 +31,30 @@ class ScreenHostBookingDetail extends StatelessWidget {
             style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w700),
           ),
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              buildBookedServiceContainer(),
-              buildVehicleContainer(),
-              buildSummaryContainer()
-            ],
-          ),
+        body: FutureBuilder<Category>(
+          future: getCategory(vehicle.vehicleCategory),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState==ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+
+            }
+            var category=snapshot.data;
+            return SingleChildScrollView(
+              child: Column(
+                children: <Widget>[
+                  buildBookedServiceContainer(),
+                  buildVehicleContainer(category!.name),
+                  buildSummaryContainer(percentageValue,totalRent)
+                ],
+              ),
+            );
+          }
         ),
       ),
     );
   }
 
-  Container buildSummaryContainer() {
+  Container buildSummaryContainer(percentageValue,totalRent) {
     return Container(
       padding: EdgeInsets.all(10.r),
       margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
@@ -67,7 +87,8 @@ class ScreenHostBookingDetail extends StatelessWidget {
                     color: Color(0xFF484848).withOpacity(.7)),
               ),
               Text(
-                "14 March, 2024",
+                dateFormat(DateTime.fromMillisecondsSinceEpoch(
+                    booking.bookingStartDate)),
                 style: TextStyle(
                     fontSize: 16.sp,
                     fontWeight: FontWeight.w600,
@@ -86,7 +107,8 @@ class ScreenHostBookingDetail extends StatelessWidget {
                     color: Color(0xFF484848).withOpacity(.7)),
               ),
               Text(
-                "14 March, 2024",
+                dateFormat(DateTime.fromMillisecondsSinceEpoch(
+                    booking.bookingEndDate)),
                 style: TextStyle(
                     fontSize: 16.sp,
                     fontWeight: FontWeight.w600,
@@ -105,7 +127,7 @@ class ScreenHostBookingDetail extends StatelessWidget {
                     color: Color(0xFF484848).withOpacity(.7)),
               ),
               Text(
-                "10:00 AM",
+                formatTime(booking.startTime),
                 style: TextStyle(
                     fontSize: 16.sp,
                     fontWeight: FontWeight.w600,
@@ -124,7 +146,7 @@ class ScreenHostBookingDetail extends StatelessWidget {
                     color: Color(0xFF484848).withOpacity(.7)),
               ),
               Text(
-                "04:00 PM",
+                formatTime(booking.EndTime),
                 style: TextStyle(
                     fontSize: 16.sp,
                     fontWeight: FontWeight.w600,
@@ -150,7 +172,7 @@ class ScreenHostBookingDetail extends StatelessWidget {
                     color: Color(0xFF484848).withOpacity(.7)),
               ),
               Text(
-                "200\$",
+                "${booking.price}\$",
                 style: TextStyle(
                     fontSize: 16.sp,
                     fontWeight: FontWeight.w600,
@@ -169,7 +191,7 @@ class ScreenHostBookingDetail extends StatelessWidget {
                     color: Color(0xFF484848).withOpacity(.7)),
               ),
               Text(
-                "15\$",
+                "${percentageValue}\$",
                 style: TextStyle(
                     fontSize: 17.sp,
                     fontWeight: FontWeight.w600,
@@ -192,7 +214,7 @@ class ScreenHostBookingDetail extends StatelessWidget {
                     color: Color(0xFF484848).withOpacity(.7)),
               ),
               Text(
-                "215\$",
+                "${totalRent}\$",
                 style: TextStyle(
                     fontSize: 18.sp,
                     fontWeight: FontWeight.w600,
@@ -200,11 +222,14 @@ class ScreenHostBookingDetail extends StatelessWidget {
               ),
             ],
           ).marginSymmetric(vertical: 4.h),
-          if(status=="Pending")buildPendingButton(),
-          if(status=="In progress")buildInprogressButton(),
-          if(status=="Completed"||status=="Canceled")buildCompletedButton(),
-          if (status=="Completed") buildReview(),
-          if (status=="Canceled") buildCanceledReason(),
+          if (booking.bookingStatus == "Request Pending") buildPendingButton(),
+          if (booking.bookingStatus == "Payment Pending") buildPendingPaymentButton().marginOnly(top: 10.h),
+          if (booking.bookingStatus == "In progress") buildInprogressButton(),
+          if (booking.bookingStatus == "Completed" ||
+              booking.bookingStatus == "Canceled")
+            buildCompletedButton(),
+          if (booking.bookingStatus == "Completed") buildReview(),
+          if (booking.bookingStatus == "Canceled") buildCanceledReason(),
         ],
       ),
     );
@@ -213,48 +238,66 @@ class ScreenHostBookingDetail extends StatelessWidget {
   Widget buildPendingButton() {
     return Column(
       children: [
-        Row(children: [
-              Expanded(
-                child: CustomButton(title: "Decline", onPressed: (){},
-                  textStyle: TextStyle(
+        Row(
+          children: [
+            Expanded(
+              child: CustomButton(
+                title: "Decline",
+                onPressed: () async {
+                  await bookingsRef
+                      .doc(booking.bookingId)
+                      .update({"bookingStatus": "Rejected"}).then((value) {
+                    Get.back();
+                  });
+                },
+                textStyle: TextStyle(
                     fontSize: 15.sp,
-                    fontWeight: FontWeight.w700,color: Colors.white
-
-                  ),
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white),
                 color: Color(0xFFFF2021),
-
-                ),
               ),
-              SizedBox(width: 15.w
-                ,),
-              Expanded(
-                child: CustomButton(title: "Accept", onPressed: (){},
+            ),
+            SizedBox(
+              width: 15.w,
+            ),
+            Expanded(
+              child: CustomButton(
+                title: "Accept",
+                onPressed: () async {
+                  await bookingsRef.doc(booking.bookingId).update(
+                      {"bookingStatus": "Payment Pending"}).then((value) {
+                    Get.back();
+                  });
+                },
                 color: Color(0xFF0F9D58),
-                  textStyle: TextStyle(
-                      fontSize: 15.sp,
-                      fontWeight: FontWeight.w700,
-                    color: Colors.white
-                  ),
-                ),
-              )
-            ],).marginSymmetric(vertical: 15.h),
+                textStyle: TextStyle(
+                    fontSize: 15.sp,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white),
+              ),
+            )
+          ],
+        ).marginSymmetric(vertical: 15.h),
         Align(
           alignment: Alignment.center,
           child: CustomButton(
-              width: 217.w
-              ,
+              width: 217.w,
               textStyle: TextStyle(
                   fontSize: 15.sp,
-                  fontWeight: FontWeight.w700,color: Colors.white
-
-              ),
-              title: "Message", onPressed: (){}),
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white),
+              title: "Message",
+              onPressed: () {
+                Get.to(ScreenUserChat(
+                  user: user,
+                ));
+              }),
         )
       ],
     );
   }
 
-  Container buildVehicleContainer() {
+  Container buildVehicleContainer(String categoryName) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
       decoration: BoxDecoration(
@@ -296,7 +339,7 @@ class ScreenHostBookingDetail extends StatelessWidget {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5.r),
                       image: DecorationImage(
-                          image: AssetImage("assets/images/vechilce-image.png"),
+                          image: NetworkImage(vehicle.vehicleImageComplete),
                           fit: BoxFit.fill)),
                 ),
                 Expanded(
@@ -308,12 +351,12 @@ class ScreenHostBookingDetail extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Toyota Camry",
+                              vehicle.vehicleModel,
                               style: TextStyle(
                                   fontWeight: FontWeight.w700, fontSize: 14.sp),
                             ),
                             Text(
-                              "322 Hoffman Dr, Cherry Hill, NJ 08077, New York",
+                              vehicle.address,
                               style: TextStyle(
                                   fontFamily: "Nunito",
                                   color: AppColors.appPrimaryColor,
@@ -343,7 +386,7 @@ class ScreenHostBookingDetail extends StatelessWidget {
                             color: Color(0xFF616161)),
                         children: [
                       TextSpan(
-                          text: "2020",
+                          text:vehicle.vehicleYear.toString(),
                           style: TextStyle(
                               fontWeight: FontWeight.w600,
                               fontSize: 14.sp,
@@ -361,7 +404,7 @@ class ScreenHostBookingDetail extends StatelessWidget {
                             color: Color(0xFF616161)),
                         children: [
                       TextSpan(
-                          text: "Sedan",
+                          text: categoryName,
                           style: TextStyle(
                               fontWeight: FontWeight.w600,
                               fontSize: 14.sp,
@@ -383,7 +426,7 @@ class ScreenHostBookingDetail extends StatelessWidget {
                             color: Color(0xFF616161)),
                         children: [
                       TextSpan(
-                          text: "Black",
+                          text: vehicle.vehicleColor,
                           style: TextStyle(
                               fontWeight: FontWeight.w600,
                               fontSize: 14.sp,
@@ -401,7 +444,7 @@ class ScreenHostBookingDetail extends StatelessWidget {
                             color: Color(0xFF616161)),
                         children: [
                       TextSpan(
-                          text: "04",
+                          text: vehicle.vehicleSeats,
                           style: TextStyle(
                               fontWeight: FontWeight.w600,
                               fontSize: 14.sp,
@@ -423,7 +466,7 @@ class ScreenHostBookingDetail extends StatelessWidget {
                             color: Color(0xFF616161)),
                         children: [
                       TextSpan(
-                          text: "Automatic",
+                          text: vehicle.vehicleTransmission,
                           style: TextStyle(
                               fontWeight: FontWeight.w600,
                               fontSize: 14.sp,
@@ -441,7 +484,7 @@ class ScreenHostBookingDetail extends StatelessWidget {
                             color: Color(0xFF616161)),
                         children: [
                       TextSpan(
-                          text: "Gasoline",
+                          text: vehicle.vehicleFuelType,
                           style: TextStyle(
                               fontWeight: FontWeight.w600,
                               fontSize: 14.sp,
@@ -455,7 +498,7 @@ class ScreenHostBookingDetail extends StatelessWidget {
             style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w700),
           ).marginSymmetric(vertical: 4.h),
           Text(
-            "The Toyota Camry is a stylish and reliable sedan that offers a comfortable and enjoyable driving experience. With its sleek design and advanced features, the Camry is perfect for both city commuting and long road trips.",
+            vehicle.vehicleDescription,
             style: TextStyle(
                 fontWeight: FontWeight.w500,
                 fontSize: 11.sp,
@@ -492,7 +535,7 @@ class ScreenHostBookingDetail extends StatelessWidget {
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5.r),
                   image: DecorationImage(
-                      image: AssetImage("assets/images/user-image.png"),
+                      image: NetworkImage(user.imageUrl),
                       fit: BoxFit.fill)),
             ),
             Expanded(
@@ -504,12 +547,12 @@ class ScreenHostBookingDetail extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Kristin Watson",
+                          user.name,
                           style: TextStyle(
                               fontWeight: FontWeight.w700, fontSize: 14.sp),
                         ),
                         Text(
-                          "322 Hoffman Dr, Cherry Hill, NJ 08077, New York",
+                          vehicle.address,
                           style: TextStyle(
                               fontFamily: "Nunito",
                               color: AppColors.appPrimaryColor,
@@ -527,27 +570,31 @@ class ScreenHostBookingDetail extends StatelessWidget {
                         height: 8.h,
                         width: 8.h,
                         decoration: BoxDecoration(
-                            color: status == "Pending"
+                            color: booking.bookingStatus == "Request Pending"
                                 ? Color(0xFFFB9701)
-                                : status == "In progress"
-                                ? Color(0xFF3C79E6)
-                                : status == "Completed"
-                                ? Color(0xFF0F9D58)
-                                : Color(0xFFFF2021),
+                                : booking.bookingStatus == "Payment Pending"
+                                    ? Color(0xFF1A9667)
+                                    : booking.bookingStatus == "In progress"
+                                        ? Color(0xFF3C79E6)
+                                        : booking.bookingStatus == "Completed"
+                                            ? Color(0xFF0F9D58)
+                                            : Color(0xFFFF2021),
                             shape: BoxShape.circle),
                       ),
                       Text(
-                        status,
+                        booking.bookingStatus,
                         style: TextStyle(
                             fontWeight: FontWeight.w500,
                             fontStyle: FontStyle.italic,
-                            color: status == "Pending"
+                            color: booking.bookingStatus == "Request Pending"
                                 ? Color(0xFFFB9701)
-                                : status == "In progress"
-                                ? Color(0xFF3C79E6)
-                                : status == "Completed"
-                                ? Color(0xFF0F9D58)
-                                : Color(0xFFFF2021),
+                                : booking.bookingStatus == "Payment Pending"
+                                    ? Color(0xFF1A9667)
+                                    : booking.bookingStatus == "In progress"
+                                        ? Color(0xFF3C79E6)
+                                        : booking.bookingStatus == "Completed"
+                                            ? Color(0xFF0F9D58)
+                                            : Color(0xFFFF2021),
                             fontSize: 12.sp),
                       ).marginOnly(bottom: 4.h, top: 4.h),
                     ],
@@ -560,93 +607,105 @@ class ScreenHostBookingDetail extends StatelessWidget {
       ),
     );
   }
-
-  ScreenHostBookingDetail({
-    required this.status,
-  });
-
-  buildInprogressButton() {
+ Widget buildPendingPaymentButton() {
     return Row(
       children: [
         Expanded(
           child: CustomButton(
-            title: "Cancel Booking", textStyle:TextStyle(
-              fontSize: 15.sp,
-              fontWeight: FontWeight.w700,
-              color: Colors.white
-          ),
-
+            title: "Message",
+            textStyle: TextStyle(
+                fontSize: 15.sp,
+                fontWeight: FontWeight.w700,
+                color: Colors.white),
             color: AppColors.appPrimaryColor,
             onPressed: () {
-              showDialog(
-                context: Get.context!,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(14.r),
-                    ),
-                    backgroundColor: Colors.white,
-                    title: Center(
-                      child: Text(
-                        'Cancel Booking',
-                        style: TextStyle(
-                          color: primaryColor,
-                          fontSize: 20.sp,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ),
-                    contentPadding: EdgeInsets.symmetric(
-                        vertical: 20.h), // Decrease height here
-                    content: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        TextField(
-                          maxLines: 8,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius
-                                  .circular(12.0),
-                              borderSide: const BorderSide(
-                                width: 1,
-                                style: BorderStyle.none,
-                              ),
-                            ),
-                            filled: true,
-                            hintStyle: TextStyle(
-                                color: Color(0xFF7D7D7D),
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.w500
-                            ),
-                            hintText: "Explain Cancel Reason",
-                            contentPadding: EdgeInsets.only(
-                                left: 12,top: 10.h, bottom: 5),
-                            fillColor: Colors.white,
-                          ),
-                        ).paddingSymmetric(horizontal: 20.w),
-                        SizedBox(height: 20.h),
-                        CustomButton(
-                            title: 'Submit', onPressed: () {
-                          Get.back();
-                        }).paddingSymmetric(horizontal: 20.w),
-
-                      ],
-                    ),
-                  );
-                },
-              );
+              Get.to(ScreenUserChat(user: user,));
             },
           ),
         ),
-        SizedBox(width: 10.w,),
+      ],
+    );
+  }
+  buildInprogressButton() {
+    return Row(
+      children: [
+        // Expanded(
+        //   child: CustomButton(
+        //     title: "Cancel Booking",
+        //     textStyle: TextStyle(
+        //         fontSize: 15.sp,
+        //         fontWeight: FontWeight.w700,
+        //         color: Colors.white),
+        //     color: AppColors.appPrimaryColor,
+        //     onPressed: () {
+        //       showDialog(
+        //         context: Get.context!,
+        //         builder: (BuildContext context) {
+        //           return AlertDialog(
+        //             shape: RoundedRectangleBorder(
+        //               borderRadius: BorderRadius.circular(14.r),
+        //             ),
+        //             backgroundColor: Colors.white,
+        //             title: Center(
+        //               child: Text(
+        //                 'Cancel Booking',
+        //                 style: TextStyle(
+        //                   color: primaryColor,
+        //                   fontSize: 20.sp,
+        //                   fontWeight: FontWeight.w700,
+        //                 ),
+        //               ),
+        //             ),
+        //             contentPadding: EdgeInsets.symmetric(vertical: 20.h),
+        //             // Decrease height here
+        //             content: Column(
+        //               mainAxisSize: MainAxisSize.min,
+        //               children: [
+        //                 TextField(
+        //                   maxLines: 8,
+        //                   decoration: InputDecoration(
+        //                     border: OutlineInputBorder(
+        //                       borderRadius: BorderRadius.circular(12.0),
+        //                       borderSide: const BorderSide(
+        //                         width: 1,
+        //                         style: BorderStyle.none,
+        //                       ),
+        //                     ),
+        //                     filled: true,
+        //                     hintStyle: TextStyle(
+        //                         color: Color(0xFF7D7D7D),
+        //                         fontSize: 12.sp,
+        //                         fontWeight: FontWeight.w500),
+        //                     hintText: "Explain Cancel Reason",
+        //                     contentPadding:
+        //                         EdgeInsets.only(left: 12, top: 10.h, bottom: 5),
+        //                     fillColor: Colors.white,
+        //                   ),
+        //                 ).paddingSymmetric(horizontal: 20.w),
+        //                 SizedBox(height: 20.h),
+        //                 CustomButton(
+        //                     title: 'Submit',
+        //                     onPressed: () {
+        //                       Get.back();
+        //                     }).paddingSymmetric(horizontal: 20.w),
+        //               ],
+        //             ),
+        //           );
+        //         },
+        //       );
+        //     },
+        //   ),
+        // ),
+        // SizedBox(
+        //   width: 10.w,
+        // ),
         Expanded(
           child: CustomButton(
             title: "Message",
             textStyle: TextStyle(
-    fontSize: 15.sp,
-    fontWeight: FontWeight.w700,
-    color: Colors.white
-    ),
+                fontSize: 15.sp,
+                fontWeight: FontWeight.w700,
+                color: Colors.white),
             color: AppColors.appPrimaryColor,
             onPressed: () {},
           ),
@@ -656,77 +715,104 @@ class ScreenHostBookingDetail extends StatelessWidget {
   }
 
   buildCompletedButton() {
-    return CustomButton(title: "Message", onPressed: (){}, textStyle: TextStyle(
-        fontSize: 15.sp,
-        fontWeight: FontWeight.w700,
-        color: Colors.white
-    ),).marginSymmetric(vertical: 15.h);
+    return CustomButton(
+      title: "Message",
+      onPressed: () {
+        Get.to(ScreenUserChat(user: user,));
+      },
+      textStyle: TextStyle(
+          fontSize: 15.sp, fontWeight: FontWeight.w700, color: Colors.white),
+    ).marginSymmetric(vertical: 15.h);
   }
 
   buildReview() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Divider(color: Colors.black.withOpacity(.1), thickness: .5,),
-        Text("Customer Review",style: TextStyle(
-          fontWeight: FontWeight.w700,
-          fontSize: 18.sp
-        ),),
+        Divider(
+          color: Colors.black.withOpacity(.1),
+          thickness: .5,
+        ),
+        Text(
+          "Customer Review",
+          style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18.sp),
+        ),
         ListTile(
           leading: CircleAvatar(
             backgroundImage: AssetImage("assets/images/user-image.png"),
           ),
-          title: Text("Kristin Watson",style: TextStyle(
-            fontSize: 15.sp,
-            fontWeight: FontWeight.w600,
-            color: Color(0xFF1B1B1B)
-          ),),
-          subtitle: Text("21 June, 2021",style: TextStyle(
-            fontWeight: FontWeight.w400,
-            fontSize: 8.sp,
-            color: Color(0xFF999999)
-          ),),
+          title: Text(
+            "Kristin Watson",
+            style: TextStyle(
+                fontSize: 15.sp,
+                fontWeight: FontWeight.w600,
+                color: Color(0xFF1B1B1B)),
+          ),
+          subtitle: Text(
+            "21 June, 2021",
+            style: TextStyle(
+                fontWeight: FontWeight.w400,
+                fontSize: 8.sp,
+                color: Color(0xFF999999)),
+          ),
           trailing: Row(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              Icon(Icons.star, color: Color(0xFFFBC017),),
-              Text("4.5", style: TextStyle(
-                fontWeight: FontWeight.w600,
-                fontSize: 13.sp
-              ),)
+              Icon(
+                Icons.star,
+                color: Color(0xFFFBC017),
+              ),
+              Text(
+                "4.5",
+                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 13.sp),
+              )
             ],
           ),
         ),
-        Text('Review text popular belief, Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsu...',style: TextStyle(
-          fontSize: 12.sp,
-          fontWeight: FontWeight.w500,
-          color: Color(0xFF414141)
-        ),)
-
-    ],).marginSymmetric(vertical: 10.h);
+        Text(
+          'Review text popular belief, Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsu...',
+          style: TextStyle(
+              fontSize: 12.sp,
+              fontWeight: FontWeight.w500,
+              color: Color(0xFF414141)),
+        )
+      ],
+    ).marginSymmetric(vertical: 10.h);
   }
 
   buildCanceledReason() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [        Divider(color: Colors.black.withOpacity(.1), thickness: .5,),
-
-
-        Text("Cancel Reason",style: TextStyle(
-            fontWeight: FontWeight.w700,
-            fontSize: 18.sp
-        ),),
-        Text("Customer has canceled the Booking.",style: TextStyle(
-            fontWeight: FontWeight.w400,
-            color: Color(0xFFFF2021),
-            fontSize: 12.sp
-        ),).marginSymmetric(vertical: 5.h),Text('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tempor turpis quis ex eleifend, eget tempor diam ultricies. Nullam eu velit nec justo vestibulum aliquam. Duis auctor diam eu elit consequat, vel dapibus purus consequat.',style: TextStyle(
-            fontSize: 12.sp,
-            fontWeight: FontWeight.w500,
-            color: Color(0xFF414141)
-        ),)
-
+      children: [
+        Divider(
+          color: Colors.black.withOpacity(.1),
+          thickness: .5,
+        ),
+        Text(
+          "Cancel Reason",
+          style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18.sp),
+        ),
+        Text(
+          "Customer has canceled the Booking.",
+          style: TextStyle(
+              fontWeight: FontWeight.w400,
+              color: Color(0xFFFF2021),
+              fontSize: 12.sp),
+        ).marginSymmetric(vertical: 5.h),
+        Text(
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tempor turpis quis ex eleifend, eget tempor diam ultricies. Nullam eu velit nec justo vestibulum aliquam. Duis auctor diam eu elit consequat, vel dapibus purus consequat.',
+          style: TextStyle(
+              fontSize: 12.sp,
+              fontWeight: FontWeight.w500,
+              color: Color(0xFF414141)),
+        )
       ],
     );
   }
+
+  ScreenHostBookingDetail({
+    required this.booking,
+    required this.user,
+    required this.vehicle,
+  });
 }

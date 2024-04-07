@@ -1,3 +1,7 @@
+import 'package:careno/constant/firebase_utils.dart';
+import 'package:careno/constant/helpers.dart';
+import 'package:careno/models/booking.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -67,11 +71,25 @@ class LayoutUserBooking extends StatelessWidget {
             ),
           ),
         ),
-        body: TabBarView(children: [
-          LayoutPendingBooking(),
-          LayoutActiveBooking  (),
-          LayoutCompletedBooking(),
-        ],),
+        body: StreamBuilder<QuerySnapshot>(
+          stream: bookingsRef.where("userId",isEqualTo: FirebaseUtils.myId).snapshots(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState==ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator(),);
+            }
+
+            var bookingsList=snapshot.data!.docs.map((e) => Booking.fromMap(e.data() as Map<String,dynamic>)).toList();
+
+            var activeBooking=bookingsList.where((element) => element.bookingStatus=="In progress").toList();
+            var completedBooking=bookingsList.where((element) => element.bookingStatus=="Completed"||element.bookingStatus=="Canceled").toList();
+            var pendingBooking=bookingsList.where((element) => element.bookingStatus=="Request Pending"||element.bookingStatus=="Payment Pending").toList();
+            return TabBarView(children: [
+              LayoutPendingBooking(pendingList:pendingBooking),
+              LayoutActiveBooking  (activeList:activeBooking),
+              LayoutCompletedBooking(completedList:completedBooking),
+            ],);
+          }
+        ),
       ),
     );
   }

@@ -287,10 +287,11 @@ class ScreenCompleteProfile extends StatelessWidget {
                                     }).marginSymmetric(
                                         horizontal: 12.w, vertical: 8.h),
                                     CustomTextField(
+
                                       // controller: controller.controllerLocation.value,
                                       text: controller.address.value,
                                       padding:
-                                          EdgeInsets.only(left: 18.w, top: 1.h),
+                                          EdgeInsets.only(left: 18.w, top: 10.h),
                                       hint: 'Select Address again',
                                       // Use the address from the snapshot
                                       hintColor:

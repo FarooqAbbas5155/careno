@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:careno/constant/helpers.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -16,14 +14,14 @@ class ControllerHostAddVechicle extends GetxController {
   Rx<TextEditingController> vehicleSeats = TextEditingController().obs;
   Rx<TextEditingController> vehicleNumberPlate = TextEditingController().obs;
   Rx<TextEditingController> vehicleColor = TextEditingController().obs;
-  Rx<TextEditingController> vehicleLicenseExpiryDate = TextEditingController().obs;
+  Rx<TextEditingController> vehicleLicenseExpiryDate =
+      TextEditingController().obs;
   Rx<TextEditingController> vehiclePerDayRent = TextEditingController().obs;
   Rx<TextEditingController> vehiclePerHourRent = TextEditingController().obs;
   Rx<TextEditingController> vehicleDescription = TextEditingController().obs;
   RxDouble latitude = 0.0.obs;
   RxDouble longitude = 0.0.obs;
   RxString address = ''.obs;
-
 
   RxString vehiclePath = "".obs;
   RxString vehicleRightSidePaths = "".obs;
@@ -59,7 +57,7 @@ class ControllerHostAddVechicle extends GetxController {
         selectCategory.value.isEmpty ||
         selectFuelType.value.isEmpty ||
         address.value.isEmpty ||
-        vehicleDescription.value.text.isEmpty||
+        vehicleDescription.value.text.isEmpty ||
         selectTransmission.value.isEmpty) {
       response = "All Fields Required";
     } else {
@@ -81,32 +79,42 @@ class ControllerHostAddVechicle extends GetxController {
       String vehicleRegistrationProofPathUrl = await FirebaseUtils.uploadImage(
           vehicleRegistrationProofPath.value,
           "Host/addVehicle/${userId}/${id}/image/vehicleRegistrationProofPath");
-      String vehicleRearPathsUrl = await FirebaseUtils.uploadImage(vehicleRearPaths.value, "Host/addVehicle/${userId}/${id}/image/vehicleRearPaths");
-      imagesUrl.value = await FirebaseUtils.uploadMultipleImage(vehicleMore.value, "Host/addVehicle/${userId}/${id}/image/imageList", extension: "png",);
-
+      String vehicleRearPathsUrl = await FirebaseUtils.uploadImage(
+          vehicleRearPaths.value,
+          "Host/addVehicle/${userId}/${id}/image/vehicleRearPaths");
+      imagesUrl.value = await FirebaseUtils.uploadMultipleImage(
+        vehicleMore.value,
+        "Host/addVehicle/${userId}/${id}/image/imageList",
+        extension: "png",
+      );
 
       AddHostVehicle addHostVehicle = AddHostVehicle(
-          hostId: userId,
-          address: address.value,
-          vehicleId: id.toString(),
-          vehicleImageComplete: vehiclePathUrl,
-          vehicleImageNumberPlate: vehicleNumberPlatePathUrl,
-          vehicleImageRightSide: vehicleRightSidePathsUrl,
-          vehicleImageRear: vehicleRearPathsUrl,
-          vehicleImageInterior: vehicleInteriorPathsUrl,
-          vehicleModel: vehicleModel.value.text.trim(),
-          vehicleSeats: vehicleSeats.value.text.trim(),
-          vehicleCategory: selectCategory.value,
-          vehicleYear: vehicleYear.value.text.trim(),
-          vehicleTransmission: selectTransmission.value,
-          vehicleNumberPlate: vehicleNumberPlate.value.text.trim(),
-          vehicleColor: vehicleColor.value.text.trim(),
-          vehicleLicenseExpiryDate: vehicleLicenseExpiryDate.value.text.trim(),
-          vehiclePerDayRent: vehiclePerDayRent.value.text.trim(),
-          vehiclePerHourRent: vehiclePerHourRent.value.text.trim(),
-          vehicleRegistrationImage: vehicleRegistrationProofPathUrl,
-          status:"Pending",
-          rating: 0.0, latitude: latitude.value,longitude: longitude.value, vehicleFuelType: selectFuelType.value, imagesUrl: imagesUrl.value, vehicleDescription: vehicleDescription.value.text.trim(),
+        hostId: userId,
+        address: address.value,
+        vehicleId: id.toString(),
+        vehicleImageComplete: vehiclePathUrl,
+        vehicleImageNumberPlate: vehicleNumberPlatePathUrl,
+        vehicleImageRightSide: vehicleRightSidePathsUrl,
+        vehicleImageRear: vehicleRearPathsUrl,
+        vehicleImageInterior: vehicleInteriorPathsUrl,
+        vehicleModel: vehicleModel.value.text.trim(),
+        vehicleSeats: vehicleSeats.value.text.trim(),
+        vehicleCategory: selectCategory.value,
+        vehicleYear: vehicleYear.value.text.trim(),
+        vehicleTransmission: selectTransmission.value,
+        vehicleNumberPlate: vehicleNumberPlate.value.text.trim(),
+        vehicleColor: vehicleColor.value.text.trim(),
+        vehicleLicenseExpiryDate: vehicleLicenseExpiryDate.value.text.trim(),
+        vehiclePerDayRent: vehiclePerDayRent.value.text.trim(),
+        vehiclePerHourRent: vehiclePerHourRent.value.text.trim(),
+        vehicleRegistrationImage: vehicleRegistrationProofPathUrl,
+        status: "Pending",
+        rating: 0.0,
+        latitude: latitude.value,
+        longitude: longitude.value,
+        vehicleFuelType: selectFuelType.value,
+        imagesUrl: imagesUrl.value,
+        vehicleDescription: vehicleDescription.value.text.trim(),
       );
       await addVehicleRef
           .doc(id.toString())

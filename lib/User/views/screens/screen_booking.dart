@@ -215,9 +215,9 @@ class ScreenBooking extends StatelessWidget {
                     value: controller.dates,
                     onValueChanged: (dates) {
                       controller.dates = dates;
-                      controller.bookingStartDate.value = dates[0];
+                      controller.bookingStartDate.value = controller.dates[0];
                       // controller.bookingPrice.value = double.tryParse(controller.priceController.text)!;
-                      controller.bookingEndDate.value = dates[1];
+                      controller.bookingEndDate.value = controller.dates[1];
                       int difference = dates[1]!.difference(dates[0]!).inDays;
                       print("difference  ${difference}");
                       controller.price.value = double.tryParse("${addHostVehicle.vehiclePerDayRent}")! * difference;

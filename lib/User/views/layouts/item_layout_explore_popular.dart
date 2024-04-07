@@ -60,7 +60,7 @@ AddHostVehicle? addHostVehicle;
                        children: [
                          Icon(Icons.star,color: AppColors.starColor,),
                          Text(addHostVehicle!.rating.toString(),style: TextStyle(color: Colors.black,fontSize: 11.sp,fontFamily:"UrbanistBold" ,fontWeight: FontWeight.w600),),
-                         Text("(528)",style: TextStyle(color: Color(0xffAAAAAA),fontSize: 11.sp,fontFamily:"Urbanist" ,fontWeight: FontWeight.w600),).marginOnly(left: 4.w),
+                         Text("(0)",style: TextStyle(color: Color(0xffAAAAAA),fontSize: 11.sp,fontFamily:"Urbanist" ,fontWeight: FontWeight.w600),).marginOnly(left: 4.w),
                        ],
                      ),
                    ],

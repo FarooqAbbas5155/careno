@@ -27,6 +27,7 @@ CollectionReference categoryRef = dbInstance.collection("categories");
 CollectionReference addVehicleRef = dbInstance.collection("vehicles");
 CollectionReference bookingsRef = dbInstance.collection("bookings");
 CollectionReference reviewRef = dbInstance.collection("reviews");
+CollectionReference notificationRef = dbInstance.collection("notifications");
 
 Map<String, User> _allUsersMap = {};
 Map<String, Category> _allCategoryMap = {};
@@ -107,7 +108,7 @@ User defaultUser = User(
   timeStamp: DateTime.now().millisecondsSinceEpoch,
   isVerified: false,
   isBlocked: false,
-  status: '',
+  status: '', address: '',
 );
 
 Color primaryColor = Color(0xff4C0AE1);
@@ -156,6 +157,27 @@ Future<FilePickerResult?> PickFile(List<String> type) async {
 
 String dateFormat(DateTime dateTime,) {
   // Use DateFormat class from intl package to format the date
-  final formatter = DateFormat('d MMMM yyyy');
-  return formatter.format(dateTime);
+  DateFormat dateFormat = DateFormat.yMMMMd('en_US');
+  return dateFormat.format(dateTime);
+}
+String formatDateRange(DateTime startDate, DateTime endDate) {
+  // Format the start date and end date
+  DateFormat dateFormat = DateFormat.yMMMMd('en_US');
+
+  String formattedStartDate = dateFormat.format(startDate);
+  String formattedEndDate = dateFormat.format(endDate);
+
+  // Construct the formatted date range string
+  return '$formattedStartDate - $formattedEndDate';
+}
+String formatTime(int hour24) {
+
+  // Create a DateTime object with the given hour in 24-hour format
+  DateTime dateTime = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, hour24);
+
+  // Format the DateTime object using DateFormat to convert to 12-hour format with AM/PM
+  DateFormat dateFormat = DateFormat('h:mm a'); // 'h:mm a' for 12-hour format with AM/PM
+  String formattedTime = dateFormat.format(dateTime);
+
+  return formattedTime;
 }

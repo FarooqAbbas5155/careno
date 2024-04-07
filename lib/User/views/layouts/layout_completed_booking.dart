@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 
+import '../../../models/booking.dart';
 import 'item_user_booking.dart';
 
 class LayoutCompletedBooking extends StatelessWidget {
-  const LayoutCompletedBooking({Key? key}) : super(key: key);
+  List<Booking> completedList;
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          ItemUserBooking(status: 'Completed',),
-          ItemUserBooking(status: 'Canceled', ),
-          ItemUserBooking(status: 'Completed',),
-          ItemUserBooking(status: 'Completed',),
-        ],
-      ),
-    );
+    return completedList.isNotEmpty?ListView.builder(
+      itemCount: completedList.length,
+      itemBuilder: (BuildContext context, int index) {
+      return ItemUserBooking(booking: completedList[index]);
+    },):Center(child: Text("No Completed Booking Yet"),);
   }
+
+  LayoutCompletedBooking({
+    required this.completedList,
+  });
 }

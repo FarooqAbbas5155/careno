@@ -2,8 +2,13 @@ import 'package:careno/Host/Views/Layouts/layout_host_active_booking.dart';
 import 'package:careno/Host/Views/Layouts/layout_host_completed_booking.dart';
 import 'package:careno/Host/Views/Layouts/layout_host_pending_booking.dart';
 import 'package:careno/constant/colors.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../../../constant/firebase_utils.dart';
+import '../../../constant/helpers.dart';
+import '../../../models/booking.dart';
 
 class LayoutHostBooking extends StatelessWidget {
 
@@ -68,11 +73,25 @@ class LayoutHostBooking extends StatelessWidget {
             ),
           ),
         ),
-        body: TabBarView(children: [
-          LayoutHostPendingBooking(),
-          LayoutHostActiveBooking(),
-          LayoutHostCompletedBooking(),
-        ],),
+        body: StreamBuilder<QuerySnapshot>(
+            stream: bookingsRef.where("hostId",isEqualTo: FirebaseUtils.myId).snapshots(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState==ConnectionState.waiting) {
+                return Center(child: CircularProgressIndicator(),);
+              }
+
+              var bookingsList=snapshot.data!.docs.map((e) => Booking.fromMap(e.data() as Map<String,dynamic>)).toList();
+
+              var activeBooking=bookingsList.where((element) => element.bookingStatus=="In progress").toList();
+              var completedBooking=bookingsList.where((element) => element.bookingStatus=="Completed"||element.bookingStatus=="Canceled").toList();
+              var pendingBooking=bookingsList.where((element) => element.bookingStatus=="Request Pending"||element.bookingStatus=="Payment Pending").toList();
+              return TabBarView(children: [
+                LayoutHostPendingBooking(pendingList:pendingBooking),
+                LayoutHostActiveBooking (activeList:activeBooking),
+                LayoutHostCompletedBooking(completedList:completedBooking),
+              ],);
+            }
+        ),
       ),
     );
   }

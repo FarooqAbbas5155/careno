@@ -20,6 +20,7 @@ class ScreenHostVehicleMyDetail extends StatelessWidget {
       addHostVehicle.vehicleImageNumberPlate,
       ...addHostVehicle.imagesUrl
     ];
+
     print("addHostVehicle.imagesUrl ${addHostVehicle.imagesUrl.length}");
     return SafeArea(
       child: Scaffold(

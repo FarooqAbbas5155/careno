@@ -109,7 +109,7 @@ class PhoneController extends GetxController {
       notificationToken: '',
       timeStamp: DateTime.now().millisecondsSinceEpoch,
       isVerified: false,
-      isBlocked: false, status: '',
+      isBlocked: false, status: '', address: '',
     );
     await await setDatabase(user);
     //
