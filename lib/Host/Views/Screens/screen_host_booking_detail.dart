@@ -552,7 +552,7 @@ class ScreenHostBookingDetail extends StatelessWidget {
                               fontWeight: FontWeight.w700, fontSize: 14.sp),
                         ),
                         Text(
-                          vehicle.address,
+                          user.address,
                           style: TextStyle(
                               fontFamily: "Nunito",
                               color: AppColors.appPrimaryColor,

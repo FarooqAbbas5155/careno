@@ -25,7 +25,7 @@ class ItemUserList extends StatelessWidget {
 
     return GestureDetector(
       onTap: (){
-        Get.to(ScreenUserChat(user: user,counter: counter,chatRoomId: roomId,timeStamp: timestamp,userblock: userBlock,));
+        Get.to(ScreenUserChat(user: user,counter: counter,chatRoomId: roomId,timeStamp: timestamp,));
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,

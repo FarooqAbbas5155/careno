@@ -4,6 +4,7 @@ import 'package:careno/User/views/screens/screen_booking.dart';
 import 'package:careno/User/views/screens/screen_user_chat.dart';
 import 'package:careno/constant/colors.dart';
 import 'package:careno/constant/helpers.dart';
+import 'package:careno/controllers/vehicle_controller.dart';
 import 'package:careno/models/add_host_vehicle.dart';
 import 'package:careno/models/rating.dart';
 import 'package:careno/widgets/custom_button.dart';
@@ -15,6 +16,7 @@ import '../layouts/item_screen_car_details.dart';
 
 class ScreenCarDetails extends StatelessWidget {
   AddHostVehicle? addHostVehicle;
+  VehicleController vehicleController = Get.put(VehicleController());
 
   // List<String> imagesList=[
   //   "assets/images/image.png",
@@ -23,8 +25,10 @@ class ScreenCarDetails extends StatelessWidget {
   //   "assets/images/image3.png",
   //   "assets/images/image4.png",
   // ];
+
   @override
   Widget build(BuildContext context) {
+    vehicleController.checkCondition(addHostVehicle!);
     List<String> imageUrl = [
       addHostVehicle!.vehicleImageComplete,
       addHostVehicle!.vehicleImageInterior,
@@ -153,14 +157,35 @@ class ScreenCarDetails extends StatelessWidget {
                                         fontFamily: "UrbanistBold",
                                         fontWeight: FontWeight.w600),
                                   ),
-                                  Text(
-                                    "(0)",
-                                    style: TextStyle(
-                                        color: Colors.white.withOpacity(.8),
-                                        fontSize: 13.sp,
-                                        fontFamily: "Urbanist",
-                                        fontWeight: FontWeight.w600),
-                                  ).marginOnly(left: 4.w),
+                                  FutureBuilder(
+                                      future: addVehicleRef
+                                          .doc(addHostVehicle!.vehicleId)
+                                          .collection("views")
+                                          .get(),
+                                      builder: (context, snapshot) {
+                                        if (snapshot.connectionState ==
+                                            ConnectionState.waiting) {
+                                          return Center(
+                                              child: Text("...",
+                                                  style: TextStyle(
+                                                      color: AppColors
+                                                          .appPrimaryColor)));
+                                        }
+                                        var views = snapshot.data!.docs
+                                            .map((e) => addVehicleRef
+                                                .doc(addHostVehicle!.vehicleId)
+                                                .collection("views"))
+                                            .toList();
+                                        return Text(
+                                          "${views == null ? "(0)" : "(${views.length})"}",
+                                          style: TextStyle(
+                                              color:
+                                                  Colors.white.withOpacity(.8),
+                                              fontSize: 13.sp,
+                                              fontFamily: "Urbanist",
+                                              fontWeight: FontWeight.w600),
+                                        );
+                                      }).marginOnly(left: 4.w),
                                 ],
                               ),
                             ],
@@ -270,7 +295,9 @@ class ScreenCarDetails extends StatelessWidget {
                                   width: 150.w,
                                   title: "Book Now",
                                   onPressed: () {
-                                    Get.to(ScreenBooking(addHostVehicle: addHostVehicle!,));
+                                    Get.to(ScreenBooking(
+                                      addHostVehicle: addHostVehicle!,
+                                    ));
                                   }),
                               CustomButton(
                                   width: 150.w,

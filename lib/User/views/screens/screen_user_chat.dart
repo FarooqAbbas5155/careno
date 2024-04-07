@@ -29,7 +29,7 @@ class ScreenUserChat extends StatefulWidget {
   int? counter;
   String? chatRoomId;
   int? timeStamp;
-  bool? userblock;
+  // bool? userblock;
   @override
   State<ScreenUserChat> createState() => _ScreenUserChatState();
 
@@ -38,7 +38,7 @@ class ScreenUserChat extends StatefulWidget {
     this.counter,
     this.chatRoomId,
     this.timeStamp,
-    this.userblock,
+    // this.userblock,
   });
 }
 
@@ -50,6 +50,8 @@ HomeController homeController = Get.put(HomeController());
   var chatRoomId = "";
   // late Stream<DatabaseEvent> stream;
   bool isActive=false;
+  bool isBlocked = false;
+  String message = "";
   Stream<DatabaseEvent> stream = Stream.empty();
 RxList<LastMessage> rooms = RxList<LastMessage>([]);
 void listenToChatRooms() {
@@ -62,6 +64,9 @@ void listenToChatRooms() {
 }
   @override
   void initState() {
+    checkConditionBlockUser();
+    print("Blocked ${isBlocked}");
+    print("Blocked ${message}");
     listenToChatRooms();
     checkCondition().then((value) {
       stream = chatref
@@ -93,6 +98,54 @@ void listenToChatRooms() {
         .get();
     return exist.exists;
   }
+  Future<bool> checkUser2() async {
+    var exist = await usersRef.doc(FirebaseUtils.myId)
+        .collection('chats')
+        .doc("${FirebaseUtils.myId}_${widget.user!.uid}")
+        .get();
+    return exist.exists;
+  }
+Future<void> checkConditionBlockUser() async {
+  bool userExists = await checkUser();
+  bool userExists2 = await checkUser2();
+
+  print("UserExists 1: $userExists");
+  print("UserExists 2: $userExists2");
+
+  if (userExists) {
+    // Case 1: User exists with chat document using "${widget.user!.uid}_${FirebaseUtils.myId}"
+    var userDoc = await usersRef
+        .doc(FirebaseUtils.myId)
+        .collection('chats')
+        .doc("${widget.user!.uid}_${FirebaseUtils.myId}")
+        .get();
+
+    if (userDoc.exists) {
+      setState(() {
+        isBlocked = userDoc.data()?['isBlocked'] ?? false;
+        message = userDoc.data()?['chatRoomId'] ?? "ggg";
+      });
+    }
+  } else if (userExists2) {
+    // Case 2: User exists with chat document using "${FirebaseUtils.myId}_${widget.user!.uid}"
+    var userDoc = await usersRef
+        .doc(FirebaseUtils.myId)
+        .collection('chats')
+        .doc("${FirebaseUtils.myId}_${widget.user!.uid}")
+        .get();
+
+    if (userDoc.exists) {
+      setState(() {
+        isBlocked = userDoc.data()?['isBlocked'] ?? false;
+        message = userDoc.data()?['chatRoomId'] ?? "ggg";
+      });
+    }
+  } else {
+    // Handle case where neither userExists nor userExists2 is true
+    // You can add specific logic here if needed
+    print('User does not exist in either case');
+  }
+}
 
   Future<void> checkCondition() async {
     if (chatRoomId == '') {
@@ -177,11 +230,12 @@ void clearChat() {
 
   @override
   Widget build(BuildContext context) {
+
     DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(widget.user!.timeStamp);
     String formattedDateTime = DateFormat('hh:mm a').format(dateTime);
     return SafeArea(child: Scaffold(
       appBar: AppBar(
-        elevation: 3,
+        elevation: 1,
         leadingWidth: 75.w,
         leading: GestureDetector(
           onTap: (){
@@ -368,7 +422,7 @@ void clearChat() {
             ),
           ),
 
-          widget.userblock == false?Row(
+          isBlocked == false?Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Expanded(child: TextField(
@@ -387,7 +441,7 @@ void clearChat() {
                   filled: true,
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent),
-                    borderRadius: BorderRadius.circular(8.r),
+                    borderRadius: BorderRadius.circular(40.r),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent),

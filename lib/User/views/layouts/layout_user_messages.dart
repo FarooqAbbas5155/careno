@@ -151,8 +151,7 @@ class LayoutUserMessages extends StatelessWidget {
                                 ),
                               ),
                               builder: (context, snapshot) {
-                                User user = snapshot.connectionState == ConnectionState.waiting ? defaultUser
-                                    : snapshot.data!;
+                                User user = snapshot.connectionState == ConnectionState.waiting ? defaultUser : snapshot.data!;
                                 return ItemUserList(
                                   user: user,
                                   roomId: lastMessageObj.chatRoomId,

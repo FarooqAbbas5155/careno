@@ -60,7 +60,18 @@ AddHostVehicle? addHostVehicle;
                        children: [
                          Icon(Icons.star,color: AppColors.starColor,),
                          Text(addHostVehicle!.rating.toString(),style: TextStyle(color: Colors.black,fontSize: 11.sp,fontFamily:"UrbanistBold" ,fontWeight: FontWeight.w600),),
-                         Text("(0)",style: TextStyle(color: Color(0xffAAAAAA),fontSize: 11.sp,fontFamily:"Urbanist" ,fontWeight: FontWeight.w600),).marginOnly(left: 4.w),
+                         FutureBuilder(
+                             future: addVehicleRef.doc(addHostVehicle!.vehicleId).collection("views").get(),
+                             builder: (context, snapshot) {
+                               if (snapshot.connectionState == ConnectionState.waiting) {
+                                 return Center(child: Text("...",style: TextStyle(color: AppColors.appPrimaryColor)));
+                               }
+                               var views = snapshot.data!.docs.map((e) => addVehicleRef.doc(addHostVehicle!.vehicleId).collection("views")).toList();
+                             return Text(
+
+                               "${views == null?"(0)":"(${views.length})"}",style: TextStyle(color: Color(0xffAAAAAA),fontSize: 11.sp,fontFamily:"Urbanist" ,fontWeight: FontWeight.w600),).marginOnly(left: 4.w);
+                           }
+                         ),
                        ],
                      ),
                    ],

@@ -234,7 +234,6 @@ class ScreenHostAddVehicle extends StatelessWidget {
                     vertical: 8.h),
                 CustomTextField(
                   readOnly: controllerAddVehicle.showLoading.value,
-
                   controller: controllerAddVehicle.vehicleDescription.value,
                   hint: "About Vehicle",
 
