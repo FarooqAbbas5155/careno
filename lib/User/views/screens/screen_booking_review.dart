@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:careno/User/views/screens/screen_add_card.dart';
 import 'package:careno/User/views/screens/screen_user_home.dart';
 import 'package:careno/constant/colors.dart';
@@ -21,7 +19,7 @@ import '../../../constant/helpers.dart';
 class ScreenBookingReview extends StatelessWidget {
   AddHostVehicle addHostVehicle;
   BookingController controller = Get.put(BookingController());
-
+  var user;
   @override
   Widget build(BuildContext context) {
     var percentageValue = controller.price.value / 100 *
@@ -63,7 +61,7 @@ class ScreenBookingReview extends StatelessWidget {
                   strokeWidth: 1,
                 ),);
               }
-              var user = snapshot.data;
+               user = snapshot.data;
               return Container(
                 height: 640.h,
                 padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 6.h),
@@ -170,11 +168,8 @@ class ScreenBookingReview extends StatelessWidget {
                     // controller.bookingType.value == "Per Day" ?
                     Column(
                       children: [
-                        BookingSummary("Start Date", dateFormat(controller
-                            .bookingStartDate.value!)),
-                        BookingSummary("End Date", dateFormat(controller
-                            .bookingEndDate
-                            .value!)),
+                        BookingSummary("Start Date", dateFormat(controller.bookingStartDate.value!)),
+                        BookingSummary("End Date", dateFormat(controller.bookingEndDate.value!)),
                       ],
                     ),
                         // : BookingSummary("Start Date",
@@ -191,32 +186,37 @@ class ScreenBookingReview extends StatelessWidget {
 
                           Row(
                             children: [
-                              controller.bookingType.value == "Per hour" ? Text(
+                              // controller.bookingType.value == "Per hour" ?
+                              Text(
                                 "${controller.startTime.value.toStringAsFixed(
                                     0)}:00 ",
                                 style: TextStyle(color: Colors.black,
                                     fontSize: 16.sp,
                                     fontWeight: FontWeight.w600,
                                     fontFamily: "UrbanistBold"),
-                              ) : Text(
-                                "${controller.EndTimeDay1.value.toStringAsFixed(
-                                    0)}:00 ",
-                                style: TextStyle(color: Colors.black,
-                                    fontSize: 16.sp,
-                                    fontWeight: FontWeight.w600,
-                                    fontFamily: "UrbanistBold"),
-                              ),
-                              controller.bookingType.value == "Per hour" ? Text(
+                              ) ,
+                              //     :
+                              // Text(
+                              //   "${controller.EndTimeDay1.value.toStringAsFixed(
+                              //       0)}:00 ",
+                              //   style: TextStyle(color: Colors.black,
+                              //       fontSize: 16.sp,
+                              //       fontWeight: FontWeight.w600,
+                              //       fontFamily: "UrbanistBold"),
+                              // ),
+                              // controller.bookingType.value == "Per hour" ?
+                              Text(
                                 controller.startTime.value > 12 ? "PM" : "AM",
                                 style: TextStyle(color: Colors.black,
                                     fontSize: 16.sp,
                                     fontWeight: FontWeight.w600,
-                                    fontFamily: "UrbanistBold"),) : Text(
-                                controller.EndTimeDay1.value > 12 ? "PM" : "AM",
-                                style: TextStyle(color: Colors.black,
-                                    fontSize: 16.sp,
-                                    fontWeight: FontWeight.w600,
-                                    fontFamily: "UrbanistBold"),),
+                                    fontFamily: "UrbanistBold"),)
+                                //   : Text(
+                                // controller.EndTimeDay1.value > 12 ? "PM" : "AM",
+                                // style: TextStyle(color: Colors.black,
+                                //     fontSize: 16.sp,
+                                //     fontWeight: FontWeight.w600,
+                                //     fontFamily: "UrbanistBold"),),
 
                             ],
                           ),
@@ -235,32 +235,36 @@ class ScreenBookingReview extends StatelessWidget {
 
                           Row(
                             children: [
-                              controller.bookingType.value == "Per hour" ? Text(
+                              // controller.bookingType.value == "Per hour" ?
+                              Text(
                                 "${controller.endTime.value.toStringAsFixed(
                                     0)}:00 ",
                                 style: TextStyle(color: Colors.black,
                                     fontSize: 16.sp,
                                     fontWeight: FontWeight.w600,
                                     fontFamily: "UrbanistBold"),
-                              ) : Text(
-                                "${controller.EndTimeDay2.value.toStringAsFixed(
-                                    0)}:00 ",
-                                style: TextStyle(color: Colors.black,
-                                    fontSize: 16.sp,
-                                    fontWeight: FontWeight.w600,
-                                    fontFamily: "UrbanistBold"),
-                              ),
-                              controller.bookingType.value == "Per hour" ? Text(
-                                controller.endMinTime.value > 12 ? "PM" : "AM",
-                                style: TextStyle(color: Colors.black,
-                                    fontSize: 16.sp,
-                                    fontWeight: FontWeight.w600,
-                                    fontFamily: "UrbanistBold"),) : Text(
-                                controller.EndTimeDay2.value > 12 ? "PM" : "AM",
+                              ) ,
+                              //     : Text(
+                              //   "${controller.EndTimeDay2.value.toStringAsFixed(
+                              //       0)}:00 ",
+                              //   style: TextStyle(color: Colors.black,
+                              //       fontSize: 16.sp,
+                              //       fontWeight: FontWeight.w600,
+                              //       fontFamily: "UrbanistBold"),
+                              // ),
+                              // controller.bookingType.value == "Per hour" ?
+                              Text(
+                                controller.endTime.value > 12 ? "PM" : "AM",
                                 style: TextStyle(color: Colors.black,
                                     fontSize: 16.sp,
                                     fontWeight: FontWeight.w600,
                                     fontFamily: "UrbanistBold"),),
+                                //   : Text(
+                                // controller.EndTimeDay2.value > 12 ? "PM" : "AM",
+                                // style: TextStyle(color: Colors.black,
+                                //     fontSize: 16.sp,
+                                //     fontWeight: FontWeight.w600,
+                                //     fontFamily: "UrbanistBold"),),
 
                             ],
                           ),
@@ -307,35 +311,7 @@ class ScreenBookingReview extends StatelessWidget {
                     Center(
                         child: CustomButton(
                             title: "Add Payment Method", onPressed: () async {
-                          await PaymentsController2().makePayment(
-                              controller.TotalVehicleRent.value.round()
-                                  .toString(), "NOK",
-                              onSuccess: (infoData) {
-                                print(infoData);
-                              }, onError: (error) {
-                            return;
-                          }).then((value) async{
-                            int id = DateTime.now().millisecondsSinceEpoch;
-                            DateTime startTimeDate = DateTime(controller.bookingStartDate.value!.year,controller.bookingStartDate.value!.month,controller.bookingStartDate.value!.day);
-                            Booking booking = Booking(bookingId: id.toString(),
-                                vehicleId: addHostVehicle.vehicleId,
-                                userId: user!.uid,
-                                hostId: addHostVehicle.hostId,
-                                bookingStatus: "Pending",
-                                paymentStatus: "Booking",
-                                bookingType: "Booking",
-                                bookingStartDate:startTimeDate.millisecondsSinceEpoch ,
-                                bookingEndDate: controller.bookingType=="Per Day"?(controller.bookingEndDate.value!.millisecondsSinceEpoch):controller.selectDates[0]!.add(Duration(hours: controller.endTime.toInt()-controller.startTime.value.toInt())).millisecondsSinceEpoch,
-                                completed: false,
-                                startTime: controller.startTime.value.toInt(),
-                                EndTime: controller.endTime.value.toInt(),
-                                price: controller.price.value);
-                            await bookingsRef.doc(id.toString()).set(booking).then((value){
-                              showBottomSheet(context);
-                            });
-                          }).catchError((error){
-                            print(error.toString());
-                          });
+                        await  setBooking(context);
 
                           // Get.to(ScreenAddCard());
                         })).marginSymmetric(horizontal: 24.w, vertical: 30.h),
@@ -351,6 +327,37 @@ class ScreenBookingReview extends StatelessWidget {
             }),
       ),
     );
+  }
+  Future<void> setBooking (BuildContext context)async{
+    await PaymentsController2().makePayment(
+        controller.TotalVehicleRent.value.round()
+            .toString(), "NOK",
+        onSuccess: (infoData) {
+          print(infoData);
+        }, onError: (error) {
+      return;
+    }).then((value) async{
+      int id = DateTime.now().millisecondsSinceEpoch;
+      DateTime startTimeDate = DateTime(controller.bookingStartDate.value!.year,controller.bookingStartDate.value!.month,controller.bookingStartDate.value!.day);
+      Booking booking = Booking(bookingId: id.toString(),
+          vehicleId: addHostVehicle.vehicleId,
+          userId: user!.uid,
+          hostId: addHostVehicle.hostId,
+          bookingStatus: "Pending",
+          paymentStatus: controller.paymentType.value,
+          bookingType: controller.bookingType.value,
+          bookingStartDate:startTimeDate.millisecondsSinceEpoch ,
+          bookingEndDate: controller.bookingType=="Per Day"?(controller.bookingEndDate.value!.millisecondsSinceEpoch):controller.selectDates[0]!.add(Duration(hours: controller.endTime.toInt()-controller.startTime.value.toInt())).millisecondsSinceEpoch,
+          completed: false,
+          startTime: controller.startTime.value.toInt(),
+          EndTime: controller.endTime.value.toInt(),
+          price: controller.price.value);
+      await bookingsRef.doc(id.toString()).set(booking).then((value){
+        showBottomSheet(context);
+      });
+    }).catchError((error){
+      print(error.toString());
+    });
   }
 
   ScreenBookingReview({

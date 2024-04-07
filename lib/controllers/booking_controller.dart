@@ -13,9 +13,9 @@ class BookingController extends GetxController {
   RxDouble startTime=1.0.obs;
   RxDouble  hoursDifference = 0.0.obs;
   RxDouble StartMinTimeDay = 1.0.obs;
-  RxDouble EndTimeDay1 = 1.0.obs;
-  RxDouble EndMinTimeDay = 1.0.obs;
-  RxDouble EndTimeDay2 = 24.0.obs;
+  // RxDouble EndTimeDay1 = 1.0.obs;
+  // RxDouble EndMinTimeDay = 1.0.obs;
+  // RxDouble EndTimeDay2 = 24.0.obs;
   RxInt percentage = 15.obs;
   RxDouble TotalVehicleRent = 0.0.obs;
 
@@ -42,4 +42,7 @@ class BookingController extends GetxController {
     }
    hoursDifference.value =  hoursDifference.value;
   }
+
+
+
 }

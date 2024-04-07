@@ -288,16 +288,18 @@ class ScreenBooking extends StatelessWidget {
                           child: Obx(() {
                             return
                               Slider(
-                              min:controller.bookingType.value == "Per hour"? controller.MinTime.value:controller.StartMinTimeDay.value,
+                            min:     controller.MinTime.value,
+                              // min:controller.bookingType.value == "Per hour"? controller.MinTime.value:controller.StartMinTimeDay.value,
                               max: 24,
                               divisions: 23,
-                              value:controller.bookingType.value == "Per hour"? controller.startTime.value:controller.EndTimeDay1.value,
+                              value: controller.startTime.value,
+                              // value:controller.bookingType.value == "Per hour"? controller.startTime.value:controller.EndTimeDay1.value,
                               // Clamp value within range
                               onChanged: (value) {
 
                                 if (controller.bookingType.value=="Per day") {
-                                  controller.EndTimeDay1.value = value;
-                                  print(controller.EndTimeDay1.value.roundToDouble());
+                                  controller.startTime.value = value;
+                                  print(controller.startTime.value.roundToDouble());
                                   }
                                else{
                                   controller.startTime.value = value;
@@ -323,32 +325,48 @@ class ScreenBooking extends StatelessWidget {
                         Obx(() {
                           return Row(
                             children: [
-                              controller.bookingType.value == "Per hour"?Text(
+                              Text(
                                 "${controller.startTime.value.toStringAsFixed(
                                     0)}:00 ",
                                 style: TextStyle(
                                     fontWeight: FontWeight.w600,
                                     fontSize: 12.sp,
                                     color: Color(0xFF1A1B1B)),
-                              ):Text(
-                                "${controller.EndTimeDay1.value.toStringAsFixed(
-                                    0)}:00 ",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 12.sp,
-                                    color: Color(0xFF1A1B1B)),
                               ),
-                              controller.bookingType.value == "Per hour"?   Text(
+                              Text(
                                 controller.startTime.value>12?"PM":"AM",  style: TextStyle(
                                   fontWeight: FontWeight.w600,
                                   fontSize: 12.sp,
-                                  color: Color(0xFF1A1B1B)),):Text(
-                                controller.EndTimeDay1.value>12?"PM":"AM",  style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 12.sp,
                                   color: Color(0xFF1A1B1B)),),
-
-                            ],
+                              // controller.bookingType.value == "Per hour"?
+                              // Text(
+                              //   "${controller.startTime.value.toStringAsFixed(
+                              //       0)}:00 ",
+                              //   style: TextStyle(
+                              //       fontWeight: FontWeight.w600,
+                              //       fontSize: 12.sp,
+                              //       color: Color(0xFF1A1B1B)),
+                              // )
+                              //     :Text(
+                              //   "${controller.EndTimeDay1.value.toStringAsFixed(
+                              //       0)}:00 ",
+                              //   style: TextStyle(
+                              //       fontWeight: FontWeight.w600,
+                              //       fontSize: 12.sp,
+                              //       color: Color(0xFF1A1B1B)),
+                              // ),
+                              // controller.bookingType.value == "Per hour"?
+                              // Text(
+                              //   controller.startTime.value>12?"PM":"AM",  style: TextStyle(
+                              //     fontWeight: FontWeight.w600,
+                              //     fontSize: 12.sp,
+                              //     color: Color(0xFF1A1B1B)),)
+                              //     :Text(
+                              //   controller.EndTimeDay1.value>12?"PM":"AM",  style: TextStyle(
+                              //     fontWeight: FontWeight.w600,
+                              //     fontSize: 12.sp,
+                              //     color: Color(0xFF1A1B1B)),),
+                         ]
                           );
                         }),
                       ],
@@ -363,15 +381,17 @@ class ScreenBooking extends StatelessWidget {
                           child: Obx(() {
                             return
                               Slider(
-                              min: controller.bookingType.value == "Per hour"?controller.endMinTime.value:controller.EndMinTimeDay.value,
+                                min: controller.endMinTime.value,
+                              // min: controller.bookingType.value == "Per hour"?controller.endMinTime.value:controller.EndMinTimeDay.value,
                               max: 24,
                               divisions: 24,
-                              value:controller.bookingType.value == "Per hour"? controller.endTime.value:controller.EndTimeDay2.value,
+                              value: controller.endTime.value,
+                              // value:controller.bookingType.value == "Per hour"? controller.endTime.value:controller.EndTimeDay2.value,
                               onChanged: (value) {
                              // Reverse the value
                                 if (controller.bookingType.value == "Per day") {
-                                  controller.EndTimeDay2.value = value;
-                                  print(controller.EndTimeDay2.value.roundToDouble());
+                                  controller.endTime.value = value;
+                                  print(controller.endTime.value.roundToDouble());
                                   // Handle per day booking
                                 }
                                 else {
@@ -402,27 +422,41 @@ class ScreenBooking extends StatelessWidget {
                           return
                             Row(
                               children: [
-                                controller.bookingType.value == "Per hour"? Text(
-                                "${controller.endTime.value.toStringAsFixed(0)}:00 ",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 12.sp,
-                                    color: Color(0xFF1A1B1B)),
-                                                          ):Text(
-                                  "${controller.EndTimeDay2.value.toStringAsFixed(0)}:00 ",
+                                Text(
+                                  "${controller.endTime.value.toStringAsFixed(0)}:00 ",
                                   style: TextStyle(
                                       fontWeight: FontWeight.w600,
                                       fontSize: 12.sp,
                                       color: Color(0xFF1A1B1B)),
                                 ),
-                                controller.bookingType.value == "Per hour"?
                                 Text(controller.endTime.value>12?"PM":"AM",  style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 12.sp,
-                              color: Color(0xFF1A1B1B)),): Text(controller.EndTimeDay2.value>12?"PM":"AM",  style: TextStyle(
                                     fontWeight: FontWeight.w600,
                                     fontSize: 12.sp,
-                                    color: Color(0xFF1A1B1B)),)
+                                    color: Color(0xFF1A1B1B)),),
+                              //   controller.bookingType.value == "Per hour"?
+                              //   Text(
+                              //   "${controller.endTime.value.toStringAsFixed(0)}:00 ",
+                              //   style: TextStyle(
+                              //       fontWeight: FontWeight.w600,
+                              //       fontSize: 12.sp,
+                              //       color: Color(0xFF1A1B1B)),
+                              //                             )
+                              //       :Text(
+                              //     "${controller.EndTimeDay2.value.toStringAsFixed(0)}:00 ",
+                              //     style: TextStyle(
+                              //         fontWeight: FontWeight.w600,
+                              //         fontSize: 12.sp,
+                              //         color: Color(0xFF1A1B1B)),
+                              //   ),
+                              //   controller.bookingType.value == "Per hour"?
+                              //   Text(controller.endTime.value>12?"PM":"AM",  style: TextStyle(
+                              // fontWeight: FontWeight.w600,
+                              // fontSize: 12.sp,
+                              // color: Color(0xFF1A1B1B)),)
+                              //       : Text(controller.EndTimeDay2.value>12?"PM":"AM",  style: TextStyle(
+                              //       fontWeight: FontWeight.w600,
+                              //       fontSize: 12.sp,
+                              //       color: Color(0xFF1A1B1B)),)
 
                               ],
                             );
