@@ -30,7 +30,6 @@ class ScreenHostEditVehicle extends StatelessWidget {
     ControllerHostAddVechicle controllerAddVehicle = Get.put(
         ControllerHostAddVechicle());
     print(controllerAddVehicle.showLoading.value);
-    controllerAddVehicle.UpdateVehicle();
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
