@@ -2,13 +2,7 @@ import 'dart:io';
 
 import 'package:careno/Host/Views/Screens/screen_host_add_vehicle_location.dart';
 import 'package:careno/Host/Views/Screens/screen_host_home_page.dart';
-import 'package:careno/constant/helpers.dart';
-import 'package:careno/controllers/controller_host_add_vechicle.dart';
-import 'package:careno/models/categories.dart';
-import 'package:careno/widgets/custom_button.dart';
-import 'package:careno/widgets/custom_image.dart';
-import 'package:careno/widgets/custom_svg.dart';
-import 'package:careno/widgets/custom_textfiled.dart';
+import 'package:careno/models/add_host_vehicle.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
@@ -19,16 +13,24 @@ import 'package:image_picker/image_picker.dart';
 
 import '../../../constant/colors.dart';
 import '../../../constant/file_pick.dart';
-import '../../../constant/firebase_utils.dart';
+import '../../../constant/helpers.dart';
+import '../../../controllers/controller_host_add_vechicle.dart';
+import '../../../models/categories.dart';
+import '../../../widgets/custom_button.dart';
+import '../../../widgets/custom_image.dart';
+import '../../../widgets/custom_svg.dart';
+import '../../../widgets/custom_textfiled.dart';
 
-class ScreenHostAddVehicle extends StatelessWidget {
-  const ScreenHostAddVehicle({Key? key}) : super(key: key);
+class ScreenHostEditVehicle extends StatelessWidget {
+  AddHostVehicle addHostVehicle;
 
-  @override
+@override
   Widget build(BuildContext context) {
-    ControllerHostAddVechicle controllerAddVehicle = Get.put(ControllerHostAddVechicle());
+
+    ControllerHostAddVechicle controllerAddVehicle = Get.put(
+        ControllerHostAddVechicle());
     print(controllerAddVehicle.showLoading.value);
-    // controllerAddVehicle.showLoading.value = false;
+    controllerAddVehicle.UpdateVehicle();
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -59,40 +61,50 @@ class ScreenHostAddVehicle extends StatelessWidget {
                         controllerAddVehicle.vehiclePath.value =
                         await FilePick().pickImage(ImageSource.gallery);
                       }, "Vehicle Image must be visible in image",
-                          RxString((controllerAddVehicle.vehiclePath
-                              .value)));
+                          RxString(controllerAddVehicle.vehiclePath.value),
+                        "${addHostVehicle.vehicleImageComplete}",
+                      );
+                 // RxString for local image path
+
                     }),
                     Obx(() {
                       return addVehicle(() async {
                         controllerAddVehicle.vehicleNumberPlatePath.value =
                         await FilePick().pickImage(ImageSource.gallery);
                       }, "Car plate number must visible in image",
-                          RxString((controllerAddVehicle.vehicleNumberPlatePath
-                              .value)));
+                          // RxString for local image path
+                          RxString(controllerAddVehicle.vehicleNumberPlatePath.value),
+                        "${addHostVehicle.vehicleImageNumberPlate}",
+                      );
+
+                      // RxString(("${controllerAddVehicle.vehicleNumberPlatePath.value.isEmpty?NetworkImage(addHostVehicle.vehicleImageNumberPlate):controllerAddVehicle.vehicleNumberPlate.value}")));
                     }),
                     Obx(() {
                       return addVehicle(() async {
                         controllerAddVehicle.vehicleRightSidePaths.value =
                         await FilePick().pickImage(ImageSource.gallery);
                       }, "Capture vehicle's right side in the image",
-                          RxString((controllerAddVehicle.vehicleRightSidePaths
-                              .value)));
+                        RxString(controllerAddVehicle.vehicleRightSidePaths.value),
+                        "${addHostVehicle.vehicleImageRightSide}",
+                      );
                     }),
                     Obx(() {
                       return addVehicle(() async {
                         controllerAddVehicle.vehicleRearPaths.value =
                         await FilePick().pickImage(ImageSource.gallery);
                       }, "Include the rear, with the rear plate",
-                          RxString((controllerAddVehicle.vehicleRearPaths
-                              .value)));
+                        RxString(controllerAddVehicle.vehicleRearPaths.value),
+                        "${addHostVehicle.vehicleImageRear}",
+                      );
                     }),
                     Obx(() {
                       return addVehicle(() async {
                         controllerAddVehicle.vehicleInteriorPaths.value =
                         await FilePick().pickImage(ImageSource.gallery);
                       }, "Provide car interior picture",
-                          RxString((controllerAddVehicle.vehicleInteriorPaths
-                              .value)));
+                        RxString(controllerAddVehicle.vehicleInteriorPaths.value),
+                        "${addHostVehicle.vehicleImageInterior}",
+                      );
                     }),
                     addVehicle(() async {
                       var path = await PickFile([
@@ -101,37 +113,54 @@ class ScreenHostAddVehicle extends StatelessWidget {
                         'jpeg'
                       ]).then((value) {
                         controllerAddVehicle.vehicleMore.value =
-                            value!.paths
-                                .map((e) =>
-                                e
-                                    .toString())
-                                .toList();
-
+                            value!.paths.map((e) => e.toString()).toList();
                       });
                       controller.update();
                     }, "Add More Images",
-                        RxString(''))
+                        RxString(''),
+                      "${addHostVehicle.imagesUrl}",
+                    )
 
                   ],
                 ),
                 Obx(() {
-                  return (controllerAddVehicle.vehicleMore.value.isEmpty)?SizedBox():SizedBox(
+                  return (controllerAddVehicle.vehicleMore.value.isEmpty)
+                      ? SizedBox(
                     height: 90.h,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
-                      itemCount: controllerAddVehicle.vehicleMore.value.length,
+                      itemCount:addHostVehicle.imagesUrl.length,
                       itemBuilder: (BuildContext context, int index) {
+
                         return Container(
-                          margin: EdgeInsets.only(top: 10.h,right: 10.w),
+                          margin: EdgeInsets.only(top: 10.h, right: 10.w),
                           height: 89.h,
                           width: 92.w,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.r),
+                              borderRadius: BorderRadius.circular(10.r),
+                              image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: NetworkImage((addHostVehicle.imagesUrl[index])),
+                              ) ),);
+                      },),
+                  )
+                      : SizedBox(
+                    height: 90.h,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: controllerAddVehicle.vehicleMore.value == null?addHostVehicle.imagesUrl.length:controllerAddVehicle.vehicleMore.value.length,
+                      itemBuilder: (BuildContext context, int index) {
+
+                        return Container(
+                          margin: EdgeInsets.only(top: 10.h, right: 10.w),
+                          height: 89.h,
+                          width: 92.w,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10.r),
                               image: DecorationImage(
                                   fit: BoxFit.cover,
                                   image: FileImage(
-                                  File(controllerAddVehicle.vehicleMore
-                                      .value[index])))
+                                      File(controllerAddVehicle.vehicleMore.value[index])))
                           ),);
                       },),
                   );
@@ -145,24 +174,19 @@ class ScreenHostAddVehicle extends StatelessWidget {
                 ).marginSymmetric(vertical: 10.h),
                 CustomTextField(
                   controller: controllerAddVehicle.vehicleModel.value,
-                  hint: "Enter Model of Vehicle",
+                  text: addHostVehicle.vehicleModel,
                   readOnly: controllerAddVehicle.showLoading.value,
                 ).marginSymmetric(vertical: 8.h),
                 buildCategoryContainer(controllerAddVehicle, context)
                     .marginSymmetric(vertical: 10.h),
                 CustomTextField(
-                  readOnly: controllerAddVehicle.showLoading.value,
-
-
                   controller: controllerAddVehicle.vehicleYear.value,
-                  hint: "Enter Year of Vehicle",
+                  text: addHostVehicle.vehicleYear,
                   keyboardType: TextInputType.number,
                 ).marginSymmetric(vertical: 8.h),
                 CustomTextField(
-                  readOnly: controllerAddVehicle.showLoading.value,
-
                   controller: controllerAddVehicle.vehicleSeats.value,
-                  hint: "Number of Seats",
+                  text: addHostVehicle.vehicleSeats,
                   keyboardType: TextInputType.number,
                 ).marginSymmetric(vertical: 8.h),
                 buildTransmissionContainer(
@@ -170,39 +194,33 @@ class ScreenHostAddVehicle extends StatelessWidget {
                     .marginSymmetric(vertical: 10.h),
                 buildFuelContainer(controllerAddVehicle, context),
                 CustomTextField(
-                  readOnly: controllerAddVehicle.showLoading.value,
-
                   controller: controllerAddVehicle.vehicleNumberPlate.value,
-                  hint: "Vehicle Plate Number",
+                  text: addHostVehicle.vehicleNumberPlate,
                   keyboardType: TextInputType.name,
                 ).marginSymmetric(vertical: 8.h),
                 CustomTextField(
-                  readOnly: controllerAddVehicle.showLoading.value,
-
                   controller: controllerAddVehicle.vehicleColor.value,
-                  hint: "Enter Vehicle Color",
+                  text: addHostVehicle.vehicleColor,
                   keyboardType: TextInputType.name,
                 ).marginSymmetric(vertical: 8.h),
                 CustomTextField(
-                  readOnly: controllerAddVehicle.showLoading.value,
-
                   controller: controllerAddVehicle.vehicleLicenseExpiryDate
                       .value,
-                  hint: "Vehicle License Expiry Date",
+                  text: addHostVehicle.vehicleLicenseExpiryDate,
                   keyboardType: TextInputType.name,
                 ).marginSymmetric(vertical: 8.h),
                 CustomTextField(
                   readOnly: controllerAddVehicle.showLoading.value,
 
                   controller: controllerAddVehicle.vehiclePerDayRent.value,
-                  hint: "Per Day Rent \$",
+                  text: "Per Day Rent ${addHostVehicle.vehiclePerDayRent}",
                   keyboardType: TextInputType.number,
                 ).marginSymmetric(vertical: 8.h),
                 CustomTextField(
                   readOnly: controllerAddVehicle.showLoading.value,
 
                   controller: controllerAddVehicle.vehiclePerHourRent.value,
-                  hint: "Per Hours Rent \$",
+                  text: "Per Hours Rent ${addHostVehicle.vehiclePerHourRent}",
                   keyboardType: TextInputType.number,
                 ).marginSymmetric(vertical: 8.h),
                 // buildVehicleNumberPlate(controllerAddVehicle),
@@ -210,10 +228,10 @@ class ScreenHostAddVehicle extends StatelessWidget {
                 Obx(() {
                   return CustomTextField(
                     controller: TextEditingController(
-                        text: controllerAddVehicle.address.value),
-                    text: controllerAddVehicle.address.value,
+                        text: controllerAddVehicle.address.value
+                    ),
+                    text: controllerAddVehicle.address.value.isEmpty?addHostVehicle.address:controllerAddVehicle.address.value,
                     padding: EdgeInsets.only(left: 18.w, top: 1.h),
-                    hint: 'Add Vehicle Location',
                     // Use the address from the snapshot
                     hintColor:
                     Color(0xff94979F).withOpacity(.7),
@@ -233,9 +251,8 @@ class ScreenHostAddVehicle extends StatelessWidget {
                 }).marginSymmetric(
                     vertical: 8.h),
                 CustomTextField(
-                  readOnly: controllerAddVehicle.showLoading.value,
                   controller: controllerAddVehicle.vehicleDescription.value,
-                  hint: "About Vehicle",
+                  text: addHostVehicle.vehicleDescription,
 
                 ).marginSymmetric(vertical: 8.h),
 
@@ -245,18 +262,18 @@ class ScreenHostAddVehicle extends StatelessWidget {
                       title: 'Add',
                       isLoading: controllerAddVehicle.showLoading.value,
                       onPressed: () async {
-                        var response =
-                        await controllerAddVehicle.hostAddVehicle();
-                        if (response == "success") {
-                          Get.offAll(ScreenHostHomePage());
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text(
-                                  "Your Vehicle added Successfully")));
-                        }
-                        else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(response)));
-                        }
+                        // var response =
+                        // await controllerAddVehicle.hostAddVehicle();
+                        // if (response == "success") {
+                        //   Get.offAll(ScreenHostHomePage());
+                        //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        //       content: Text(
+                        //           "Your Vehicle added Successfully")));
+                        // }
+                        // else {
+                        //   ScaffoldMessenger.of(context).showSnackBar(
+                        //       SnackBar(content: Text(response)));
+                        // }
                       });
                 }).marginSymmetric(vertical: 20.h)
               ],
@@ -266,7 +283,6 @@ class ScreenHostAddVehicle extends StatelessWidget {
       ),
     );
   }
-
   Obx buildRegistrationProof(ControllerHostAddVechicle controllerAddVehicle) {
     return Obx(() {
       return GestureDetector(
@@ -283,29 +299,8 @@ class ScreenHostAddVehicle extends StatelessWidget {
           ),
           child: (controllerAddVehicle
               .vehicleRegistrationProofPath.value.isNotEmpty)
-              ? Image.file(File(controllerAddVehicle
-              .vehicleRegistrationProofPath.value))
-              : Column(
-            children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  CustomSvg(
-                    name: "car-insurance",
-                  ),
-                  Text(
-                    "Add vehicle\nregistration\nImage",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontFamily: "Nunito",
-                        fontWeight: FontWeight.w400,
-                        fontSize: 12.sp),
-                  )
-                ],
-              ),
-            ],
-          ),
+              ? Image.file(File(controllerAddVehicle.vehicleRegistrationProofPath.value))
+              : Center(child: Image.network(addHostVehicle.vehicleRegistrationImage)),
         ),
       );
     });
@@ -405,13 +400,13 @@ class ScreenHostAddVehicle extends StatelessWidget {
 
             var categories = snapshot.data!.docs.map((e) =>
                 Category.fromMap(e.data() as Map<String, dynamic>)).toList();
-            var categoryNameList = categories.map((e) => e.name).toList();
+            var name = categories.where((element) => element.id == addHostVehicle.vehicleCategory);
 
             return CustomTextField(
               padding: EdgeInsets.only(left: 18.w, top: 22.h),
               readOnly: true,
               hint: controllerAddVehicle.selectCategoryName.value.isEmpty
-                  ? "Select Category/Type"
+                  ? name.first.name
                   : controllerAddVehicle.selectCategoryName.value,
               hintColor: controllerAddVehicle.selectCategoryName.value.isEmpty
                   ? Color(0xff94979F)
@@ -456,7 +451,7 @@ class ScreenHostAddVehicle extends StatelessWidget {
         padding: EdgeInsets.only(left: 18.w, top: 18.h),
         readOnly: true,
         hint: controllerAddVehicle.selectTransmission.value.isEmpty
-            ? "Select Transmission"
+            ? addHostVehicle.vehicleTransmission
             : controllerAddVehicle.selectTransmission.value,
         hintColor:
         controllerAddVehicle.selectTransmission.value.isEmpty
@@ -489,8 +484,7 @@ class ScreenHostAddVehicle extends StatelessWidget {
       );
     });
   }
-
-  Widget addVehicle(VoidCallback onTap, String text, RxString imagePath) {
+  Widget addVehicle(VoidCallback onTap, String text, RxString imagePath, String networkImage) {
     return Obx(() {
       return GestureDetector(
         onTap: onTap,
@@ -521,24 +515,23 @@ class ScreenHostAddVehicle extends StatelessWidget {
               ).marginOnly(top: 10.h, right: 10.w),
             ),
           )
-              : Column(
-            children: [
-              Spacer(),
-              CustomSvg(
-                name: "camer-",
+              :  Container(
+            height: Get.height,
+            width: Get.width,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5.r
               ),
-              Spacer(),
-              Text(
-                text,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontWeight: FontWeight.w400,
-                  fontSize: 6.sp,
-                  fontFamily: "Nunito",
-                  color: Colors.black.withOpacity(.5),
-                ),
-              ).marginSymmetric(horizontal: 5.w, vertical: 8.h),
-            ],
+              image: DecorationImage(
+                image: NetworkImage(networkImage),
+                fit: BoxFit.fill,
+              ),
+            ),
+            child: Align(
+              alignment: Alignment.topRight,
+              child: CustomSvg(
+                name: "edit-car",
+              ).marginOnly(top: 10.h, right: 10.w),
+            ),
           ),
         ),
       );
@@ -552,7 +545,7 @@ class ScreenHostAddVehicle extends StatelessWidget {
         padding: EdgeInsets.only(left: 18.w, top: 18.h),
         readOnly: true,
         hint: controllerAddVehicle.selectFuelType.value.isEmpty
-            ? "Select Fuel Type"
+            ? addHostVehicle.vehicleFuelType
             : controllerAddVehicle.selectFuelType.value,
         hintColor: controllerAddVehicle.selectFuelType.value.isEmpty
             ? Color(0xff94979F)
@@ -655,4 +648,8 @@ class ScreenHostAddVehicle extends StatelessWidget {
       );
     });
   }
+
+  ScreenHostEditVehicle({
+    required this.addHostVehicle,
+  });
 }

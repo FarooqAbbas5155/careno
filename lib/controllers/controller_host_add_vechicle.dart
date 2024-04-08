@@ -121,6 +121,7 @@ class ControllerHostAddVechicle extends GetxController {
           .set(addHostVehicle.toMap())
           .then((value) {
         response = "success";
+        resetAllVehicleState();
         print(response);
         showLoading.value = false;
         Get.offAll(ScreenHostHomePage());
@@ -142,4 +143,42 @@ class ControllerHostAddVechicle extends GetxController {
 
     // Proceed with form submission or any other action since all fields are filled
   }
+
+
+  void resetAllVehicleState() {
+    vehicleModel.value.clear();
+    vehicleYear.value.clear();
+    vehicleSeats.value.clear();
+    vehicleNumberPlate.value.clear();
+    vehicleColor.value.clear();
+    vehicleLicenseExpiryDate.value.clear();
+    vehiclePerDayRent.value.clear();
+    vehiclePerHourRent.value.clear();
+    vehicleDescription.value.clear();
+    latitude.value = 0.0;
+    longitude.value = 0.0;
+    address.value = '';
+
+    vehiclePath.value = '';
+    vehicleRightSidePaths.value = '';
+    vehicleInteriorPaths.value = '';
+    vehicleMore.clear();
+    imagesUrl.clear();
+    vehicleRearPaths.value = '';
+    vehicleNumberPlatePath.value = '';
+    vehicleRegistrationProofPath.value = '';
+    selectCategory.value = '';
+    selectCategoryName.value = '';
+    selectFuelType.value = '';
+    selectTransmission.value = '';
+  }
+
+  Future<String> UpdateVehicle(String id)async{
+    await addVehicleRef.doc(id).update({
+
+
+    });
+    return response;
+  }
+
 }
