@@ -25,6 +25,7 @@ CollectionReference usersRef = dbInstance.collection("users");
 CollectionReference hostIdentityProofRef = dbInstance.collection("identies");
 CollectionReference categoryRef = dbInstance.collection("categories");
 CollectionReference addVehicleRef = dbInstance.collection("vehicles");
+CollectionReference viewsRef = dbInstance.collection("views");
 CollectionReference bookingsRef = dbInstance.collection("bookings");
 CollectionReference reviewRef = dbInstance.collection("reviews");
 CollectionReference notificationRef = dbInstance.collection("notifications");

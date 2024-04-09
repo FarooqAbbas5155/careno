@@ -37,11 +37,13 @@ class CustomTextField extends StatefulWidget {
   final InputBorderType? borderType;
   final EdgeInsetsGeometry? padding;
   final bool? obsercureText;
+  final double? height;
 
   CustomTextField(
       {this.hint,
       this.isPasswordField,
       this.obsercureText,
+      this.height,
       this.onChange,
       this.padding,
       this.keyboardType,
@@ -119,7 +121,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
   Widget build(BuildContext context) {
     return Container(
       // padding: EdgeInsets.only(top: 2.sp),
-      height: 55.h,
+      height: widget.height ?? 55.h,
       decoration: BoxDecoration(
           color: Color(0xffB0B0B0).withOpacity(.1),
           borderRadius: BorderRadius.circular(10),

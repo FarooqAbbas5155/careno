@@ -1,3 +1,4 @@
+
 import 'package:careno/constant/helpers.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -28,6 +29,8 @@ class ControllerHostAddVechicle extends GetxController {
   RxString vehicleInteriorPaths = "".obs;
   RxList<String> vehicleMore = RxList([]);
   RxList<String> imagesUrl = RxList([]);
+  RxList<String> uploadedimageUrl= RxList([]);
+  RxList<String> uploadedandimagesUrl= RxList([]);
   RxString vehicleRearPaths = "".obs;
   RxString vehicleNumberPlatePath = "".obs;
   RxString vehicleRegistrationProofPath = "".obs;
@@ -121,6 +124,7 @@ class ControllerHostAddVechicle extends GetxController {
           .set(addHostVehicle.toMap())
           .then((value) {
         response = "success";
+        resetAllVehicleState();
         print(response);
         showLoading.value = false;
         Get.offAll(ScreenHostHomePage());
@@ -142,4 +146,189 @@ class ControllerHostAddVechicle extends GetxController {
 
     // Proceed with form submission or any other action since all fields are filled
   }
+
+
+  void resetAllVehicleState() {
+    vehicleModel.value.clear();
+    vehicleYear.value.clear();
+    vehicleSeats.value.clear();
+    vehicleNumberPlate.value.clear();
+    vehicleColor.value.clear();
+    vehicleLicenseExpiryDate.value.clear();
+    vehiclePerDayRent.value.clear();
+    vehiclePerHourRent.value.clear();
+    vehicleDescription.value.clear();
+    latitude.value = 0.0;
+    longitude.value = 0.0;
+    address.value = '';
+
+    vehiclePath.value = '';
+    vehicleRightSidePaths.value = '';
+    vehicleInteriorPaths.value = '';
+    vehicleMore.clear();
+    imagesUrl.clear();
+    vehicleRearPaths.value = '';
+    vehicleNumberPlatePath.value = '';
+    vehicleRegistrationProofPath.value = '';
+    selectCategory.value = '';
+    selectCategoryName.value = '';
+    selectFuelType.value = '';
+    selectTransmission.value = '';
+  }
+
+  Future<String> UpdateVehicle(String id,hostId)async{
+    String _response = "";
+    print("vehiclePath.value   ${vehiclePath.value}");
+    if(vehiclePath.value.isNotEmpty){
+      showLoading.value =true;
+      String vehiclePathUrl = await FirebaseUtils.uploadImage(vehiclePath.value,
+          "User/Host/${hostId}/addVehicle/${id}/vehiclePath");
+
+      await addVehicleRef.doc(id).update({"vehicleImageComplete":vehiclePathUrl});
+      await _updateCommonData(id).then((value) {
+        showLoading.value =false;
+        _response = "success";
+
+      }).catchError((error){
+        print(error.toString());
+        showLoading.value = false;
+      });
+    }
+    else if (  vehicleRightSidePaths.value.isNotEmpty) {
+      showLoading.value =true;
+      String vehicleRightSidePathsUrl = await FirebaseUtils.uploadImage(
+          vehicleRightSidePaths.value,
+          "User/Host/${hostId}/addVehicle/${id}/vehicleRightSidePaths");
+      await addVehicleRef.doc(id).update({"vehicleImageRightSide":vehicleRightSidePathsUrl});
+      await _updateCommonData(id).then((value) {
+        showLoading.value =false;
+        _response = "success";
+
+      }).catchError((error){
+        print(error.toString());
+        showLoading.value = false;
+      });
+    }
+
+   else if (  vehicleInteriorPaths.value.isNotEmpty) {
+     showLoading.value =true;
+      String vehicleInteriorPathsUrl = await FirebaseUtils.uploadImage(
+          vehicleInteriorPaths.value,
+          "User/Host/${hostId}/addVehicle/${id}/vehicleInteriorPaths");
+
+
+      await addVehicleRef.doc(id).update({"vehicleImageComplete":vehicleInteriorPathsUrl});
+      await _updateCommonData(id).then((value) {
+        showLoading.value =false;
+        _response = "success";
+
+      }).catchError((error){
+        print(error.toString());
+        showLoading.value = false;
+      });
+    }
+
+   else if ( vehicleNumberPlatePath.value.isNotEmpty) {
+     showLoading.value =true;
+      String vehicleNumberPlatePathUrl = await FirebaseUtils.uploadImage(
+          vehicleNumberPlatePath.value,
+          "Host/addVehicle/${hostId}/${id}/image/vehicleNumberPlatePath");
+
+      await addVehicleRef.doc(id).update({"vehicleImageComplete":vehicleNumberPlatePathUrl});
+      await _updateCommonData(id).then((value) {
+        showLoading.value =false;
+        _response = "success";
+
+      }).catchError((error){
+        print(error.toString());
+        showLoading.value = false;
+      });
+    }
+    else if ( vehicleRegistrationProofPath.value.isNotEmpty) {
+      showLoading.value = true;
+      String vehicleRegistrationProofPathUrl = await FirebaseUtils.uploadImage(
+          vehicleNumberPlatePath.value,
+          "Host/addVehicle/${hostId}/${id}/image/vehicleNumberPlatePath");
+
+      await addVehicleRef.doc(id).update({"vehicleImageComplete":vehicleRegistrationProofPathUrl});
+      await _updateCommonData(id).then((value) {
+        showLoading.value =false;
+        _response = "success";
+
+      }).catchError((error){
+        print(error.toString());
+        showLoading.value = false;
+      });
+    }
+
+   else if ( vehicleRearPaths.value.isNotEmpty) {
+      showLoading.value =true;
+      String vehicleRearPathsUrl = await FirebaseUtils.uploadImage(
+          vehicleNumberPlatePath.value,
+          "Host/addVehicle/${hostId}/${id}/image/vehicleNumberPlatePath");
+
+      await addVehicleRef.doc(id).update({"vehicleImageComplete":vehicleRearPathsUrl});
+      await _updateCommonData(id).then((value){    showLoading.value =false;
+      _response = "success";
+
+      }).catchError((error){
+        print(error.toString());
+        showLoading.value = false;
+      });
+    }
+
+  else  if ( imagesUrl.value != null && imagesUrl.value.isNotEmpty) {
+      showLoading.value =true;
+      imagesUrl.value = await FirebaseUtils.uploadMultipleImage(vehicleMore.value, "Host/addVehicle/${hostId}/${id}/image/imageList", extension: "png",);
+      uploadedandimagesUrl.value = [
+        ...uploadedimageUrl.value,
+        ...imagesUrl.value,
+      ];
+
+      await addVehicleRef.doc(id).update({"imagesUrl":uploadedandimagesUrl.value});
+      await _updateCommonData(id).then((value) {
+        showLoading.value =false;
+        _response = "success";
+
+      }).catchError((error){
+        print(error.toString());
+        showLoading.value = false;
+      });
+
+    }
+  else{
+      showLoading.value =true;
+      await _updateCommonData(id).then((value){
+
+        showLoading.value =false;
+        _response = "success";
+
+      }).catchError((error){
+        print(error.toString());
+        showLoading.value = false;
+      });
+    }
+
+    return _response;
+  }
+  Future<void> _updateCommonData(String id)async{
+    await addVehicleRef.doc(id).update({
+    "vehicleModel":vehicleModel.value.text.trim(),
+    "address":address.value,
+    "vehicleCategory":selectCategoryName.value,
+    "vehicleYear":vehicleYear.value.text.trim(),
+    "vehicleSeats":vehicleSeats.value.text.trim(),
+    "vehicleTransmission":selectTransmission.value,
+    "vehicleFuelType":selectFuelType.value,
+    "vehicleNumberPlate":vehicleNumberPlate.value.text.trim(),
+    "vehicleColor":vehicleColor.value.text.trim(),
+    "vehicleLicenseExpiryDate":vehicleLicenseExpiryDate.value.text.trim(),
+    "vehiclePerDayRent":vehiclePerDayRent.value.text.trim(),
+    "vehiclePerHourRent":vehiclePerHourRent.value.text.trim(),
+    "vehicleDescription":vehicleDescription.value.text.trim(),
+    "latitude":latitude,
+    "longitude":longitude,
+    });
+  }
+
 }

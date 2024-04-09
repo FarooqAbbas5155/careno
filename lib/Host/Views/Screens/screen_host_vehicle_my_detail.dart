@@ -1,9 +1,15 @@
 import 'package:card_swiper/card_swiper.dart';
+import 'package:careno/Host/Views/Screens/screen_host_edit_vehicle.dart';
+import 'package:careno/constant/colors.dart';
+import 'package:careno/constant/helpers.dart';
 import 'package:careno/models/add_host_vehicle.dart';
 import 'package:careno/widgets/custom_button.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+
+import '../../../widgets/custom_svg.dart';
 
 class ScreenHostVehicleMyDetail extends StatelessWidget {
  AddHostVehicle addHostVehicle;
@@ -134,7 +140,9 @@ class ScreenHostVehicleMyDetail extends StatelessWidget {
                     fontSize: 15.sp,
                     fontWeight: FontWeight.w700,
                     color: Colors.white
-                  ),onPressed: (){})),
+                  ),onPressed: (){
+                        Get.to(ScreenHostEditVehicle(addHostVehicle: addHostVehicle,));
+                          })),
                   SizedBox(width: 10.w
                     ,),
                   Expanded(
@@ -144,7 +152,72 @@ class ScreenHostVehicleMyDetail extends StatelessWidget {
                     fontSize: 15.sp,
                     fontWeight: FontWeight.w700,
                     color: Colors.white
-                  ),onPressed: (){},
+                  ),onPressed: ()async{
+                          Get.defaultDialog(
+                              title: '',
+                              content: GestureDetector(
+                                onTap: () {
+                                  Get.back();
+                                },
+                                child: Align(
+                                  alignment: Alignment.topRight,
+                                  child: Container(
+                                      padding: EdgeInsets.all(12.sp),
+                                      margin: EdgeInsets.symmetric(horizontal:12.sp),
+                                      decoration: BoxDecoration(
+                                          color: Color(0xFFF0F0F0),
+                                          shape: BoxShape.circle
+                                      ),
+                                      child: Icon(Icons.clear,color: Colors.black,)),
+                                ),
+                              ),
+                              actions: [
+                                Column(
+                                  children: [
+                                    Container(
+                                      height: 55.h,
+                                      width: 55.w,
+                                      padding: EdgeInsets.all(12.sp),
+                                      decoration: BoxDecoration(
+                                          color: Color(0xFFF0F0F0),
+                                          borderRadius: BorderRadius.circular(20.r)),
+                                      child: Icon(Icons.delete_forever,color: Colors.red,)
+                                    ),
+                                    SizedBox(
+                                      height: 10.sp,
+                                    ),
+                                    Text(
+                                      "Delete",
+                                      style: TextStyle(color: Colors.black, fontSize: 22.sp, fontWeight: FontWeight.w700,fontFamily: "UrbanistBold",),
+                                    ),
+                                    SizedBox(
+                                      height: 13.sp,
+                                    ),
+                                    SizedBox(
+                                      height: 36.h,
+                                      width: 230.w,
+                                      child: Text(
+                                        textAlign: TextAlign.center,
+                                        "Are you sure you want to Delete Vehicel?",
+                                        style: TextStyle(color: Colors.black, fontSize: 15.sp, fontWeight: FontWeight.w600,fontFamily: "UrbanistBold",),
+                                      ),
+                                    ),
+                                    CustomButton(
+                                        color: Color(0xffeb141b),
+                                        width: 193.w,
+                                        title: "Yes, Delete",
+                                        onPressed: () async{
+                                          await deleteDirectory("Host/addVehicle/${addHostVehicle.hostId}/${addHostVehicle.vehicleId}/image").then((value) async {
+                                            await addVehicleRef.doc(addHostVehicle.vehicleId).delete();
+                                            Get.back();
+
+                                          }
+                                          );
+                                        }).marginSymmetric(vertical: 20.h)
+                                  ],
+                                )
+                              ]);
+                        },
                       color: Color(0xFFFE0000),
                       )),
                 ],
@@ -155,7 +228,33 @@ class ScreenHostVehicleMyDetail extends StatelessWidget {
         ),
       ),
     );
-  }
+  }Future<void> deleteDirectory(String path) async {
+   try {
+     // Get reference to the directory
+     Reference directoryRef = FirebaseStorage.instance.ref().child(path);
+
+     // List all items (files and subdirectories) in the directory
+     ListResult result = await directoryRef.listAll();
+
+     // Delete each item (file or subdirectory) recursively
+     for (Reference ref in result.items) {
+       if (ref.fullPath.endsWith('/')) {
+         // If the item is a subdirectory (ends with '/'), delete it recursively
+         await deleteDirectory(ref.fullPath);
+       } else {
+         // If the item is a file, delete it
+         await ref.delete();
+       }
+     }
+
+     // After deleting all items, delete the directory itself
+     await directoryRef.delete();
+
+     print('Directory $path and its contents deleted successfully.');
+   } catch (e) {
+     print('Error deleting directory $path: $e');
+   }
+ }
 
   Widget buildDetail(String title, String subtitle) {
     return Column(
