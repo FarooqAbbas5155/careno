@@ -2,7 +2,6 @@ import 'package:careno/AuthSection/screen_login.dart';
 import 'package:careno/AuthSection/screen_welcome.dart';
 import 'package:careno/Host/Views/Screens/screen_host_home_page.dart';
 import 'package:careno/User/views/screens/screen_user_home.dart';
-import 'package:careno/models/booking.dart';
 import 'package:careno/models/categories.dart';
 import 'package:careno/models/rating.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

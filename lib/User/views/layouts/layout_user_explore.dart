@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:careno/Host/Views/Screens/screen_host_notification.dart';
 import 'package:careno/User/views/screens/screen_search_filter.dart';
 import 'package:careno/constant/colors.dart';
@@ -5,10 +7,12 @@ import 'package:careno/constant/helpers.dart';
 import 'package:careno/controllers/home_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../screens/screen_filter.dart';
 import '../screens/screen_preview_category.dart';
@@ -23,10 +27,28 @@ class LayoutUserExplore extends StatefulWidget {
 
 class _LayoutUserExploreState extends State<LayoutUserExplore> {
   Rx<int> newValue = 0.obs;
+  HomeController controller = Get.put(HomeController());
+  String? setLocationOnMap;
+  static  CameraPosition _kGooglePlex = CameraPosition(
+    target: LatLng(37.42796133580664, -122.085749655962),
+    zoom: 14.4746,
+  );
+  GoogleMapController? mapController;
 
+
+  final Completer<GoogleMapController> _controller =
+  Completer<GoogleMapController>();
+  // var address = '';
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+      // initializeComponent();
+    });
+  }
   @override
   Widget build(BuildContext context) {
-    HomeController controller = Get.put(HomeController());
     print(controller.addhostvehicle.value.length);
     return SafeArea(
       child: Scaffold(
