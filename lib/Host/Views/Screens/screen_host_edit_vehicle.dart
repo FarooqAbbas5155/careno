@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'dart:io';
 
 import 'package:careno/Host/Views/Screens/screen_host_add_vehicle_location.dart';
@@ -26,10 +27,11 @@ class ScreenHostEditVehicle extends StatelessWidget {
 
 @override
   Widget build(BuildContext context) {
-
-    ControllerHostAddVechicle controllerAddVehicle = Get.put(
-        ControllerHostAddVechicle());
-    print(controllerAddVehicle.showLoading.value);
+    ControllerHostAddVechicle controllerAddVehicle = Get.put(ControllerHostAddVechicle());
+    controllerAddVehicle.selectFuelType.value = addHostVehicle.vehicleFuelType ?? "";
+    controllerAddVehicle.selectTransmission.value = addHostVehicle.vehicleTransmission ?? "";
+    controllerAddVehicle.selectCategory.value = addHostVehicle.vehicleCategory ?? "";
+    controllerAddVehicle.uploadedimageUrl.value = addHostVehicle.imagesUrl ?? [];
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -249,7 +251,11 @@ class ScreenHostEditVehicle extends StatelessWidget {
                   );
                 }).marginSymmetric(
                     vertical: 8.h),
+
                 CustomTextField(
+                  height: 160.h,
+                  maxLines: 6,
+                  minLines: 1,
                   controller: controllerAddVehicle.vehicleDescription.value,
                   text: addHostVehicle.vehicleDescription,
 
@@ -258,21 +264,22 @@ class ScreenHostEditVehicle extends StatelessWidget {
                 buildRegistrationProof(controllerAddVehicle),
                 Obx(() {
                   return CustomButton(
-                      title: 'Add',
+                      title: 'Update',
                       isLoading: controllerAddVehicle.showLoading.value,
                       onPressed: () async {
-                        // var response =
-                        // await controllerAddVehicle.hostAddVehicle();
-                        // if (response == "success") {
-                        //   Get.offAll(ScreenHostHomePage());
-                        //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        //       content: Text(
-                        //           "Your Vehicle added Successfully")));
-                        // }
-                        // else {
-                        //   ScaffoldMessenger.of(context).showSnackBar(
-                        //       SnackBar(content: Text(response)));
-                        // }
+                        var response =
+                        await controllerAddVehicle.UpdateVehicle(addHostVehicle.vehicleId,addHostVehicle.hostId);
+                        if (response == "success") {
+                          Get.back();
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text(
+                                  "Your Vehicle edit Successfully",style: TextStyle(color: Colors.white),)));
+                        }
+                        else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(response,style: TextStyle(color: Colors.white),)));
+                          print(response);
+                        }
                       });
                 }).marginSymmetric(vertical: 20.h)
               ],
