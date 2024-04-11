@@ -16,6 +16,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../screens/screen_filter.dart';
 import '../screens/screen_preview_category.dart';
+import '../screens/screen_search_result.dart';
 import 'item_layout_explore_image.dart';
 import 'item_layout_explore_popular.dart';
 import 'layout_vehicle_google_map.dart';
@@ -157,6 +158,7 @@ class _LayoutUserExploreState extends State<LayoutUserExplore> {
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(6.r)),
                           child: TextField(
+                            readOnly: true,
                             decoration: InputDecoration(
                               hintText: "Search for City, airport, or a hotel...",
                               hintStyle: TextStyle(
@@ -171,10 +173,15 @@ class _LayoutUserExploreState extends State<LayoutUserExplore> {
                               contentPadding: EdgeInsets.symmetric(vertical: 4),
                               border: InputBorder.none,
                             ),
+                            onTap:(){
+                              Get.to(ScreenSearchResult());
+
+                            } ,
                           ),
                         ),
                         GestureDetector(
                           onTap: () {
+
                             Get.to(ScreenFilter());
                           },
                           child: Container(

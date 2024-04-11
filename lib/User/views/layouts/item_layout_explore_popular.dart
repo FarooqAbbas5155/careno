@@ -1,7 +1,6 @@
 import 'package:careno/User/views/screens/screen_car_details.dart';
 import 'package:careno/constant/colors.dart';
 import 'package:careno/constant/helpers.dart';
-import 'package:careno/controllers/faveourite_controller.dart';
 import 'package:careno/interfaces/like_listener.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

@@ -126,12 +126,12 @@ class ScreenHostAddVehicle extends StatelessWidget {
                           height: 89.h,
                           width: 92.w,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.r),
+                              borderRadius: BorderRadius.circular(10.r),
                               image: DecorationImage(
                                   fit: BoxFit.cover,
                                   image: FileImage(
-                                  File(controllerAddVehicle.vehicleMore
-                                      .value[index])))
+                                      File(controllerAddVehicle.vehicleMore
+                                          .value[index])))
                           ),);
                       },),
                   );
@@ -144,7 +144,7 @@ class ScreenHostAddVehicle extends StatelessWidget {
                       fontWeight: FontWeight.w700, fontSize: 20.sp),
                 ).marginSymmetric(vertical: 10.h),
                 CustomTextField(
-                  controller: controllerAddVehicle.vehicleModel.value,
+                  controller: controllerAddVehicle.vehicleModel,
                   hint: "Enter Model of Vehicle",
                   readOnly: controllerAddVehicle.showLoading.value,
                 ).marginSymmetric(vertical: 8.h),
@@ -154,14 +154,14 @@ class ScreenHostAddVehicle extends StatelessWidget {
                   readOnly: controllerAddVehicle.showLoading.value,
 
 
-                  controller: controllerAddVehicle.vehicleYear.value,
+                  controller: controllerAddVehicle.vehicleYear,
                   hint: "Enter Year of Vehicle",
                   keyboardType: TextInputType.number,
                 ).marginSymmetric(vertical: 8.h),
                 CustomTextField(
                   readOnly: controllerAddVehicle.showLoading.value,
 
-                  controller: controllerAddVehicle.vehicleSeats.value,
+                  controller: controllerAddVehicle.vehicleSeats,
                   hint: "Number of Seats",
                   keyboardType: TextInputType.number,
                 ).marginSymmetric(vertical: 8.h),
@@ -172,14 +172,14 @@ class ScreenHostAddVehicle extends StatelessWidget {
                 CustomTextField(
                   readOnly: controllerAddVehicle.showLoading.value,
 
-                  controller: controllerAddVehicle.vehicleNumberPlate.value,
+                  controller: controllerAddVehicle.vehicleNumberPlate,
                   hint: "Vehicle Plate Number",
                   keyboardType: TextInputType.name,
                 ).marginSymmetric(vertical: 8.h),
                 CustomTextField(
                   readOnly: controllerAddVehicle.showLoading.value,
 
-                  controller: controllerAddVehicle.vehicleColor.value,
+                  controller: controllerAddVehicle.vehicleColor,
                   hint: "Enter Vehicle Color",
                   keyboardType: TextInputType.name,
                 ).marginSymmetric(vertical: 8.h),
@@ -187,21 +187,21 @@ class ScreenHostAddVehicle extends StatelessWidget {
                   readOnly: controllerAddVehicle.showLoading.value,
 
                   controller: controllerAddVehicle.vehicleLicenseExpiryDate
-                      .value,
+                  ,
                   hint: "Vehicle License Expiry Date",
                   keyboardType: TextInputType.name,
                 ).marginSymmetric(vertical: 8.h),
                 CustomTextField(
                   readOnly: controllerAddVehicle.showLoading.value,
 
-                  controller: controllerAddVehicle.vehiclePerDayRent.value,
+                  controller: controllerAddVehicle.vehiclePerDayRent,
                   hint: "Per Day Rent \$",
                   keyboardType: TextInputType.number,
                 ).marginSymmetric(vertical: 8.h),
                 CustomTextField(
                   readOnly: controllerAddVehicle.showLoading.value,
 
-                  controller: controllerAddVehicle.vehiclePerHourRent.value,
+                  controller: controllerAddVehicle.vehiclePerHourRent,
                   hint: "Per Hours Rent \$",
                   keyboardType: TextInputType.number,
                 ).marginSymmetric(vertical: 8.h),
@@ -234,7 +234,7 @@ class ScreenHostAddVehicle extends StatelessWidget {
                     vertical: 8.h),
                 CustomTextField(
                   readOnly: controllerAddVehicle.showLoading.value,
-                  controller: controllerAddVehicle.vehicleDescription.value,
+                  controller: controllerAddVehicle.vehicleDescription,
                   hint: "About Vehicle",
 
                 ).marginSymmetric(vertical: 8.h),

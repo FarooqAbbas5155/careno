@@ -1,3 +1,4 @@
+import 'dart:developer';
 
 import 'package:careno/constant/helpers.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -10,16 +11,20 @@ import '../constant/firebase_utils.dart';
 import '../models/add_host_vehicle.dart';
 
 class ControllerHostAddVechicle extends GetxController {
-  Rx<TextEditingController> vehicleModel = TextEditingController().obs;
-  Rx<TextEditingController> vehicleYear = TextEditingController().obs;
-  Rx<TextEditingController> vehicleSeats = TextEditingController().obs;
-  Rx<TextEditingController> vehicleNumberPlate = TextEditingController().obs;
-  Rx<TextEditingController> vehicleColor = TextEditingController().obs;
-  Rx<TextEditingController> vehicleLicenseExpiryDate =
-      TextEditingController().obs;
-  Rx<TextEditingController> vehiclePerDayRent = TextEditingController().obs;
-  Rx<TextEditingController> vehiclePerHourRent = TextEditingController().obs;
-  Rx<TextEditingController> vehicleDescription = TextEditingController().obs;
+  TextEditingController vehicleModel = TextEditingController();
+  TextEditingController vehicleYear = TextEditingController();
+  TextEditingController vehicleSeats = TextEditingController();
+  TextEditingController vehicleNumberPlate = TextEditingController();
+  TextEditingController vehicleColor = TextEditingController();
+  TextEditingController vehicleLicenseExpiryDate =
+  TextEditingController();
+  TextEditingController vehiclePerDayRent = TextEditingController();
+  TextEditingController vehiclePerHourRent = TextEditingController();
+  TextEditingController vehicleDescription = TextEditingController();
+  RxString search = "".obs;
+  Rx<TextEditingController> searchController = TextEditingController().obs;
+
+
   RxDouble latitude = 0.0.obs;
   RxDouble longitude = 0.0.obs;
   RxString address = ''.obs;
@@ -29,8 +34,8 @@ class ControllerHostAddVechicle extends GetxController {
   RxString vehicleInteriorPaths = "".obs;
   RxList<String> vehicleMore = RxList([]);
   RxList<String> imagesUrl = RxList([]);
-  RxList<String> uploadedimageUrl= RxList([]);
-  RxList<String> uploadedandimagesUrl= RxList([]);
+  RxList<String> uploadedimageUrl = RxList([]);
+  RxList<String> uploadedandimagesUrl = RxList([]);
   RxString vehicleRearPaths = "".obs;
   RxString vehicleNumberPlatePath = "".obs;
   RxString vehicleRegistrationProofPath = "".obs;
@@ -138,26 +143,26 @@ class ControllerHostAddVechicle extends GetxController {
     return response;
   }
 
-  void submitForm() {
-    // Check if any of the required fields are empty
+  ///Update
 
-    showLoading.value = false;
-    return;
-
-    // Proceed with form submission or any other action since all fields are filled
-  }
-
+  RxString vehicleImageCompleteUrl = ''.obs;
+  RxString vehicleImageNumberPlateUrl = ''.obs;
+  RxString vehicleImageRightSideUrl = ''.obs;
+  RxString vehicleImageRearUrl = ''.obs;
+  RxString vehicleImageInteriorUrl = ''.obs;
+  RxString vehicleRegistrationUrl = ''.obs;
+  // List<String> imagesUrls = [];
 
   void resetAllVehicleState() {
-    vehicleModel.value.clear();
-    vehicleYear.value.clear();
-    vehicleSeats.value.clear();
-    vehicleNumberPlate.value.clear();
-    vehicleColor.value.clear();
-    vehicleLicenseExpiryDate.value.clear();
-    vehiclePerDayRent.value.clear();
-    vehiclePerHourRent.value.clear();
-    vehicleDescription.value.clear();
+    vehicleModel.clear();
+    vehicleYear.clear();
+    vehicleSeats.clear();
+    vehicleNumberPlate.clear();
+    vehicleColor.clear();
+    vehicleLicenseExpiryDate.clear();
+    vehiclePerDayRent.clear();
+    vehiclePerHourRent.clear();
+    vehicleDescription.clear();
     latitude.value = 0.0;
     longitude.value = 0.0;
     address.value = '';
@@ -176,159 +181,116 @@ class ControllerHostAddVechicle extends GetxController {
     selectTransmission.value = '';
   }
 
-  Future<String> UpdateVehicle(String id,hostId)async{
+  Future<String> UpdateVehicle(AddHostVehicle _addHostVehicle) async {
     String _response = "";
-    print("vehiclePath.value   ${vehiclePath.value}");
-    if(vehiclePath.value.isNotEmpty){
-      showLoading.value =true;
-      String vehiclePathUrl = await FirebaseUtils.uploadImage(vehiclePath.value,
-          "User/Host/${hostId}/addVehicle/${id}/vehiclePath");
-
-      await addVehicleRef.doc(id).update({"vehicleImageComplete":vehiclePathUrl});
-      await _updateCommonData(id).then((value) {
-        showLoading.value =false;
-        _response = "success";
-
-      }).catchError((error){
-        print(error.toString());
-        showLoading.value = false;
-      });
+    showLoading.value = true;
+    String userId = FirebaseAuth.instance.currentUser!.uid;
+    log("1");
+    if (vehiclePath.value.isNotEmpty) {
+      vehicleImageCompleteUrl.value = await FirebaseUtils.uploadImage(
+          vehiclePath.value,
+          "User/Host/${userId}/addVehicle/${_addHostVehicle.vehicleId}/vehiclePath");
     }
-    else if (  vehicleRightSidePaths.value.isNotEmpty) {
-      showLoading.value =true;
-      String vehicleRightSidePathsUrl = await FirebaseUtils.uploadImage(
+    log("2");
+
+    if (vehicleRightSidePaths.value.isNotEmpty) {
+      vehicleImageRightSideUrl.value = await FirebaseUtils.uploadImage(
           vehicleRightSidePaths.value,
-          "User/Host/${hostId}/addVehicle/${id}/vehicleRightSidePaths");
-      await addVehicleRef.doc(id).update({"vehicleImageRightSide":vehicleRightSidePathsUrl});
-      await _updateCommonData(id).then((value) {
-        showLoading.value =false;
-        _response = "success";
-
-      }).catchError((error){
-        print(error.toString());
-        showLoading.value = false;
-      });
+          "User/Host/${userId}/addVehicle/${_addHostVehicle.vehicleId}/vehicleRightSidePaths");
     }
+    log("3");
 
-   else if (  vehicleInteriorPaths.value.isNotEmpty) {
-     showLoading.value =true;
-      String vehicleInteriorPathsUrl = await FirebaseUtils.uploadImage(
+    if (vehicleInteriorPaths.value.isNotEmpty) {
+      vehicleImageInteriorUrl.value = await FirebaseUtils.uploadImage(
           vehicleInteriorPaths.value,
-          "User/Host/${hostId}/addVehicle/${id}/vehicleInteriorPaths");
-
-
-      await addVehicleRef.doc(id).update({"vehicleImageComplete":vehicleInteriorPathsUrl});
-      await _updateCommonData(id).then((value) {
-        showLoading.value =false;
-        _response = "success";
-
-      }).catchError((error){
-        print(error.toString());
-        showLoading.value = false;
-      });
+          "User/Host/${userId}/addVehicle/${_addHostVehicle.vehicleId}/vehicleInteriorPaths");
     }
+    log("4");
 
-   else if ( vehicleNumberPlatePath.value.isNotEmpty) {
-     showLoading.value =true;
-      String vehicleNumberPlatePathUrl = await FirebaseUtils.uploadImage(
+    if (vehicleNumberPlatePath.value.isNotEmpty) {
+      vehicleImageNumberPlateUrl.value = await FirebaseUtils.uploadImage(
           vehicleNumberPlatePath.value,
-          "Host/addVehicle/${hostId}/${id}/image/vehicleNumberPlatePath");
-
-      await addVehicleRef.doc(id).update({"vehicleImageComplete":vehicleNumberPlatePathUrl});
-      await _updateCommonData(id).then((value) {
-        showLoading.value =false;
-        _response = "success";
-
-      }).catchError((error){
-        print(error.toString());
-        showLoading.value = false;
-      });
+          "Host/addVehicle/${userId}/${_addHostVehicle.vehicleId}/image/vehicleNumberPlatePath");
     }
-    else if ( vehicleRegistrationProofPath.value.isNotEmpty) {
-      showLoading.value = true;
-      String vehicleRegistrationProofPathUrl = await FirebaseUtils.uploadImage(
-          vehicleNumberPlatePath.value,
-          "Host/addVehicle/${hostId}/${id}/image/vehicleNumberPlatePath");
-
-      await addVehicleRef.doc(id).update({"vehicleImageComplete":vehicleRegistrationProofPathUrl});
-      await _updateCommonData(id).then((value) {
-        showLoading.value =false;
-        _response = "success";
-
-      }).catchError((error){
-        print(error.toString());
-        showLoading.value = false;
-      });
+    if (vehicleRegistrationProofPath.value.isNotEmpty) {
+      vehicleRegistrationUrl.value = await FirebaseUtils.uploadImage(
+          vehicleRegistrationProofPath.value,
+          "Host/addVehicle/${userId}/${_addHostVehicle.vehicleId}/image/vehicleRegistrationProofPath");
     }
-
-   else if ( vehicleRearPaths.value.isNotEmpty) {
-      showLoading.value =true;
-      String vehicleRearPathsUrl = await FirebaseUtils.uploadImage(
-          vehicleNumberPlatePath.value,
-          "Host/addVehicle/${hostId}/${id}/image/vehicleNumberPlatePath");
-
-      await addVehicleRef.doc(id).update({"vehicleImageComplete":vehicleRearPathsUrl});
-      await _updateCommonData(id).then((value){    showLoading.value =false;
-      _response = "success";
-
-      }).catchError((error){
-        print(error.toString());
-        showLoading.value = false;
-      });
+    if (vehicleRearPaths.value.isNotEmpty) {
+      vehicleImageRearUrl.value = await FirebaseUtils.uploadImage(
+          vehicleRearPaths.value,
+          "Host/addVehicle/${userId}/${_addHostVehicle.vehicleId}/image/vehicleRearPaths");
     }
-
-  else  if ( imagesUrl.value != null && imagesUrl.value.isNotEmpty) {
-      showLoading.value =true;
-      imagesUrl.value = await FirebaseUtils.uploadMultipleImage(vehicleMore.value, "Host/addVehicle/${hostId}/${id}/image/imageList", extension: "png",);
-      uploadedandimagesUrl.value = [
-        ...uploadedimageUrl.value,
-        ...imagesUrl.value,
-      ];
-
-      await addVehicleRef.doc(id).update({"imagesUrl":uploadedandimagesUrl.value});
-      await _updateCommonData(id).then((value) {
-        showLoading.value =false;
-        _response = "success";
-
-      }).catchError((error){
-        print(error.toString());
-        showLoading.value = false;
-      });
-
+    if (vehicleMore.value.isNotEmpty) {
+      imagesUrl.value = await FirebaseUtils.uploadMultipleImage(
+        vehicleMore.value,
+        "Host/addVehicle/${userId}/${_addHostVehicle.vehicleId}/image/imageList",
+        extension: "png",
+      );
     }
-  else{
-      showLoading.value =true;
-      await _updateCommonData(id).then((value){
-
-        showLoading.value =false;
-        _response = "success";
-
-      }).catchError((error){
-        print(error.toString());
-        showLoading.value = false;
-      });
-    }
+    AddHostVehicle addHostVehicle = AddHostVehicle(
+        hostId: _addHostVehicle.hostId,
+        vehicleId: _addHostVehicle.vehicleId,
+        address: address.value,
+        vehicleImageComplete: vehicleImageCompleteUrl.value,
+        vehicleImageNumberPlate: vehicleImageNumberPlateUrl.value,
+        vehicleImageRightSide: vehicleImageRightSideUrl.value,
+        vehicleImageRear: vehicleImageRearUrl.value,
+        vehicleImageInterior: vehicleImageInteriorUrl.value,
+        vehicleModel: vehicleModel.text,
+        vehicleCategory: selectCategory.value,
+        vehicleYear: vehicleYear.text,
+        vehicleSeats: vehicleSeats.text,
+        vehicleTransmission: selectTransmission.value,
+        vehicleFuelType: selectFuelType.value,
+        vehicleNumberPlate: vehicleNumberPlate.text,
+        vehicleColor: vehicleColor.text,
+        vehicleLicenseExpiryDate: vehicleLicenseExpiryDate.text,
+        vehiclePerDayRent: vehiclePerDayRent.text,
+        vehiclePerHourRent: vehiclePerHourRent.text,
+        vehicleRegistrationImage: vehicleRegistrationUrl.value,
+        status: _addHostVehicle.status,
+        vehicleDescription: vehicleDescription.text,
+        rating: _addHostVehicle.rating,
+        latitude: latitude.value,
+        longitude: longitude.value,
+        imagesUrl: imagesUrl);
+    log(addHostVehicle.toString());
+    await addVehicleRef.doc(addHostVehicle.vehicleId).update(addHostVehicle.toMap());
+    // await _updateCommonData(addHostVehicle);
+    showLoading.value=false;
+    Get.back();
+    _response = "Success";
+    log(addHostVehicle.toString());
 
     return _response;
   }
-  Future<void> _updateCommonData(String id)async{
-    await addVehicleRef.doc(id).update({
-    "vehicleModel":vehicleModel.value.text.trim(),
-    "address":address.value,
-    "vehicleCategory":selectCategoryName.value,
-    "vehicleYear":vehicleYear.value.text.trim(),
-    "vehicleSeats":vehicleSeats.value.text.trim(),
-    "vehicleTransmission":selectTransmission.value,
-    "vehicleFuelType":selectFuelType.value,
-    "vehicleNumberPlate":vehicleNumberPlate.value.text.trim(),
-    "vehicleColor":vehicleColor.value.text.trim(),
-    "vehicleLicenseExpiryDate":vehicleLicenseExpiryDate.value.text.trim(),
-    "vehiclePerDayRent":vehiclePerDayRent.value.text.trim(),
-    "vehiclePerHourRent":vehiclePerHourRent.value.text.trim(),
-    "vehicleDescription":vehicleDescription.value.text.trim(),
-    "latitude":latitude,
-    "longitude":longitude,
+
+  Future<void> _updateCommonData(AddHostVehicle addHostVehicle) async {
+    await addVehicleRef.doc(addHostVehicle.vehicleId).update({
+      "vehicleImageComplete": addHostVehicle.vehicleImageComplete,
+      "vehicleImageNumberPlate": addHostVehicle.vehicleImageNumberPlate,
+      "vehicleImageRightSide": addHostVehicle.vehicleImageRightSide,
+      "vehicleImageRear":addHostVehicle.vehicleImageRear,
+      "vehicleImageInterior": addHostVehicle.vehicleImageInterior,
+      "vehicleModel": addHostVehicle.vehicleModel,
+      "address": addHostVehicle.address,
+      "vehicleCategory":addHostVehicle.vehicleCategory,
+      "vehicleYear": addHostVehicle.vehicleYear,
+      "vehicleSeats": addHostVehicle.vehicleSeats,
+      "vehicleTransmission": addHostVehicle.vehicleTransmission,
+      "vehicleFuelType":addHostVehicle.vehicleFuelType,
+      "vehicleNumberPlate": addHostVehicle.vehicleNumberPlate,
+      "vehicleColor": addHostVehicle.vehicleColor,
+      "vehicleLicenseExpiryDate": addHostVehicle.vehicleLicenseExpiryDate,
+      "vehiclePerDayRent": addHostVehicle.vehiclePerDayRent,
+      "vehiclePerHourRent": addHostVehicle.vehiclePerHourRent,
+      "vehicleDescription": addHostVehicle.vehicleDescription,
+      "latitude": addHostVehicle.latitude,
+      "vehicleRegistrationImage": addHostVehicle.vehicleRegistrationImage,
+      "imagesUrl": addHostVehicle.imagesUrl,
+      "longitude": addHostVehicle.longitude,
     });
   }
-
 }

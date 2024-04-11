@@ -22,16 +22,52 @@ import '../../../widgets/custom_image.dart';
 import '../../../widgets/custom_svg.dart';
 import '../../../widgets/custom_textfiled.dart';
 
-class ScreenHostEditVehicle extends StatelessWidget {
+class ScreenHostEditVehicle extends StatefulWidget {
   AddHostVehicle addHostVehicle;
+  @override
+  State<ScreenHostEditVehicle> createState() => _ScreenHostEditVehicleState();
 
-@override
+  ScreenHostEditVehicle({
+    required this.addHostVehicle,
+  });
+}
+
+class _ScreenHostEditVehicleState extends State<ScreenHostEditVehicle> {
+  ControllerHostAddVechicle controllerAddVehicle = Get.put(ControllerHostAddVechicle());
+  @override
+  void initState() {
+    controllerAddVehicle.vehicleModel.text=widget.addHostVehicle.vehicleModel;
+    controllerAddVehicle.vehicleYear.text=widget.addHostVehicle.vehicleYear;
+    controllerAddVehicle.vehicleSeats.text=widget.addHostVehicle.vehicleSeats;
+    controllerAddVehicle.vehicleNumberPlate.text=widget.addHostVehicle.vehicleNumberPlate;
+    controllerAddVehicle.vehicleColor.text=widget.addHostVehicle.vehicleColor;
+    controllerAddVehicle.vehicleLicenseExpiryDate.text=widget.addHostVehicle.vehicleLicenseExpiryDate;
+    controllerAddVehicle.vehiclePerDayRent.text=widget.addHostVehicle.vehiclePerDayRent;
+    controllerAddVehicle.vehiclePerHourRent.text=widget.addHostVehicle.vehiclePerHourRent;
+    controllerAddVehicle.vehicleDescription.text=widget.addHostVehicle.vehicleDescription;
+    controllerAddVehicle.latitude.value=widget.addHostVehicle.latitude;
+    controllerAddVehicle.longitude.value=widget.addHostVehicle.longitude;
+    controllerAddVehicle.address.value=widget.addHostVehicle.address;
+    ///Images
+    controllerAddVehicle.vehicleImageCompleteUrl.value=widget.addHostVehicle.vehicleImageComplete;
+    controllerAddVehicle.vehicleImageNumberPlateUrl.value=widget.addHostVehicle.vehicleImageNumberPlate;
+    controllerAddVehicle.vehicleImageInteriorUrl.value=widget.addHostVehicle.vehicleImageInterior;
+    controllerAddVehicle.vehicleImageRearUrl.value=widget.addHostVehicle.vehicleImageRear;
+    controllerAddVehicle.vehicleImageRightSideUrl.value=widget.addHostVehicle.vehicleImageRightSide;
+    ///ImagesList
+
+    controllerAddVehicle.imagesUrl.value=[
+      ...widget.addHostVehicle.imagesUrl
+    ];
+    ///Category
+    controllerAddVehicle.selectCategory.value=widget.addHostVehicle.vehicleCategory;
+    controllerAddVehicle.selectFuelType.value=widget.addHostVehicle.vehicleFuelType;
+    controllerAddVehicle.selectTransmission.value=widget.addHostVehicle.vehicleTransmission;
+    controllerAddVehicle.vehicleRegistrationUrl.value=widget.addHostVehicle.vehicleRegistrationImage;
+    super.initState();
+  }
+  @override
   Widget build(BuildContext context) {
-    ControllerHostAddVechicle controllerAddVehicle = Get.put(ControllerHostAddVechicle());
-    controllerAddVehicle.selectFuelType.value = addHostVehicle.vehicleFuelType ?? "";
-    controllerAddVehicle.selectTransmission.value = addHostVehicle.vehicleTransmission ?? "";
-    controllerAddVehicle.selectCategory.value = addHostVehicle.vehicleCategory ?? "";
-    controllerAddVehicle.uploadedimageUrl.value = addHostVehicle.imagesUrl ?? [];
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -62,10 +98,10 @@ class ScreenHostEditVehicle extends StatelessWidget {
                         controllerAddVehicle.vehiclePath.value =
                         await FilePick().pickImage(ImageSource.gallery);
                       }, "Vehicle Image must be visible in image",
-                          RxString(controllerAddVehicle.vehiclePath.value),
-                        "${addHostVehicle.vehicleImageComplete}",
+                        RxString(controllerAddVehicle.vehiclePath.value),
+                        "${widget.addHostVehicle.vehicleImageComplete}",
                       );
-                 // RxString for local image path
+                      // RxString for local image path
 
                     }),
                     Obx(() {
@@ -73,9 +109,9 @@ class ScreenHostEditVehicle extends StatelessWidget {
                         controllerAddVehicle.vehicleNumberPlatePath.value =
                         await FilePick().pickImage(ImageSource.gallery);
                       }, "Car plate number must visible in image",
-                          // RxString for local image path
-                          RxString(controllerAddVehicle.vehicleNumberPlatePath.value),
-                        "${addHostVehicle.vehicleImageNumberPlate}",
+                        // RxString for local image path
+                        RxString(controllerAddVehicle.vehicleNumberPlatePath.value),
+                        "${widget.addHostVehicle.vehicleImageNumberPlate}",
                       );
 
                       // RxString(("${controllerAddVehicle.vehicleNumberPlatePath.value.isEmpty?NetworkImage(addHostVehicle.vehicleImageNumberPlate):controllerAddVehicle.vehicleNumberPlate.value}")));
@@ -86,7 +122,7 @@ class ScreenHostEditVehicle extends StatelessWidget {
                         await FilePick().pickImage(ImageSource.gallery);
                       }, "Capture vehicle's right side in the image",
                         RxString(controllerAddVehicle.vehicleRightSidePaths.value),
-                        "${addHostVehicle.vehicleImageRightSide}",
+                        "${widget.addHostVehicle.vehicleImageRightSide}",
                       );
                     }),
                     Obx(() {
@@ -95,7 +131,7 @@ class ScreenHostEditVehicle extends StatelessWidget {
                         await FilePick().pickImage(ImageSource.gallery);
                       }, "Include the rear, with the rear plate",
                         RxString(controllerAddVehicle.vehicleRearPaths.value),
-                        "${addHostVehicle.vehicleImageRear}",
+                        "${widget.addHostVehicle.vehicleImageRear}",
                       );
                     }),
                     Obx(() {
@@ -104,10 +140,10 @@ class ScreenHostEditVehicle extends StatelessWidget {
                         await FilePick().pickImage(ImageSource.gallery);
                       }, "Provide car interior picture",
                         RxString(controllerAddVehicle.vehicleInteriorPaths.value),
-                        "${addHostVehicle.vehicleImageInterior}",
+                        "${widget.addHostVehicle.vehicleImageInterior}",
                       );
                     }),
-                    addVehicle(() async {
+                    addMoreVehicle(() async {
                       var path = await PickFile([
                         'png',
                         'jpg',
@@ -118,8 +154,8 @@ class ScreenHostEditVehicle extends StatelessWidget {
                       });
                       controller.update();
                     }, "Add More Images",
-                        RxString(''),
-                      "${addHostVehicle.imagesUrl}",
+                      RxString(''),
+                      "${widget.addHostVehicle.imagesUrl}",
                     )
 
                   ],
@@ -130,7 +166,7 @@ class ScreenHostEditVehicle extends StatelessWidget {
                     height: 90.h,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
-                      itemCount:addHostVehicle.imagesUrl.length,
+                      itemCount:controllerAddVehicle.imagesUrl.length,
                       itemBuilder: (BuildContext context, int index) {
 
                         return Container(
@@ -140,8 +176,8 @@ class ScreenHostEditVehicle extends StatelessWidget {
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10.r),
                               image: DecorationImage(
-                                  fit: BoxFit.cover,
-                                  image: NetworkImage((addHostVehicle.imagesUrl[index])),
+                                fit: BoxFit.cover,
+                                image: NetworkImage((widget.addHostVehicle.imagesUrl[index])),
                               ) ),);
                       },),
                   )
@@ -149,7 +185,7 @@ class ScreenHostEditVehicle extends StatelessWidget {
                     height: 90.h,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
-                      itemCount: controllerAddVehicle.vehicleMore.value == null?addHostVehicle.imagesUrl.length:controllerAddVehicle.vehicleMore.value.length,
+                      itemCount: controllerAddVehicle.vehicleMore.value == null?widget.addHostVehicle.imagesUrl.length:controllerAddVehicle.vehicleMore.value.length,
                       itemBuilder: (BuildContext context, int index) {
 
                         return Container(
@@ -174,20 +210,20 @@ class ScreenHostEditVehicle extends StatelessWidget {
                       fontWeight: FontWeight.w700, fontSize: 20.sp),
                 ).marginSymmetric(vertical: 10.h),
                 CustomTextField(
-                  controller: controllerAddVehicle.vehicleModel.value,
-                  text: addHostVehicle.vehicleModel,
+                  controller: controllerAddVehicle.vehicleModel,
+                  text: widget.addHostVehicle.vehicleModel,
                   readOnly: controllerAddVehicle.showLoading.value,
                 ).marginSymmetric(vertical: 8.h),
                 buildCategoryContainer(controllerAddVehicle, context)
                     .marginSymmetric(vertical: 10.h),
                 CustomTextField(
-                  controller: controllerAddVehicle.vehicleYear.value,
-                  text: addHostVehicle.vehicleYear,
+                  controller: controllerAddVehicle.vehicleYear,
+                  text: widget.addHostVehicle.vehicleYear,
                   keyboardType: TextInputType.number,
                 ).marginSymmetric(vertical: 8.h),
                 CustomTextField(
-                  controller: controllerAddVehicle.vehicleSeats.value,
-                  text: addHostVehicle.vehicleSeats,
+                  controller: controllerAddVehicle.vehicleSeats,
+                  text: widget.addHostVehicle.vehicleSeats,
                   keyboardType: TextInputType.number,
                 ).marginSymmetric(vertical: 8.h),
                 buildTransmissionContainer(
@@ -195,33 +231,33 @@ class ScreenHostEditVehicle extends StatelessWidget {
                     .marginSymmetric(vertical: 10.h),
                 buildFuelContainer(controllerAddVehicle, context),
                 CustomTextField(
-                  controller: controllerAddVehicle.vehicleNumberPlate.value,
-                  text: addHostVehicle.vehicleNumberPlate,
+                  controller: controllerAddVehicle.vehicleNumberPlate,
+                  text: widget.addHostVehicle.vehicleNumberPlate,
                   keyboardType: TextInputType.name,
                 ).marginSymmetric(vertical: 8.h),
                 CustomTextField(
-                  controller: controllerAddVehicle.vehicleColor.value,
-                  text: addHostVehicle.vehicleColor,
+                  controller: controllerAddVehicle.vehicleColor,
+                  text: widget.addHostVehicle.vehicleColor,
                   keyboardType: TextInputType.name,
                 ).marginSymmetric(vertical: 8.h),
                 CustomTextField(
                   controller: controllerAddVehicle.vehicleLicenseExpiryDate
-                      .value,
-                  text: addHostVehicle.vehicleLicenseExpiryDate,
+                  ,
+                  text: widget.addHostVehicle.vehicleLicenseExpiryDate,
                   keyboardType: TextInputType.name,
                 ).marginSymmetric(vertical: 8.h),
                 CustomTextField(
                   readOnly: controllerAddVehicle.showLoading.value,
 
-                  controller: controllerAddVehicle.vehiclePerDayRent.value,
-                  text: "Per Day Rent ${addHostVehicle.vehiclePerDayRent}",
+                  controller: controllerAddVehicle.vehiclePerDayRent,
+                  text: widget.addHostVehicle.vehiclePerDayRent,
                   keyboardType: TextInputType.number,
                 ).marginSymmetric(vertical: 8.h),
                 CustomTextField(
                   readOnly: controllerAddVehicle.showLoading.value,
 
-                  controller: controllerAddVehicle.vehiclePerHourRent.value,
-                  text: "Per Hours Rent ${addHostVehicle.vehiclePerHourRent}",
+                  controller: controllerAddVehicle.vehiclePerHourRent,
+                  text: widget.addHostVehicle.vehiclePerHourRent,
                   keyboardType: TextInputType.number,
                 ).marginSymmetric(vertical: 8.h),
                 // buildVehicleNumberPlate(controllerAddVehicle),
@@ -231,7 +267,7 @@ class ScreenHostEditVehicle extends StatelessWidget {
                     controller: TextEditingController(
                         text: controllerAddVehicle.address.value
                     ),
-                    text: controllerAddVehicle.address.value.isEmpty?addHostVehicle.address:controllerAddVehicle.address.value,
+                    text: controllerAddVehicle.address.value.isEmpty?widget.addHostVehicle.address:controllerAddVehicle.address.value,
                     padding: EdgeInsets.only(left: 18.w, top: 1.h),
                     // Use the address from the snapshot
                     hintColor:
@@ -256,8 +292,8 @@ class ScreenHostEditVehicle extends StatelessWidget {
                   height: 160.h,
                   maxLines: 6,
                   minLines: 1,
-                  controller: controllerAddVehicle.vehicleDescription.value,
-                  text: addHostVehicle.vehicleDescription,
+                  controller: controllerAddVehicle.vehicleDescription,
+                  text: widget.addHostVehicle.vehicleDescription,
 
                 ).marginSymmetric(vertical: 8.h),
 
@@ -268,12 +304,12 @@ class ScreenHostEditVehicle extends StatelessWidget {
                       isLoading: controllerAddVehicle.showLoading.value,
                       onPressed: () async {
                         var response =
-                        await controllerAddVehicle.UpdateVehicle(addHostVehicle.vehicleId,addHostVehicle.hostId);
+                        await controllerAddVehicle.UpdateVehicle(widget.addHostVehicle);
                         if (response == "success") {
                           Get.back();
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                               content: Text(
-                                  "Your Vehicle edit Successfully",style: TextStyle(color: Colors.white),)));
+                                "Your Vehicle edit Successfully",style: TextStyle(color: Colors.white),)));
                         }
                         else {
                           ScaffoldMessenger.of(context).showSnackBar(
@@ -289,6 +325,7 @@ class ScreenHostEditVehicle extends StatelessWidget {
       ),
     );
   }
+
   Obx buildRegistrationProof(ControllerHostAddVechicle controllerAddVehicle) {
     return Obx(() {
       return GestureDetector(
@@ -306,7 +343,7 @@ class ScreenHostEditVehicle extends StatelessWidget {
           child: (controllerAddVehicle
               .vehicleRegistrationProofPath.value.isNotEmpty)
               ? Image.file(File(controllerAddVehicle.vehicleRegistrationProofPath.value))
-              : Center(child: Image.network(addHostVehicle.vehicleRegistrationImage)),
+              : Center(child: Image.network(widget.addHostVehicle.vehicleRegistrationImage)),
         ),
       );
     });
@@ -380,13 +417,6 @@ class ScreenHostEditVehicle extends StatelessWidget {
   }
 
   // Stream<Category> fetchCategories() {
-  //   return categoryRef.snapshots().map((snapshot) {
-  //     return snapshot.docs.map((doc) => doc.).toList();
-  //   });
-  // }
-
-
-
   Widget buildCategoryContainer(ControllerHostAddVechicle controllerAddVehicle,
       BuildContext context) {
     var categoryName = "";
@@ -406,7 +436,7 @@ class ScreenHostEditVehicle extends StatelessWidget {
 
             var categories = snapshot.data!.docs.map((e) =>
                 Category.fromMap(e.data() as Map<String, dynamic>)).toList();
-            var name = categories.where((element) => element.id == addHostVehicle.vehicleCategory);
+            var name = categories.where((element) => element.id == widget.addHostVehicle.vehicleCategory);
 
             return CustomTextField(
               padding: EdgeInsets.only(left: 18.w, top: 22.h),
@@ -449,7 +479,6 @@ class ScreenHostEditVehicle extends StatelessWidget {
     );
   }
 
-
   Obx buildTransmissionContainer(ControllerHostAddVechicle controllerAddVehicle,
       BuildContext context) {
     return Obx(() {
@@ -457,7 +486,7 @@ class ScreenHostEditVehicle extends StatelessWidget {
         padding: EdgeInsets.only(left: 18.w, top: 18.h),
         readOnly: true,
         hint: controllerAddVehicle.selectTransmission.value.isEmpty
-            ? addHostVehicle.vehicleTransmission
+            ? widget.addHostVehicle.vehicleTransmission
             : controllerAddVehicle.selectTransmission.value,
         hintColor:
         controllerAddVehicle.selectTransmission.value.isEmpty
@@ -490,58 +519,61 @@ class ScreenHostEditVehicle extends StatelessWidget {
       );
     });
   }
+
   Widget addVehicle(VoidCallback onTap, String text, RxString imagePath, String networkImage) {
     return Obx(() {
       return GestureDetector(
         onTap: onTap,
         child: Container(
           // margin: EdgeInsets.only(r.h),
+            height: 89.h,
+            width: 92.w,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(6.r),
+              color: Color(0xFFC4C4C4).withOpacity(.3),
+              image: DecorationImage(image: imagePath.value.isNotEmpty?FileImage(File(imagePath.value)): NetworkImage(networkImage)
+              as ImageProvider,
+                fit: BoxFit.fill,
+              ),
+            ),
+            child:  Align(
+              alignment: Alignment.topRight,
+              child: CustomSvg(
+                name: "edit-car",
+              ).marginOnly(top: 10.h, right: 10.w),
+            )
+
+        ),
+      );
+    });
+  }
+  Widget addMoreVehicle(VoidCallback onTap, String text, RxString imagePath, String networkImage) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        // margin: EdgeInsets.only(r.h),
           height: 89.h,
           width: 92.w,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(6.r),
             color: Color(0xFFC4C4C4).withOpacity(.3),
+            // image: DecorationImage(image: imagePath.value.isNotEmpty?FileImage(File(imagePath.value)): NetworkImage(networkImage)
+            //  as ImageProvider,
+            //   fit: BoxFit.fill,
+            // ),
           ),
-          child: (imagePath.value.isNotEmpty)
-              ? Container(
-            height: Get.height,
-            width: Get.width,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5.r
+          child:  Center(
+            child: Text(
+              "Add More\n Images",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontSize: 10.sp
               ),
-              image: DecorationImage(
-                image: FileImage(File(imagePath.value)),
-                fit: BoxFit.fill,
-              ),
-            ),
-            child: Align(
-              alignment: Alignment.topRight,
-              child: CustomSvg(
-                name: "edit-car",
-              ).marginOnly(top: 10.h, right: 10.w),
             ),
           )
-              :  Container(
-            height: Get.height,
-            width: Get.width,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5.r
-              ),
-              image: DecorationImage(
-                image: NetworkImage(networkImage),
-                fit: BoxFit.fill,
-              ),
-            ),
-            child: Align(
-              alignment: Alignment.topRight,
-              child: CustomSvg(
-                name: "edit-car",
-              ).marginOnly(top: 10.h, right: 10.w),
-            ),
-          ),
-        ),
-      );
-    });
+
+      ),
+    );
   }
 
   Obx buildFuelContainer(ControllerHostAddVechicle controllerAddVehicle,
@@ -551,7 +583,7 @@ class ScreenHostEditVehicle extends StatelessWidget {
         padding: EdgeInsets.only(left: 18.w, top: 18.h),
         readOnly: true,
         hint: controllerAddVehicle.selectFuelType.value.isEmpty
-            ? addHostVehicle.vehicleFuelType
+            ? widget.addHostVehicle.vehicleFuelType
             : controllerAddVehicle.selectFuelType.value,
         hintColor: controllerAddVehicle.selectFuelType.value.isEmpty
             ? Color(0xff94979F)
@@ -654,8 +686,4 @@ class ScreenHostEditVehicle extends StatelessWidget {
       );
     });
   }
-
-  ScreenHostEditVehicle({
-    required this.addHostVehicle,
-  });
 }

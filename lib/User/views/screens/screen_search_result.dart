@@ -1,10 +1,21 @@
+import 'package:careno/constant/colors.dart';
+import 'package:careno/constant/helpers.dart';
+import 'package:careno/models/add_host_vehicle.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../layouts/item_layout_explore_popular.dart';
 
-class ScreenSearchResult extends StatelessWidget {
+class ScreenSearchResult extends StatefulWidget {
+  @override
+  State<ScreenSearchResult> createState() => _ScreenSearchResultState();
+}
+
+class _ScreenSearchResultState extends State<ScreenSearchResult> {
   final TextEditingController _searchController = TextEditingController();
+
+  RxString search = "".obs;
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +57,15 @@ class ScreenSearchResult extends StatelessWidget {
                 ),
                 color: Color(0xffF0F0F0),
               ),
-              child: TextField(
+              child:  TextField(
+                onChanged: (value) {
+                  search.value = value;
+                  setState(() {
+
+                  });
+                  print("search.value ${search.value}");
+
+                },
                 controller: _searchController,
                 decoration: InputDecoration(
                   border: InputBorder.none,
@@ -71,16 +90,57 @@ class ScreenSearchResult extends StatelessWidget {
                 ),
               ),
             ).marginSymmetric(horizontal: 20.w, vertical: 10.h),
-            Text("4 results found", style: TextStyle(color: Colors.grey,
-                fontFamily: "Urbanist",
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w600),).marginSymmetric(horizontal: 14.w),
-            ListView.builder(
-              itemCount: 4,
-              shrinkWrap: true,
-              itemBuilder: (BuildContext context, int index) {
-              return Text("jkhfakjhfkajh");
-            },).marginSymmetric(horizontal: 14.w)
+            StreamBuilder<QuerySnapshot>(
+              stream: addVehicleRef.snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(
+                    child: CircularProgressIndicator(
+                      color: AppColors.appPrimaryColor,
+                      strokeWidth: 2,
+                    ),
+                  );
+                }
+
+                // Get list of AddHostVehicle objects from snapshot
+                var vehicleList = snapshot.data!.docs.map((e) =>
+                    AddHostVehicle.fromMap(e.data() as Map<String, dynamic>))
+                    .toList();
+
+                // Apply search filter if search value is not empty
+                if (search.value.isNotEmpty) {
+                  vehicleList = vehicleList.where((vehicle) =>
+                      vehicle.vehicleColor.toLowerCase().startsWith(
+                          search.value.toLowerCase())).toList();
+                }
+
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "${vehicleList.length} results found",
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontFamily: "Urbanist",
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ).marginSymmetric(horizontal: 14.w),
+                    ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: vehicleList.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        var vehicle = vehicleList[index];
+                        return ItemLayoutExplorePopular(
+                            addHostVehicle: vehicle);
+                      },
+                    ).marginSymmetric(horizontal: 14.w),
+                  ],
+                );
+              },
+            )
+
           ],
         ),
       ),
