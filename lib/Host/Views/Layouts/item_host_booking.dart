@@ -159,7 +159,7 @@ class ItemHostBooking extends StatelessWidget {
                                           ],
                                         ),
                                         Text(
-                                          "\$ 350",
+                                          "${currencyUnit}350",
                                           style: TextStyle(
                                               fontSize: 20.sp,
                                               fontWeight: FontWeight.w700,

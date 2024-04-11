@@ -61,13 +61,20 @@ class LayoutUserProfile extends StatelessWidget {
                       decoration: BoxDecoration(
                           shape: BoxShape.circle, color: Colors.white),
                       child: Obx(() {
-                        return CircleAvatar(
-                          radius: 60,
-                          backgroundColor: Colors.white,
-                          backgroundImage:
-                          NetworkImage(controller.user.value == null
-                              ? image_url
-                              : controller.user.value!.imageUrl),
+                        return GestureDetector(
+                          onTap: (){
+
+                            showPopupImage(context, controller.user.value!.imageUrl);
+                        },
+                          child: CircleAvatar(
+
+                            radius: 60,
+                            backgroundColor: Colors.white,
+                            backgroundImage:
+                            NetworkImage(controller.user.value == null
+                                ? image_url
+                                : controller.user.value!.imageUrl),
+                          ),
                         );
                       }),
                     ),

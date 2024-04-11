@@ -1,4 +1,5 @@
 import 'package:card_swiper/card_swiper.dart';
+import 'package:careno/User/views/screens/full_image_view.dart';
 import 'package:careno/User/views/screens/screen_all_reviews.dart';
 import 'package:careno/User/views/screens/screen_booking.dart';
 import 'package:careno/User/views/screens/screen_user_chat.dart';
@@ -71,22 +72,27 @@ class ScreenCarDetails extends StatelessWidget {
                             child: Swiper(
                               outer: false,
                               itemBuilder: (c, i) {
-                                return Container(
-                                  decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                          image: NetworkImage(imageUrl[i]),
-                                          fit: BoxFit.cover)),
+                                return GestureDetector(
+                                  onTap: (){
+                                    Get.to(FullImageView(imageUrl: imageUrl[i],));
+                                  },
                                   child: Container(
-                                    height: 145.h,
                                     decoration: BoxDecoration(
-                                        gradient: LinearGradient(
-                                      colors: [
-                                        Colors.black.withOpacity(.0),
-                                        Colors.black
-                                      ],
-                                      begin: Alignment.topCenter,
-                                      end: FractionalOffset.bottomCenter,
-                                    )),
+                                        image: DecorationImage(
+                                            image: NetworkImage(imageUrl[i]),
+                                            fit: BoxFit.cover)),
+                                    child: Container(
+                                      height: 145.h,
+                                      decoration: BoxDecoration(
+                                          gradient: LinearGradient(
+                                        colors: [
+                                          Colors.black.withOpacity(.0),
+                                          Colors.black
+                                        ],
+                                        begin: Alignment.topCenter,
+                                        end: FractionalOffset.bottomCenter,
+                                      )),
+                                    ),
                                   ),
                                 );
                               },
@@ -196,7 +202,7 @@ class ScreenCarDetails extends StatelessWidget {
                           bottom: 20.h,
                           child: RichText(
                             text: TextSpan(
-                              text: '\$ ${addHostVehicle!.vehiclePerDayRent}',
+                              text: '${currencyUnit}${addHostVehicle!.vehiclePerDayRent}',
                               style: TextStyle(
                                   color: Colors.white,
                                   fontFamily: "UrbanistBold",

@@ -358,8 +358,8 @@ class ScreenBookingDetails extends StatelessWidget {
                             ),
                           ),
                         ),
-                        BookingSummary("Subtotal", "\$${booking.price}"),
-                        BookingSummary("Service Fee", "\$${percentageValue}"),
+                        BookingSummary("Subtotal", "${currencyUnit}${booking.price}"),
+                        BookingSummary("Service Fee", "${currencyUnit}${percentageValue}"),
                         Divider(
                           indent: 1,
                           endIndent: 1,
@@ -379,7 +379,7 @@ class ScreenBookingDetails extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              "\$${totalRent}",
+                              "${currencyUnit}${totalRent}",
                               style: TextStyle(
                                   color: AppColors.appPrimaryColor,
                                   fontSize: 16.sp,

@@ -1,5 +1,6 @@
 import 'package:careno/controllers/chat_controller.dart';
 import 'package:careno/widgets/custom_svg.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_holo_date_picker/date_time_formatter.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -32,19 +33,25 @@ class ItemUserList extends StatelessWidget {
         children: [
           Row(
             children: <Widget>[
-              Container(
-                height: 48.h,
-                width: 48.w,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                      image:  NetworkImage(user.imageUrl.isEmpty
-                          ? image_url
-                          : user.imageUrl),)
+              GestureDetector(
+                onTap: (){
+                  showPopupImage(context, user.imageUrl);
+                },
+                child: Container(
+                  height: 48.h,
+                  width: 48.w,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                        image:  NetworkImage(user.imageUrl.isEmpty
+                            ? image_url
+                            : user.imageUrl),
+                    fit: BoxFit.fill)
+                  ),
+                  child: Align(
+                      alignment: Alignment.bottomRight,
+                      child: CustomSvg(name: "circle",color: user.status == "Online"?Colors.green:Colors.grey.withOpacity(.3),)),
                 ),
-                child: Align(
-                    alignment: Alignment.bottomRight,
-                    child: CustomSvg(name: "circle",color: user.status == "Online"?Colors.green:Colors.grey.withOpacity(.3),)),
               ),
               Expanded(
                 child: Column(

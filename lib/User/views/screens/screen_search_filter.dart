@@ -409,8 +409,8 @@ class _ScreenSearchFilterState extends State<ScreenSearchFilter> {
               SizedBox(
                 width: Get.width,
                 child: Obx(() {
-                  final startLabel = "\$${controller.selectedRange.value.start.toStringAsFixed(0)}";
-                  final endLabel = "\$${controller.selectedRange.value.end.toStringAsFixed(0)}";
+                  final startLabel = "${currencyUnit}${controller.selectedRange.value.start.toStringAsFixed(0)}";
+                  final endLabel = "${currencyUnit}${controller.selectedRange.value.end.toStringAsFixed(0)}";
 
                   return SliderTheme(
                     data: SliderThemeData(
@@ -440,11 +440,11 @@ class _ScreenSearchFilterState extends State<ScreenSearchFilter> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text("\$ 0",style: TextStyle(
+                  Text("${currencyUnit}0",style: TextStyle(
                       fontSize: 12.sp,
                       fontWeight: FontWeight.w600
                   ),),
-                  Text("\$ 100",style: TextStyle(
+                  Text("${currencyUnit}100",style: TextStyle(
                       fontSize: 12.sp,
                       fontWeight: FontWeight.w600
                   ),),

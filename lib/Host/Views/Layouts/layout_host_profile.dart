@@ -4,14 +4,12 @@ import 'package:careno/Host/Views/Screens/screen_host_documents.dart';
 import 'package:careno/Host/Views/Screens/screen_host_edit_profile.dart';
 import 'package:careno/Host/Views/Screens/screen_host_setting.dart';
 import 'package:careno/Host/Views/Screens/screen_host_vehicle.dart';
-import 'package:careno/Host/Views/Screens/screen_host_vehicle_my_detail.dart';
 import 'package:careno/constant/helpers.dart';
 import 'package:careno/controllers/home_controller.dart';
 import 'package:careno/widgets/custom_svg.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 import '../../../constant/colors.dart';
@@ -61,13 +59,18 @@ class LayoutHostProfile extends StatelessWidget {
                       decoration: BoxDecoration(
                           shape: BoxShape.circle, color: Colors.white),
                       child: Obx(() {
-                        return CircleAvatar(
-                          radius: 60,
-                          backgroundColor: Colors.white,
-                          backgroundImage:
-                          NetworkImage(controller.user.value == null
-                              ? image_url
-                              : controller.user.value!.imageUrl),
+                        return GestureDetector(
+                          onTap: (){
+                            showPopupImage(context, controller.user.value!.imageUrl);
+                          },
+                          child: CircleAvatar(
+                            radius: 60,
+                            backgroundColor: Colors.white,
+                            backgroundImage:
+                            NetworkImage(controller.user.value == null
+                                ? image_url
+                                : controller.user.value!.imageUrl),
+                          ),
                         );
                       }),
                     ),

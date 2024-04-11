@@ -172,7 +172,7 @@ class ScreenHostBookingDetail extends StatelessWidget {
                     color: Color(0xFF484848).withOpacity(.7)),
               ),
               Text(
-                "${booking.price}\$",
+                "${booking.price}${currencyUnit}",
                 style: TextStyle(
                     fontSize: 16.sp,
                     fontWeight: FontWeight.w600,
@@ -191,7 +191,7 @@ class ScreenHostBookingDetail extends StatelessWidget {
                     color: Color(0xFF484848).withOpacity(.7)),
               ),
               Text(
-                "${percentageValue}\$",
+                "${percentageValue}${currencyUnit}",
                 style: TextStyle(
                     fontSize: 17.sp,
                     fontWeight: FontWeight.w600,
@@ -214,7 +214,7 @@ class ScreenHostBookingDetail extends StatelessWidget {
                     color: Color(0xFF484848).withOpacity(.7)),
               ),
               Text(
-                "${totalRent}\$",
+                "${totalRent}${currencyUnit}",
                 style: TextStyle(
                     fontSize: 18.sp,
                     fontWeight: FontWeight.w600,

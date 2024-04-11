@@ -102,7 +102,7 @@ class ScreenBooking extends StatelessWidget {
                               ],
                             ),
                             Text(
-                              "\$ ${addHostVehicle.vehiclePerDayRent}",
+                              "${currencyUnit}${addHostVehicle.vehiclePerDayRent}",
                               style: MyFont.heading18
                                   .copyWith(color: AppColors.appPrimaryColor),
                             )
@@ -133,7 +133,7 @@ class ScreenBooking extends StatelessWidget {
                               ],
                             ),
                             Text(
-                              "\$ ${addHostVehicle.vehiclePerHourRent}",
+                              "${currencyUnit}${addHostVehicle.vehiclePerHourRent}",
                               style: MyFont.heading18
                                   .copyWith(color: AppColors.appPrimaryColor),
                             )
@@ -488,7 +488,7 @@ class ScreenBooking extends StatelessWidget {
                   ),
                   Obx(() {
                     return Text(
-                      "\$ ${controller.bookingType == "Per day"
+                      "${currencyUnit}${controller.bookingType == "Per day"
                           ? controller.price.value
                           : controller.price.value.roundToDouble()}",
                       style: TextStyle(

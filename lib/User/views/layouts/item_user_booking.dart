@@ -152,7 +152,7 @@ Booking booking;
                                       ],
                                     ),
                                     Text(
-                                      "\$ ${booking.price}",
+                                      "${currencyUnit}${booking.price}",
                                       style: TextStyle(
                                           fontSize: 20.sp,
                                           fontWeight: FontWeight.w700,

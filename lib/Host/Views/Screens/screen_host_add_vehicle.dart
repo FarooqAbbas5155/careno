@@ -195,14 +195,14 @@ class ScreenHostAddVehicle extends StatelessWidget {
                   readOnly: controllerAddVehicle.showLoading.value,
 
                   controller: controllerAddVehicle.vehiclePerDayRent,
-                  hint: "Per Day Rent \$",
+                  hint: "Per Day Rent ${currencyUnit}",
                   keyboardType: TextInputType.number,
                 ).marginSymmetric(vertical: 8.h),
                 CustomTextField(
                   readOnly: controllerAddVehicle.showLoading.value,
 
                   controller: controllerAddVehicle.vehiclePerHourRent,
-                  hint: "Per Hours Rent \$",
+                  hint: "Per Hours Rent ${currencyUnit}",
                   keyboardType: TextInputType.number,
                 ).marginSymmetric(vertical: 8.h),
                 // buildVehicleNumberPlate(controllerAddVehicle),

@@ -310,8 +310,8 @@ class ScreenBookingReview extends StatelessWidget {
                       ),
                     ),
                     BookingSummary("Subtotal",
-                        "\$${controller.price.value.toStringAsFixed(0)}"),
-                    BookingSummary("Service Fee", "\$${percentageValue}"),
+                        "${currencyUnit}${controller.price.value.toStringAsFixed(0)}"),
+                    BookingSummary("Service Fee", "${currencyUnit}${percentageValue}"),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -324,7 +324,7 @@ class ScreenBookingReview extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          "\$${controller.TotalVehicleRent.value.round()}",
+                          "${currencyUnit}${controller.TotalVehicleRent.value.round()}",
                           style: TextStyle(
                               color: AppColors.appPrimaryColor,
                               fontSize: 16.sp,

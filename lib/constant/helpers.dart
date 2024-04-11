@@ -8,6 +8,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'dart:developer' as dev;
@@ -36,6 +38,9 @@ Map<String, User> _allUsersMap = {};
 Map<String, Category> _allCategoryMap = {};
 Map<String, Rating> allVehicleRatings = {};
 Map<String, Rating> ratingsMap = {};
+var currencyUnit = "\$";
+
+
 
 Future<bool> hostProofAlreadyExists(String uid) async {
   final doc = await hostIdentityProofRef.doc(uid).get();
@@ -197,4 +202,31 @@ void checkForLikes(String vehical_id, LikeListener listener) {
         .toList();
     listener.onLikesUpdated(likes);
   });
+
+
+
+}
+void showPopupImage(BuildContext context,String image) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return Dialog(
+        child: GestureDetector(
+          onTap: () {
+            Navigator.of(context).pop(); // Close the dialog
+          },
+          child: Container(
+            width: 300.h,
+            height: 300.w,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: NetworkImage(image),
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+        ),
+      );
+    },
+  );
 }

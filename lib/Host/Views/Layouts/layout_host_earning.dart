@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../../constant/colors.dart';
+import '../../../constant/helpers.dart';
 
 class LayoutHostEarning extends StatelessWidget {
   const LayoutHostEarning({Key? key}) : super(key: key);
@@ -63,7 +64,7 @@ class LayoutHostEarning extends StatelessWidget {
                             fontSize: 15.sp,
                             color: Color(0xFF969696)
                           ),),
-                          subtitle: Text("300\$",style: TextStyle(
+                          subtitle: Text("300${currencyUnit}",style: TextStyle(
                             fontWeight: FontWeight.w700,
                             fontSize: 25.sp,
                             color: AppColors.appPrimaryColor
