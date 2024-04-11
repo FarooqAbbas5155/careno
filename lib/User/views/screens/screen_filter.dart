@@ -2,6 +2,9 @@ import 'package:careno/User/views/screens/screen_search.dart';
 import 'package:careno/User/views/screens/screen_search_filter.dart';
 import 'package:careno/User/views/screens/screen_search_result.dart';
 import 'package:careno/constant/colors.dart';
+import 'package:careno/constant/helpers.dart';
+import 'package:careno/models/add_host_vehicle.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -79,13 +82,22 @@ class ScreenFilter extends StatelessWidget {
             ],
             centerTitle: true,
           ),
-          body: Container(
-            margin: EdgeInsets.symmetric(horizontal: 10.w),
-            child: ListView.builder(
-              itemCount: 10,
-              itemBuilder: (BuildContext context, int index) {
-              return ItemLayoutExplorePopular();
-            },),
+          body: StreamBuilder<QuerySnapshot>(
+            stream: addVehicleRef.snapshots(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState==ConnectionState.waiting) {
+                return Center(child: CircularProgressIndicator());
+              }
+              var vehicle=snapshot.data!.docs.map((e) => AddHostVehicle.fromMap(e.data() as Map<String,dynamic>)).toList();
+              return Container(
+                margin: EdgeInsets.symmetric(horizontal: 10.w),
+                child: ListView.builder(
+                  itemCount: vehicle.length,
+                  itemBuilder: (BuildContext context, int index) {
+                  return ItemLayoutExplorePopular(addHostVehicle: vehicle[index],);
+                },),
+              );
+            }
           ),
         ));
   }

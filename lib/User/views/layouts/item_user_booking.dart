@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:careno/User/views/screens/screen_booking_details.dart';
 import 'package:careno/constant/helpers.dart';
 import 'package:careno/models/add_host_vehicle.dart';
@@ -23,6 +25,7 @@ Booking booking;
           return SizedBox();
         }
         var host=User.fromMap(snapshot.data!.data() as Map<String,dynamic>);
+        log(booking.vehicleId);
         return StreamBuilder<DocumentSnapshot>(
           stream: addVehicleRef.doc(booking.vehicleId).snapshots(),
           builder: (context, snapshot) {
@@ -79,10 +82,13 @@ Booking booking;
                                       ),
                                       Text(
                                         vehicle.address,
+                                        maxLines: 3,
+                                        overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
                                             decoration: TextDecoration.underline,
 
                                             fontFamily: "Nunito",
+
                                             color: AppColors.appPrimaryColor,
                                             fontWeight: FontWeight.w400,
                                             fontSize: 11.sp),

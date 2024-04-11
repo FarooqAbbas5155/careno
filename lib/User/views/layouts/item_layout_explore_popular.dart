@@ -8,7 +8,7 @@ import 'package:get/get.dart';
 import '../../../models/add_host_vehicle.dart';
 
 class ItemLayoutExplorePopular extends StatelessWidget {
-AddHostVehicle? addHostVehicle;
+AddHostVehicle addHostVehicle;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -117,6 +117,6 @@ AddHostVehicle? addHostVehicle;
   }
 
 ItemLayoutExplorePopular({
-    this.addHostVehicle,
+    required this.addHostVehicle,
   });
 }
