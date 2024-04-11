@@ -18,6 +18,7 @@ import '../Host/Views/Screens/screen_host_add_ident_identity_proof.dart';
 import '../User/views/screens/screen_user_home.dart';
 import '../constant/fcm.dart';
 import '../constant/firebase_utils.dart';
+import '../interfaces/like_listener.dart';
 import '../models/user.dart' as model;
 
 class HomeController extends GetxController {

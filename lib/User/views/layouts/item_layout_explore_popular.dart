@@ -1,19 +1,43 @@
 import 'package:careno/User/views/screens/screen_car_details.dart';
 import 'package:careno/constant/colors.dart';
 import 'package:careno/constant/helpers.dart';
+import 'package:careno/controllers/faveourite_controller.dart';
+import 'package:careno/interfaces/like_listener.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../../models/add_host_vehicle.dart';
 
-class ItemLayoutExplorePopular extends StatelessWidget {
-AddHostVehicle addHostVehicle;
+class ItemLayoutExplorePopular extends StatefulWidget {
+  AddHostVehicle? addHostVehicle;
+
+  @override
+  State<ItemLayoutExplorePopular> createState() => _ItemLayoutExplorePopularState();
+
+ItemLayoutExplorePopular({
+    this.addHostVehicle,
+  });
+}
+
+class _ItemLayoutExplorePopularState extends State<ItemLayoutExplorePopular> implements LikeListener{
+
+  RxList<String> likedUsers = <String>[].obs;
+  RxBool alreadyLiked = false.obs;
+  @override
+  void initState() {
+    checkForLikes(widget.addHostVehicle!.vehicleId, this);
+    super.initState();
+    setState(() {
+
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: (){
-        Get.to(ScreenCarDetails(addHostVehicle: addHostVehicle!));
+        Get.to(ScreenCarDetails(addHostVehicle: widget.addHostVehicle!));
       },
       child: Container(
         // height: 81.h,
@@ -45,7 +69,7 @@ AddHostVehicle addHostVehicle;
                    decoration: BoxDecoration(
                        borderRadius: BorderRadius.circular(5.r),
                        image: DecorationImage(
-                           image: NetworkImage(addHostVehicle!.vehicleImageComplete),
+                           image: NetworkImage(widget.addHostVehicle!.vehicleImageComplete),
                            fit: BoxFit.fill
                        )
                    ),
@@ -54,19 +78,19 @@ AddHostVehicle addHostVehicle;
                    mainAxisAlignment: MainAxisAlignment.start,
                    crossAxisAlignment: CrossAxisAlignment.start,
                    children: [
-                     Text(addHostVehicle!.vehicleModel,style: TextStyle(color: Colors.black,fontSize: 14.sp,fontFamily:"Urbanist" ,fontWeight: FontWeight.w700),),
-                     Text(addHostVehicle!.vehicleTransmission,style: TextStyle(color: Color(0xffAAAAAA),fontSize: 10.sp,fontFamily:"Urbanist" ,fontWeight: FontWeight.w500),).marginOnly(bottom: 2.h),
+                     Text(widget.addHostVehicle!.vehicleModel,style: TextStyle(color: Colors.black,fontSize: 14.sp,fontFamily:"Urbanist" ,fontWeight: FontWeight.w700),),
+                     Text(widget.addHostVehicle!.vehicleTransmission,style: TextStyle(color: Color(0xffAAAAAA),fontSize: 10.sp,fontFamily:"Urbanist" ,fontWeight: FontWeight.w500),).marginOnly(bottom: 2.h),
                      Row(
                        children: [
                          Icon(Icons.star,color: AppColors.starColor,),
-                         Text(addHostVehicle!.rating.toString(),style: TextStyle(color: Colors.black,fontSize: 11.sp,fontFamily:"UrbanistBold" ,fontWeight: FontWeight.w600),),
+                         Text(widget.addHostVehicle!.rating.toString(),style: TextStyle(color: Colors.black,fontSize: 11.sp,fontFamily:"UrbanistBold" ,fontWeight: FontWeight.w600),),
                          FutureBuilder(
-                             future: addVehicleRef.doc(addHostVehicle!.vehicleId).collection("views").get(),
+                             future: addVehicleRef.doc(widget.addHostVehicle!.vehicleId).collection("views").get(),
                              builder: (context, snapshot) {
                                if (snapshot.connectionState == ConnectionState.waiting) {
                                  return Center(child: Text("...",style: TextStyle(color: AppColors.appPrimaryColor)));
                                }
-                               var views = snapshot.data!.docs.map((e) => addVehicleRef.doc(addHostVehicle!.vehicleId).collection("views")).toList();
+                               var views = snapshot.data!.docs.map((e) => addVehicleRef.doc(widget.addHostVehicle!.vehicleId).collection("views")).toList();
                              return Text(
 
                                "${views == null?"(0)":"(${views.length})"}",style: TextStyle(color: Color(0xffAAAAAA),fontSize: 11.sp,fontFamily:"Urbanist" ,fontWeight: FontWeight.w600),).marginOnly(left: 4.w);
@@ -83,19 +107,48 @@ AddHostVehicle addHostVehicle;
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Container(
-                  height: 36.h,
-                  width: 40.w,
-                  margin: EdgeInsets.only(left: 12.w),
-                  decoration: BoxDecoration(
-                    color: Color(0xffAAAAAA).withOpacity(.2),
-                    shape: BoxShape.circle
-                  ),
-                  child: Icon(Icons.favorite_border,color: Color(0xff949494),),
-                ).marginOnly(left: 18.w),
+                GestureDetector(
+                  onTap: () async {
+                    alreadyLiked.value != alreadyLiked.value;
+                    if (!alreadyLiked.value) {
+                      await addVehicleRef
+                          .doc(widget.addHostVehicle!.vehicleId)
+                          .collection("likes")
+                          .doc(getUid())
+                          .set({"uid": getUid()});
+                      await usersRef
+                          .doc(getUid())
+                          .collection("isLiked")
+                          .doc(widget.addHostVehicle!.vehicleId)
+                          .set(
+                          widget.addHostVehicle!.toMap());
+                    } else {
+                      await addVehicleRef
+                          .doc(widget.addHostVehicle!.vehicleId)
+                          .collection("likes")
+                          .doc(getUid())
+                          .delete();
+                      await usersRef
+                          .doc(getUid())
+                          .collection("isLiked")
+                          .doc(widget.addHostVehicle!.vehicleId)
+                          .delete();
+                    }
+                  },
+                  child: Container(
+                    height: 36.h,
+                    width: 40.w,
+                    margin: EdgeInsets.only(left: 12.w),
+                    decoration: BoxDecoration(
+                      color: Color(0xffAAAAAA).withOpacity(.2),
+                      shape: BoxShape.circle
+                    ),
+                    child: Icon(Icons.favorite,color: alreadyLiked.value ? AppColors.appPrimaryColor : Color(0xff949494),),
+                  ).marginOnly(left: 18.w),
+                ),
                 RichText(
                   text: TextSpan(
-                    text: '\$ ${addHostVehicle!.vehiclePerDayRent}',
+                    text: '\$ ${widget.addHostVehicle!.vehiclePerDayRent}',
                     style: TextStyle(color: primaryColor,fontFamily: "Urbanist",fontWeight: FontWeight.w700,fontSize: 14.sp),
                     children: <TextSpan>[
                       TextSpan(
@@ -116,7 +169,15 @@ AddHostVehicle addHostVehicle;
     );
   }
 
-ItemLayoutExplorePopular({
-    required this.addHostVehicle,
-  });
+  @override
+  void onLikesUpdated(List<String> likedUsers) {
+    setState(() {
+      if (mounted) {
+
+        this.likedUsers.value = likedUsers;
+        this.alreadyLiked.value = likedUsers.contains(getUid());
+      }
+    });
+
+  }
 }

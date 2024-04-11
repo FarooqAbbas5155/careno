@@ -1,10 +1,11 @@
 import 'package:careno/User/views/layouts/item_layout_explore_popular.dart';
+import 'package:careno/constant/colors.dart';
+import 'package:careno/constant/helpers.dart';
+import 'package:careno/models/add_host_vehicle.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import '../../../constant/helpers.dart';
-import '../../../models/add_host_vehicle.dart';
+import 'package:get/get.dart';
 
 class ScreenUserFavoriteVehicles extends StatelessWidget {
   const ScreenUserFavoriteVehicles({Key? key}) : super(key: key);
@@ -16,18 +17,21 @@ class ScreenUserFavoriteVehicles extends StatelessWidget {
         title: Text("Favorite Vehicles"),
       ),
       body: StreamBuilder<QuerySnapshot>(
-          stream: addVehicleRef.snapshots(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState==ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
-            }
-            var vehicle=snapshot.data!.docs.map((e) => AddHostVehicle.fromMap(e.data() as Map<String,dynamic>)).toList();
+        stream: usersRef.doc(uid).collection("isLiked").snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(color: AppColors.appPrimaryColor,),
+            );
+          }
+          var vehicles = snapshot.data!.docs.map((e) => AddHostVehicle.fromMap(e.data() as Map<String,dynamic>)).toList();
 
-            return ListView.builder(
+          return ListView.builder(
             padding: EdgeInsets.symmetric(horizontal: 26.w,vertical: 10.h),
-            itemCount: vehicle.length,
+            itemCount: vehicles.length,
             itemBuilder: (BuildContext context, int index) {
-            return ItemLayoutExplorePopular(addHostVehicle: vehicle[index],);
+              var vehicel =  vehicles[index];
+            return ItemLayoutExplorePopular(addHostVehicle: vehicel,);
           },);
         }
       ),

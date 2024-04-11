@@ -10,8 +10,11 @@ import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'dart:developer' as dev;
+
 
 import '../Host/Views/Screens/screen_host_add_ident_identity_proof.dart';
+import '../interfaces/like_listener.dart';
 import '../models/user.dart';
 
 var uid = auth.FirebaseAuth.instance.currentUser!.uid;
@@ -89,6 +92,11 @@ Future<User> getUser(String id) async {
   }
 
   return user;
+}
+String getUid() {
+  var uid = (auth.FirebaseAuth.instance.currentUser?.uid ?? "").trim();
+  dev.log("uid: $uid");
+  return uid;
 }
 
 User defaultUser = User(
@@ -180,4 +188,13 @@ String formatTime(int hour24) {
   String formattedTime = dateFormat.format(dateTime);
 
   return formattedTime;
+}
+void checkForLikes(String vehical_id, LikeListener listener) {
+  List<String> likes = [];
+  addVehicleRef.doc(vehical_id).collection("likes").snapshots().listen((event) {
+    likes = event.docs
+        .map((e) => ((e.data() as Map<String, dynamic>)['uid']).toString())
+        .toList();
+    listener.onLikesUpdated(likes);
+  });
 }
