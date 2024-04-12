@@ -39,6 +39,7 @@ Map<String, Category> _allCategoryMap = {};
 Map<String, Rating> allVehicleRatings = {};
 Map<String, Rating> ratingsMap = {};
 var currencyUnit = "\$";
+///Pushed
 
 
 
