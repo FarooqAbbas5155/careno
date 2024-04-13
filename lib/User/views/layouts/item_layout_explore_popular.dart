@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../../controllers/home_controller.dart';
 import '../../../models/add_host_vehicle.dart';
 
 class ItemLayoutExplorePopular extends StatefulWidget {
@@ -83,18 +84,22 @@ class _ItemLayoutExplorePopularState extends State<ItemLayoutExplorePopular> imp
                        children: [
                          Icon(Icons.star,color: AppColors.starColor,),
                          Text(widget.addHostVehicle!.rating.toString(),style: TextStyle(color: Colors.black,fontSize: 11.sp,fontFamily:"UrbanistBold" ,fontWeight: FontWeight.w600),),
-                         FutureBuilder(
-                             future: addVehicleRef.doc(widget.addHostVehicle!.vehicleId).collection("views").get(),
-                             builder: (context, snapshot) {
-                               if (snapshot.connectionState == ConnectionState.waiting) {
-                                 return Center(child: Text("...",style: TextStyle(color: AppColors.appPrimaryColor)));
-                               }
-                               var views = snapshot.data!.docs.map((e) => addVehicleRef.doc(widget.addHostVehicle!.vehicleId).collection("views")).toList();
-                             return Text(
 
-                               "${views == null?"(0)":"(${views.length})"}",style: TextStyle(color: Color(0xffAAAAAA),fontSize: 11.sp,fontFamily:"Urbanist" ,fontWeight: FontWeight.w600),).marginOnly(left: 4.w);
-                           }
-                         ),
+                         Text(
+
+                           "(${Get.find<HomeController>().getReviewCount(Get.find<HomeController>().ratedVehicleList.value, widget.addHostVehicle!.vehicleId).toString()})",style: TextStyle(color: Color(0xffAAAAAA),fontSize: 11.sp,fontFamily:"Urbanist" ,fontWeight: FontWeight.w600),)
+                         // FutureBuilder(
+                         //     future: addVehicleRef.doc(widget.addHostVehicle!.vehicleId).collection("views").get(),
+                         //     builder: (context, snapshot) {
+                         //       if (snapshot.connectionState == ConnectionState.waiting) {
+                         //         return Center(child: Text("...",style: TextStyle(color: AppColors.appPrimaryColor)));
+                         //       }
+                         //       var views = snapshot.data!.docs.map((e) => addVehicleRef.doc(widget.addHostVehicle!.vehicleId).collection("views")).toList();
+                         //     return Text(
+                         //
+                         //       "${views == null?"(0)":"(${views.length})"}",style: TextStyle(color: Color(0xffAAAAAA),fontSize: 11.sp,fontFamily:"Urbanist" ,fontWeight: FontWeight.w600),).marginOnly(left: 4.w);
+                         //   }
+                         // ),
                        ],
                      ),
                    ],

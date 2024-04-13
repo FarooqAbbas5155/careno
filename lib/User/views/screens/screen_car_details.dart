@@ -9,10 +9,12 @@ import 'package:careno/controllers/vehicle_controller.dart';
 import 'package:careno/models/add_host_vehicle.dart';
 import 'package:careno/models/rating.dart';
 import 'package:careno/widgets/custom_button.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../../controllers/home_controller.dart';
 import '../layouts/item_screen_car_details.dart';
 
 class ScreenCarDetails extends StatelessWidget {
@@ -319,8 +321,8 @@ class ScreenCarDetails extends StatelessWidget {
                       ).marginSymmetric(horizontal: 10.w),
                     ).marginOnly(
                         left: 10.w, right: 10.w, top: 8.h, bottom: 12.h),
-                    StreamBuilder(
-                        stream: reviewRef.snapshots(),
+                    StreamBuilder<QuerySnapshot>(
+                        stream: reviewRef.where("vehicleId", isEqualTo: addHostVehicle!.vehicleId).snapshots(),
                         builder: (BuildContext context, snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
@@ -357,7 +359,7 @@ class ScreenCarDetails extends StatelessWidget {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
-                                            "13 Reviews",
+                                            "(${Get.find<HomeController>().getReviewCount(Get.find<HomeController>().ratedVehicleList.value, addHostVehicle!.vehicleId).toString()}) Reviews",
                                             style: TextStyle(
                                                 fontFamily: "UrbanistBold",
                                                 fontSize: 18.sp,
@@ -365,7 +367,7 @@ class ScreenCarDetails extends StatelessWidget {
                                           ),
                                           GestureDetector(
                                             onTap: () {
-                                              Get.to(ScreenAllReviews());
+                                              Get.to(ScreenAllReviews(ratingList: ratings, addHostVehicle: addHostVehicle!,));
                                             },
                                             child: Text(
                                               "See all ",
@@ -382,10 +384,10 @@ class ScreenCarDetails extends StatelessWidget {
                                         scrollDirection: Axis.vertical,
                                         shrinkWrap: true,
                                         physics: NeverScrollableScrollPhysics(),
-                                        itemCount: 8,
+                                        itemCount: ratings.length,
                                         itemBuilder:
                                             (BuildContext context, int index) {
-                                          return ItemScreenCarDetails();
+                                          return ItemVehicleReview(rating:ratings[index]);
                                         },
                                       )
                                     ],

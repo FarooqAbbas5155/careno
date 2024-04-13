@@ -1,3 +1,6 @@
+
+import 'dart:io';
+
 import 'package:careno/AuthSection/screen_login.dart';
 import 'package:careno/AuthSection/screen_welcome.dart';
 import 'package:careno/Host/Views/Screens/screen_host_home_page.dart';
@@ -122,7 +125,7 @@ User defaultUser = User(
   timeStamp: DateTime.now().millisecondsSinceEpoch,
   isVerified: false,
   isBlocked: false,
-  status: '', address: '',
+  status: '', address: '', currentBalance: 0.0,
 );
 
 Color primaryColor = Color(0xff4C0AE1);
@@ -230,4 +233,10 @@ void showPopupImage(BuildContext context,String image) {
       );
     },
   );
+}
+
+String getCurrency() {
+  var format = NumberFormat.simpleCurrency(locale: Platform.localeName);
+  dev.log(format.currencySymbol);
+  return format.currencySymbol;
 }

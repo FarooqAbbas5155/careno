@@ -17,10 +17,11 @@ import 'package:intl/intl.dart';
 
 import '../../../AuthSection/screen_allow_location.dart';
 import '../../../constant/helpers.dart';
+import '../../../controllers/controller_host_home.dart';
 
 class ScreenHostEditProfile extends StatelessWidget {
   String userType;
-  HomeController controller = Get.put(HomeController());
+  ControllerHostHome controller = Get.put(ControllerHostHome());
 
   @override
   Widget build(BuildContext context) {

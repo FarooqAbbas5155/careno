@@ -2,9 +2,11 @@ import 'package:careno/Host/Views/Layouts/layout_host_active_booking.dart';
 import 'package:careno/Host/Views/Layouts/layout_host_completed_booking.dart';
 import 'package:careno/Host/Views/Layouts/layout_host_pending_booking.dart';
 import 'package:careno/constant/colors.dart';
+import 'package:careno/controllers/controller_host_home.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 import '../../../constant/firebase_utils.dart';
 import '../../../constant/helpers.dart';
@@ -14,6 +16,7 @@ class LayoutHostBooking extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ControllerHostHome controllerHostHom=Get.put(ControllerHostHome());
     return DefaultTabController(
       length: 3,
       child: Scaffold(
@@ -73,25 +76,11 @@ class LayoutHostBooking extends StatelessWidget {
             ),
           ),
         ),
-        body: StreamBuilder<QuerySnapshot>(
-            stream: bookingsRef.where("hostId",isEqualTo: FirebaseUtils.myId).snapshots(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState==ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator(),);
-              }
-
-              var bookingsList=snapshot.data!.docs.map((e) => Booking.fromMap(e.data() as Map<String,dynamic>)).toList();
-
-              var activeBooking=bookingsList.where((element) => element.bookingStatus=="In progress").toList();
-              var completedBooking=bookingsList.where((element) => element.bookingStatus=="Completed"||element.bookingStatus=="Canceled").toList();
-              var pendingBooking=bookingsList.where((element) => element.bookingStatus=="Request Pending"||element.bookingStatus=="Payment Pending").toList();
-              return TabBarView(children: [
-                LayoutHostPendingBooking(pendingList:pendingBooking),
-                LayoutHostActiveBooking (activeList:activeBooking),
-                LayoutHostCompletedBooking(completedList:completedBooking),
-              ],);
-            }
-        ),
+        body: TabBarView(children: [
+          LayoutHostPendingBooking(pendingList:controllerHostHom.requestedBookingsList),
+          LayoutHostActiveBooking (activeList:controllerHostHom.startedBookingsList),
+          LayoutHostCompletedBooking(completedList:controllerHostHom.completedBookingsList),
+        ],)
       ),
     );
   }

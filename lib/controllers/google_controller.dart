@@ -52,7 +52,7 @@ class GoogleController extends GetxController {
         notificationToken: '',
         timeStamp: DateTime.now().millisecondsSinceEpoch,
         isVerified: false,
-        isBlocked: false, status: '', address: '',
+        isBlocked: false, status: '', address: '', currentBalance: 0.0,
       );
       ;
       await usersRef.doc(user.uid).set(_user.toMap()).then((value) {

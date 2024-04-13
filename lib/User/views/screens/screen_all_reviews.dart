@@ -1,14 +1,16 @@
+import 'package:careno/models/add_host_vehicle.dart';
 import 'package:custom_rating_bar/custom_rating_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
+import '../../../models/rating.dart';
 import '../layouts/item_screen_car_details.dart';
 
 class ScreenAllReviews extends StatelessWidget {
-  const ScreenAllReviews({Key? key}) : super(key: key);
-
+ List<Rating> ratingList;
+ AddHostVehicle addHostVehicle;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -60,7 +62,7 @@ class ScreenAllReviews extends StatelessWidget {
                     Padding(
                       padding:  EdgeInsets.symmetric(horizontal:22.w),
                       child: Text(
-                        "5.0",
+                        addHostVehicle.rating.toString(),
                         style: TextStyle(
                             fontSize: 42.sp,
                             fontWeight: FontWeight.w700,
@@ -168,9 +170,9 @@ class ScreenAllReviews extends StatelessWidget {
             child: ListView.builder(
               scrollDirection: Axis.vertical,
               // shrinkWrap: true,
-              itemCount: 8,
+              itemCount: ratingList.length,
               itemBuilder: (BuildContext context, int index) {
-                return ItemScreenCarDetails();
+                return ItemVehicleReview(rating: ratingList[index],);
               },),
           )
 
@@ -178,4 +180,9 @@ class ScreenAllReviews extends StatelessWidget {
       ).marginSymmetric(horizontal: 15.sp, vertical: 10.h),
     ));
   }
+
+ ScreenAllReviews({
+    required this.ratingList,
+    required this.addHostVehicle,
+  });
 }

@@ -1,10 +1,10 @@
+import 'package:careno/models/notification_model.dart';
 import 'package:careno/widgets/custom_svg.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ItemNotification extends StatelessWidget {
-  const ItemNotification({Key? key}) : super(key: key);
-
+NotificationModel notificationModel;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -23,16 +23,28 @@ class ItemNotification extends StatelessWidget {
         ]
       ),
       child: ListTile(
-        title: Text("Chat Notification",style: TextStyle(
+        title: Text(notificationModel.type,style: TextStyle(
           fontWeight: FontWeight.w700,
           fontSize: 14.sp
         ),),
-        subtitle: Text("Notification text will appear here.",style: TextStyle(
-          fontSize: 12.sp,
-          fontWeight: FontWeight.w500
-        ),),
+        subtitle: Column(
+          children: [
+            Text(notificationModel.title,style: TextStyle(
+              fontSize: 12.sp,
+              fontWeight: FontWeight.w500
+            ),),
+            Text(notificationModel.subtitle,style: TextStyle(
+              fontSize: 12.sp,
+              fontWeight: FontWeight.w500
+            ),),
+          ],
+        ),
         trailing: CustomSvg(name: "noti",),
       ),
     );
   }
+
+ItemNotification({
+    required this.notificationModel,
+  });
 }

@@ -3,12 +3,15 @@ import 'dart:developer';
 import 'package:careno/User/views/screens/screen_filter.dart';
 import 'package:careno/constant/colors.dart';
 import 'package:careno/constant/helpers.dart';
+import 'package:careno/controllers/controller_filter.dart';
 import 'package:careno/widgets/custom_button.dart';
 import 'package:custom_rating_bar/custom_rating_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../../controllers/home_controller.dart';
+import '../../../models/add_host_vehicle.dart';
+import '../../../models/categories.dart';
 
 class ScreenSearchFilter extends StatefulWidget {
   @override
@@ -16,10 +19,15 @@ class ScreenSearchFilter extends StatefulWidget {
 }
 
 class _ScreenSearchFilterState extends State<ScreenSearchFilter> {
-  HomeController controller = Get.put(HomeController());
+  ControllerFilter controller = Get.put(ControllerFilter());
 
   @override
   Widget build(BuildContext context) {
+    controller.selectCategoryName.value = Get
+        .find<HomeController>()
+        .allCategory
+        .first
+        .name;
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -27,8 +35,8 @@ class _ScreenSearchFilterState extends State<ScreenSearchFilter> {
 
         ),
         child: SingleChildScrollView(
-          child:Column(
-            mainAxisSize: MainAxisSize.max,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -55,38 +63,43 @@ class _ScreenSearchFilterState extends State<ScreenSearchFilter> {
                         fontWeight: FontWeight.w600),
                   ),
                   Row(children: [
-                    Text(
-                      controller.Cartype.value,
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontFamily: "Urbanist",
-                          fontSize: 15.sp,
-                          fontWeight: FontWeight.w500),
-                    ),
-                    PopupMenuButton(
+                    Obx(() {
+                      return Text(
+                        controller.selectCategoryName.value,
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: "Urbanist",
+                            fontSize: 15.sp,
+                            fontWeight: FontWeight.w500),
+                      );
+                    }),
+                    PopupMenuButton<Category>(
                       icon: Icon(Icons.expand_more),
                       color: Theme
                           .of(context)
                           .primaryColor,
                       itemBuilder: (BuildContext context) {
-                        return Cartype.map((String choice) {
-                          return PopupMenuItem<String>(
+                        return Get
+                            .find<HomeController>()
+                            .allCategory
+                            .value
+                            .map((choice) {
+                          return PopupMenuItem<Category>(
                             value: choice,
                             child: Text(
-                              choice,
+                              choice.name,
                               style: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: "Urbanist"),
+                                  color: Colors.white, fontFamily: "Urbanist"),
                             ),
                           );
                         }).toList();
                       },
-                      onSelected: (String choice) {
-                        // Update selected gender when an option is chosen
-                        controller.Cartype.value = choice;
-                        setState(() {
-
-                        });
+                      onSelected: (Category choice) {
+                        // Update selected category when an option is chosen
+                          controller.selectCategory.value =
+                              choice.id.toString();
+                          controller.selectCategoryName.value =
+                              choice.name.toString();
                       },
                     ),
                   ])
@@ -110,7 +123,7 @@ class _ScreenSearchFilterState extends State<ScreenSearchFilter> {
                   ),
                   Row(children: [
                     Text(
-                      controller.CarModel.value,
+                      controller.carModel.value,
                       style: TextStyle(
                           color: Colors.black,
                           fontFamily: "Urbanist",
@@ -137,7 +150,7 @@ class _ScreenSearchFilterState extends State<ScreenSearchFilter> {
                       },
                       onSelected: (String choice) {
                         // Update selected gender when an option is chosen
-                        controller.CarModel.value = choice;
+                        controller.carModel.value = choice;
                         setState(() {
 
                         });
@@ -165,7 +178,7 @@ class _ScreenSearchFilterState extends State<ScreenSearchFilter> {
                   ),
                   Row(children: [
                     Text(
-                      controller.CarTransmission.value,
+                      controller.carTransmission.value,
                       style: TextStyle(
                           color: Colors.black,
                           fontFamily: "Urbanist",
@@ -192,7 +205,7 @@ class _ScreenSearchFilterState extends State<ScreenSearchFilter> {
                       },
                       onSelected: (String choice) {
                         // Update selected gender when an option is chosen
-                        controller.CarTransmission.value = choice;
+                        controller.carTransmission.value = choice;
                         setState(() {
 
                         });
@@ -220,7 +233,7 @@ class _ScreenSearchFilterState extends State<ScreenSearchFilter> {
                   ),
                   Row(children: [
                     Text(
-                      controller.CarFuelType.value,
+                      controller.carFuelType.value,
                       style: TextStyle(
                           color: Colors.black,
                           fontFamily: "Urbanist",
@@ -247,7 +260,7 @@ class _ScreenSearchFilterState extends State<ScreenSearchFilter> {
                       },
                       onSelected: (String choice) {
                         // Update selected gender when an option is chosen
-                        controller.CarFuelType.value = choice;
+                        controller.carFuelType.value = choice;
                         setState(() {
 
                         });
@@ -275,7 +288,7 @@ class _ScreenSearchFilterState extends State<ScreenSearchFilter> {
                   ),
                   Row(children: [
                     Text(
-                      controller.CarSeatsCapacity.value,
+                      controller.carSeatsCapacity.value,
                       style: TextStyle(
                           color: Colors.black,
                           fontFamily: "Urbanist",
@@ -302,7 +315,7 @@ class _ScreenSearchFilterState extends State<ScreenSearchFilter> {
                       },
                       onSelected: (String choice) {
                         // Update selected gender when an option is chosen
-                        controller.CarSeatsCapacity.value = choice;
+                        controller.carSeatsCapacity.value = choice;
                         setState(() {
 
                         });
@@ -317,55 +330,55 @@ class _ScreenSearchFilterState extends State<ScreenSearchFilter> {
                 color: Color(0xffD8D8D8),
               ),
 
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Car Location",
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontFamily: "UrbanistBold",
-                        fontSize: 15.sp,
-                        fontWeight: FontWeight.w600),
-                  ),
-                  Row(children: [
-                    Text(
-                      controller.CarLocation.value,
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontFamily: "Urbanist",
-                          fontSize: 15.sp,
-                          fontWeight: FontWeight.w500),
-                    ),
-                    PopupMenuButton(
-                      icon: Icon(Icons.expand_more),
-                      color: Theme
-                          .of(context)
-                          .primaryColor,
-                      itemBuilder: (BuildContext context) {
-                        return CarLocation.map((String choice) {
-                          return PopupMenuItem<String>(
-                            value: choice,
-                            child: Text(
-                              choice,
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: "Urbanist"),
-                            ),
-                          );
-                        }).toList();
-                      },
-                      onSelected: (String choice) {
-                        // Update selected gender when an option is chosen
-                        controller.CarLocation.value = choice;
-                        setState(() {
-
-                        });
-                      },
-                    ),
-                  ])
-                ],
-              ),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   children: [
+              //     Text(
+              //       "Car Location",
+              //       style: TextStyle(
+              //           color: Colors.black,
+              //           fontFamily: "UrbanistBold",
+              //           fontSize: 15.sp,
+              //           fontWeight: FontWeight.w600),
+              //     ),
+              //     Row(children: [
+              //       Text(
+              //         controller.carLocation.value,
+              //         style: TextStyle(
+              //             color: Colors.black,
+              //             fontFamily: "Urbanist",
+              //             fontSize: 15.sp,
+              //             fontWeight: FontWeight.w500),
+              //       ),
+              //       // PopupMenuButton(
+              //       //   icon: Icon(Icons.expand_more),
+              //       //   color: Theme
+              //       //       .of(context)
+              //       //       .primaryColor,
+              //       //   itemBuilder: (BuildContext context) {
+              //       //     return CarLocation.map((String choice) {
+              //       //       return PopupMenuItem<String>(
+              //       //         value: choice,
+              //       //         child: Text(
+              //       //           choice,
+              //       //           style: TextStyle(
+              //       //               color: Colors.white,
+              //       //               fontFamily: "Urbanist"),
+              //       //         ),
+              //       //       );
+              //       //     }).toList();
+              //       //   },
+              //       //   onSelected: (String choice) {
+              //       //     // Update selected gender when an option is chosen
+              //       //     controller.CarLocation.value = choice;
+              //       //     setState(() {
+              //       //
+              //       //     });
+              //       //   },
+              //       // ),
+              //     ])
+              //   ],
+              // ),
               Divider(
                 height: 0,
                 thickness: .5,
@@ -385,7 +398,7 @@ class _ScreenSearchFilterState extends State<ScreenSearchFilter> {
                   RatingBar(
                     filledIcon: Icons.star,
                     emptyIcon: Icons.star_border,
-                    onRatingChanged: (value) => debugPrint('$value'),
+                    onRatingChanged: (value) => controller.rating.value = value,
                     initialRating: 5,
                     maxRating: 5,
                     filledColor: primaryColor,
@@ -409,8 +422,10 @@ class _ScreenSearchFilterState extends State<ScreenSearchFilter> {
               SizedBox(
                 width: Get.width,
                 child: Obx(() {
-                  final startLabel = "${currencyUnit}${controller.selectedRange.value.start.toStringAsFixed(0)}";
-                  final endLabel = "${currencyUnit}${controller.selectedRange.value.end.toStringAsFixed(0)}";
+                  final startLabel = "${currencyUnit}${controller.selectedRange
+                      .value.start.toStringAsFixed(0)}";
+                  final endLabel = "${currencyUnit}${controller.selectedRange
+                      .value.end.toStringAsFixed(0)}";
 
                   return SliderTheme(
                     data: SliderThemeData(
@@ -440,18 +455,19 @@ class _ScreenSearchFilterState extends State<ScreenSearchFilter> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text("${currencyUnit}0",style: TextStyle(
+                  Text("${currencyUnit}0", style: TextStyle(
                       fontSize: 12.sp,
                       fontWeight: FontWeight.w600
                   ),),
-                  Text("${currencyUnit}100",style: TextStyle(
+                  Text("${currencyUnit}100", style: TextStyle(
                       fontSize: 12.sp,
                       fontWeight: FontWeight.w600
                   ),),
                 ],
               ).marginSymmetric(horizontal: 25.w
               ),
-              Image.asset("assets/images/Line 39.png").marginSymmetric(horizontal: 40.w,vertical: 20.h),
+              Image.asset("assets/images/Line 39.png").marginSymmetric(
+                  horizontal: 40.w, vertical: 20.h),
               Center(
                 child: Text(
                   "Sort by",
@@ -459,41 +475,28 @@ class _ScreenSearchFilterState extends State<ScreenSearchFilter> {
                     color: AppColors.appPrimaryColor,
                     fontSize: 15.sp,
                     fontWeight: FontWeight.w600
-                    ,fontFamily: "UrbanistBold",
+                    , fontFamily: "UrbanistBold",
                   ),
                 ),
               ),
-              RadioListTile(
-                  title: Text("Popular Vehicle",
-                    style: TextStyle(color: Colors.black,fontFamily: "UrbanistBold",fontSize: 15.sp,
-                        fontWeight: FontWeight.w600),),
-                  controlAffinity: ListTileControlAffinity.trailing,
-                  activeColor: primaryColor,
-                  value: "popularVehicle",
-                  groupValue: controller.popularVehicle.value,
-                  onChanged: (String? value) {
-                    setState(() {
-                      controller.popularVehicle.value = value!;
-
-                    });
-                  }),
               Divider(
-                height: 0,
+                height: 20.h,
                 thickness: .5,
                 color: Color(0xffD8D8D8),
               ),
               RadioListTile(
-                  title: Text("Price Low to Heigh",
-                    style: TextStyle(color: Colors.black,fontFamily: "UrbanistBold",fontSize: 15.sp,
+                  title: Text("Price Low to High",
+                    style: TextStyle(color: Colors.black,
+                        fontFamily: "UrbanistBold",
+                        fontSize: 15.sp,
                         fontWeight: FontWeight.w600),),
                   controlAffinity: ListTileControlAffinity.trailing,
                   activeColor: primaryColor,
-                  value: "pricelowtoheigh",
-                  groupValue: controller.popularVehicle.value,
+                  value: "Low To High",
+                  groupValue: controller.sortBy.value,
                   onChanged: (String? value) {
                     setState(() {
-                      controller.popularVehicle.value = value!;
-
+                      controller.sortBy.value = value!;
                     });
                   }),
               Divider(
@@ -503,56 +506,103 @@ class _ScreenSearchFilterState extends State<ScreenSearchFilter> {
               ),
               RadioListTile(
                   title: Text("Price Heigh To Low",
-                    style: TextStyle(color: Colors.black,fontFamily: "UrbanistBold",fontSize: 15.sp,
+                    style: TextStyle(color: Colors.black,
+                        fontFamily: "UrbanistBold",
+                        fontSize: 15.sp,
                         fontWeight: FontWeight.w600),),
                   controlAffinity: ListTileControlAffinity.trailing,
                   activeColor: primaryColor,
-                  value: "priceheightolow",
-                  groupValue: controller.popularVehicle.value,
+                  value: "High to Low",
+                  groupValue: controller.sortBy.value,
                   onChanged: (String? value) {
                     setState(() {
-                      controller.popularVehicle.value = value!;
-
+                      controller.sortBy.value = value!;
                     });
                   }),
 
               Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children:[
+                  children: [
                     CustomButton(
                         width: 164.w,
                         color: Color(0xffC7C7C7),
                         textStyle: TextStyle(
                             fontWeight: FontWeight.w600,
                             fontSize: 18.sp
-                            ,color: Colors.black
+                            , color: Colors.black
                         ),
-                        title: "Clear", onPressed: (){}),
+                        title: "Clear",
+                        onPressed: () {}),
                     CustomButton(
                         width: 164.w,
                         textStyle: TextStyle(
                             fontWeight: FontWeight.w600,
                             fontSize: 18.sp
-                            ,color: Colors.white
+                            , color: Colors.white
                         ),
-                        title: "Apply", onPressed: (){
-                      Get.to(ScreenFilter());
+                        title: "Apply", onPressed: () {
+                      List<AddHostVehicle> applyFiltersAndSort(List<AddHostVehicle> vehicles) {
+                        return vehicles.where((vehicle) {
+                          // Apply filtering based on controller values
+                          final matchesCategory = vehicle.vehicleCategory == controller.selectCategory.value;
+                          log(matchesCategory.toString());
+                          final matchesModelYear = vehicle.vehicleYear == controller.carModel.value;
+                          log(matchesModelYear.toString());
+                          final matchesTransmission = vehicle.vehicleTransmission == controller.carTransmission.value;
+                          log(matchesTransmission.toString());
+                          final matchesFuelType = vehicle.vehicleFuelType == controller.carFuelType.value;
+                          final matchesSeatsCapacity = vehicle.vehicleSeats == controller.carSeatsCapacity.value;
+                          // final matchesLocation = vehicle.address.toLowerCase().contains(controller.carLocation.value.toLowerCase());
+                          final matchesBrand = vehicle.vehicleModel.toLowerCase().contains(controller.carBrand.value.toLowerCase());
+
+                          // Add more filter conditions as needed...
+
+                          return matchesCategory &&
+                              matchesModelYear &&
+                              matchesTransmission &&
+                              matchesFuelType &&
+                              matchesSeatsCapacity &&
+                              // matchesLocation &&
+                              matchesBrand;
+                        }).toList()
+                          ..sort((a, b) {
+                            // Sorting logic based on price (vehiclePerHourRent or vehiclePerDayRent)
+                            double priceA = double.parse(a.vehiclePerHourRent); // Assuming this is a double value
+                            double priceB = double.parse(b.vehiclePerHourRent); // Assuming this is a double value
+
+                            if (controller.sortBy.value == 'Low To High') {
+                              return priceA.compareTo(priceB);
+                            } else {
+                              return priceB.compareTo(priceA);
+                            }
+                          });
+                      }
+                      controller.filterVehicle.value = applyFiltersAndSort(Get.find<HomeController>().addhostvehicle);
+                      Get.back();
+
+
+
                     }),
                   ]
               )
 
             ],
-          ).marginSymmetric(horizontal: 15.w,vertical: 15.h),
+          ).marginSymmetric(horizontal: 15.w, vertical: 15.h),
 
         ),
       ),
     );
   }
-  var Cartype = ["Sedan","Trucks","Luxury Car","Electronic Car"];
-  var CarBrand = ["Toyota","Jeep","Luxury Car","Ford Ranger"];
-  var CarModel = ["2000","2019","2022","2025"];
-  var CarTransmission  = ["Automatic","Compterized"];
-  var CarFuelType      = ["Gasoline","Petrol","Diesel"];
-  var CarSeatsCapacity = ["01","02","03","04"];
-  var CarLocation       =     ["Central Park New York","Pakistan layyah","Krachi layyah"];
+
+  var Cartype = ["Sedan", "Trucks", "Luxury Car", "Electronic Car"];
+  var CarBrand = ["Toyota", "Jeep", "Luxury Car", "Ford Ranger"];
+  var CarModel = ["2000", "2019", "2022", "2025"];
+  var CarTransmission = ["Automatic", "Compterized"];
+  var CarFuelType = ["Gasoline", "Petrol", "Diesel"];
+  var CarSeatsCapacity = ["01", "02", "03", "04"];
+  var CarLocation = [
+    "Central Park New York",
+    "Pakistan layyah",
+    "Krachi layyah"
+  ];
 }

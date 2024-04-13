@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../../constant/helpers.dart';
+import '../../../controllers/controller_host_home.dart';
 import '../../../controllers/home_controller.dart';
 import '../../../widgets/custom_button.dart';
 import '../../../widgets/custom_svg.dart';
@@ -14,7 +15,7 @@ class ScreenHostSetting extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    HomeController controller = Get.put(HomeController());
+    ControllerHostHome controller = Get.put(ControllerHostHome());
    isNotification.value =controller.user.value!.notification;
     return SafeArea(child: Scaffold(
       appBar: AppBar(

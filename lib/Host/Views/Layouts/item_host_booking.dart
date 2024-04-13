@@ -69,8 +69,9 @@ class ItemHostBooking extends StatelessWidget {
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(5.r),
                                     image: DecorationImage(
-                                        image: AssetImage(
-                                            "assets/images/user-image.png"),
+                                        image: NetworkImage(
+                                          user.imageUrl
+                                        ),
                                         fit: BoxFit.fill)),
                               ),
                               Expanded(
@@ -82,13 +83,15 @@ class ItemHostBooking extends StatelessWidget {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            "Kristin Watson",
+                                            user.name,
                                             style: TextStyle(
                                                 fontWeight: FontWeight.w700,
                                                 fontSize: 14.sp),
                                           ),
                                           Text(
-                                            "322 Hoffman Dr, Cherry Hill, NJ 08077, New York",
+                                            user.address,
+                                            maxLines: 3,
+                                            overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
                                                 decoration:
                                                     TextDecoration.underline,
@@ -159,7 +162,7 @@ class ItemHostBooking extends StatelessWidget {
                                           ],
                                         ),
                                         Text(
-                                          "${currencyUnit}350",
+                                          "${currencyUnit}${booking.price}",
                                           style: TextStyle(
                                               fontSize: 20.sp,
                                               fontWeight: FontWeight.w700,
@@ -181,7 +184,7 @@ class ItemHostBooking extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   Text(
-                                    'Booking Date',
+                                    'Booking Start & End Date',
                                     style: TextStyle(
                                         color: Color(0xFF848484),
                                         fontWeight: FontWeight.w400,
@@ -189,17 +192,13 @@ class ItemHostBooking extends StatelessWidget {
                                         fontFamily: "Nunito"),
                                   ).marginOnly(bottom: 3.h),
                                   Text(
-                                    "March 15 - 18, 2024",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 11.sp,
-                                        color: Colors.black),
+                                    "${formatDateRange(DateTime.fromMillisecondsSinceEpoch(booking.bookingStartDate), DateTime.fromMillisecondsSinceEpoch(booking.bookingEndDate))}",
+                                    style:
+                                    TextStyle(fontWeight: FontWeight.w500, fontSize: 11.sp,color: Colors.black),
                                   )
                                 ],
                               ),
-                              VerticalDivider(
-                                color: Colors.black.withOpacity(.1),
-                              ),
+                              VerticalDivider(color: Colors.black.withOpacity(.1),),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
@@ -212,11 +211,9 @@ class ItemHostBooking extends StatelessWidget {
                                         fontFamily: "Nunito"),
                                   ).marginOnly(bottom: 3.h),
                                   Text(
-                                    "10:00 AM - 11:00 AM",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 11.sp,
-                                        color: Colors.black),
+                                    "${formatTime(booking.startTime)} - ${formatTime(booking.EndTime)}",
+                                    style:
+                                    TextStyle(fontWeight: FontWeight.w500, fontSize: 11.sp,color: Colors.black),
                                   )
                                 ],
                               ),

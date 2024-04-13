@@ -9,9 +9,10 @@ class Booking {
   String paymentStatus;
   String bookingType;
   int bookingStartDate, bookingEndDate;
-  bool completed;
+  bool completed,isRated;
   int startTime, EndTime;
   double price;
+
   bool? withdrawn;
 
 //<editor-fold desc="Data Methods">
@@ -28,6 +29,7 @@ class Booking {
     required this.bookingStartDate,
     required this.bookingEndDate,
     required this.completed,
+    required this.isRated,
     required this.startTime,
     required this.EndTime,
     required this.price,
@@ -51,6 +53,7 @@ class Booking {
           bookingStartDate == other.bookingStartDate &&
           bookingEndDate == other.bookingEndDate &&
           completed == other.completed &&
+          isRated == other.isRated &&
           startTime == other.startTime &&
           EndTime == other.EndTime &&
           price == other.price &&
@@ -70,6 +73,7 @@ class Booking {
       bookingStartDate.hashCode ^
       bookingEndDate.hashCode ^
       completed.hashCode ^
+      isRated.hashCode ^
       startTime.hashCode ^
       EndTime.hashCode ^
       price.hashCode ^
@@ -90,6 +94,7 @@ class Booking {
         ' bookingStartDate: $bookingStartDate,' +
         ' bookingEndDate: $bookingEndDate,' +
         ' completed: $completed,' +
+        ' isRated: $isRated,' +
         ' startTime: $startTime,' +
         ' EndTime: $EndTime,' +
         ' price: $price,' +
@@ -110,6 +115,7 @@ class Booking {
     int? bookingStartDate,
     int? bookingEndDate,
     bool? completed,
+    bool? isRated,
     int? startTime,
     int? EndTime,
     double? price,
@@ -128,6 +134,7 @@ class Booking {
       bookingStartDate: bookingStartDate ?? this.bookingStartDate,
       bookingEndDate: bookingEndDate ?? this.bookingEndDate,
       completed: completed ?? this.completed,
+      isRated: isRated ?? this.isRated,
       startTime: startTime ?? this.startTime,
       EndTime: EndTime ?? this.EndTime,
       price: price ?? this.price,
@@ -149,6 +156,7 @@ class Booking {
       'bookingStartDate': this.bookingStartDate,
       'bookingEndDate': this.bookingEndDate,
       'completed': this.completed,
+      'isRated': this.isRated,
       'startTime': this.startTime,
       'EndTime': this.EndTime,
       'price': this.price,
@@ -170,6 +178,7 @@ class Booking {
       bookingStartDate: map['bookingStartDate'] as int? ?? 0,
       bookingEndDate: map['bookingEndDate'] as int? ?? 0,
       completed: map['completed'] as bool? ?? false,
+      isRated: map['isRated'] as bool? ?? false,
       startTime: map['startTime'] as int? ?? 0,
       EndTime: map['EndTime'] as int? ?? 0,
       price: map['price'] as double? ?? 0.0,

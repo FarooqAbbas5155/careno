@@ -4,7 +4,8 @@ class User{
    String uid,userType,phoneNumber,imageUrl,address,name,email,profileDescription,gender,notificationToken,status;
    int dob,timeStamp;
    HostIdentity?  hostIdentity;
-   double lat,lng;
+
+   double lat,lng,currentBalance;
    bool notification,isVerified,isBlocked;
 
 //<editor-fold desc="Data Methods">
@@ -25,6 +26,7 @@ class User{
     this.hostIdentity,
     required this.lat,
     required this.lng,
+    required this.currentBalance,
     required this.notification,
     required this.isVerified,
     required this.isBlocked,
@@ -51,6 +53,7 @@ class User{
           hostIdentity == other.hostIdentity &&
           lat == other.lat &&
           lng == other.lng &&
+          currentBalance == other.currentBalance &&
           notification == other.notification &&
           isVerified == other.isVerified &&
           isBlocked == other.isBlocked);
@@ -73,6 +76,7 @@ class User{
       hostIdentity.hashCode ^
       lat.hashCode ^
       lng.hashCode ^
+      currentBalance.hashCode ^
       notification.hashCode ^
       isVerified.hashCode ^
       isBlocked.hashCode;
@@ -96,6 +100,7 @@ class User{
         ' hostIdentity: $hostIdentity,' +
         ' lat: $lat,' +
         ' lng: $lng,' +
+        ' currentBalance: $currentBalance,' +
         ' notification: $notification,' +
         ' isVerified: $isVerified,' +
         ' isBlocked: $isBlocked,' +
@@ -119,6 +124,7 @@ class User{
     HostIdentity? hostIdentity,
     double? lat,
     double? lng,
+    double? currentBalance,
     bool? notification,
     bool? isVerified,
     bool? isBlocked,
@@ -140,6 +146,7 @@ class User{
       hostIdentity: hostIdentity ?? this.hostIdentity,
       lat: lat ?? this.lat,
       lng: lng ?? this.lng,
+      currentBalance: currentBalance ?? this.currentBalance,
       notification: notification ?? this.notification,
       isVerified: isVerified ?? this.isVerified,
       isBlocked: isBlocked ?? this.isBlocked,
@@ -164,6 +171,7 @@ class User{
       'hostIdentity': this.hostIdentity,
       'lat': this.lat,
       'lng': this.lng,
+      'currentBalance': this.currentBalance,
       'notification': this.notification,
       'isVerified': this.isVerified,
       'isBlocked': this.isBlocked,
@@ -188,6 +196,7 @@ class User{
       hostIdentity: map['hostIdentity'] != null ? HostIdentity.fromMap(map['hostIdentity']) : null,
       lat: map['lat'] as double,
       lng: map['lng'] as double,
+      currentBalance: (map['currentBalance'] as num?)?.toDouble() ?? 0.0, // Handle null case
       notification: map['notification'] as bool,
       isVerified: map['isVerified'] as bool,
       isBlocked: map['isBlocked'] as bool,

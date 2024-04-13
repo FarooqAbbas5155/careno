@@ -3,6 +3,7 @@ import 'package:careno/models/user.dart' as userModle;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import '../AuthSection/screen_welcome.dart';
 import '../constant/helpers.dart';
 
@@ -16,9 +17,6 @@ class PhoneController extends GetxController {
   int _resendToken = 0;
   final showLoading = false.obs;
   String country_code = "+1";
-
-
-
 
   void verifyPin(String pin) async {
     PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.credential(
@@ -109,7 +107,10 @@ class PhoneController extends GetxController {
       notificationToken: '',
       timeStamp: DateTime.now().millisecondsSinceEpoch,
       isVerified: false,
-      isBlocked: false, status: '', address: '',
+      isBlocked: false,
+      status: '',
+      address: '',
+      currentBalance: 0.0,
     );
     await await setDatabase(user);
     //
@@ -148,12 +149,10 @@ class PhoneController extends GetxController {
     return snap.docs.isNotEmpty;
   }
 
-  // Future signOut() async {
-  //   await FirebaseAuth.instance.signOut();
-  //   _googleSignIn.signOut();
-  //   _googleSignIn.disconnect();
-  //   Get.offAll(ScreenLogin());
-  // }
-
-
+// Future signOut() async {
+//   await FirebaseAuth.instance.signOut();
+//   _googleSignIn.signOut();
+//   _googleSignIn.disconnect();
+//   Get.offAll(ScreenLogin());
+// }
 }

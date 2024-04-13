@@ -1,4 +1,5 @@
 import 'package:careno/Host/Views/Screens/screen_host_vehicle_my_detail.dart';
+import 'package:careno/controllers/controller_host_home.dart';
 import 'package:careno/models/add_host_vehicle.dart';
 import 'package:careno/widgets/custom_svg.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,7 @@ import 'package:get/get.dart';
 
 import '../../../constant/colors.dart';
 import '../../../constant/helpers.dart';
+import '../../../controllers/home_controller.dart';
 
 class ItemHostVehicle extends StatelessWidget {
 AddHostVehicle? addHostVehicle;
@@ -63,7 +65,7 @@ String? categoryName;
                     children: [
                       CustomSvg(name:"Star"),
                       Text("${addHostVehicle!.rating}",style: TextStyle(color: Colors.black,fontSize: 13.sp,fontFamily:"UrbanistBold" ,fontWeight: FontWeight.w600),),
-                      Text("",style: TextStyle(color: Color(0xffAAAAAA),fontSize: 11.sp,fontFamily:"Urbanist" ,fontWeight: FontWeight.w600),).marginOnly(left: 4.w),
+                      Text("(${Get.find<ControllerHostHome>().getReviewCount(Get.find<ControllerHostHome>().ratedVehicleList.value, addHostVehicle!.vehicleId).toString()})",style: TextStyle(color: Color(0xffAAAAAA),fontSize: 11.sp,fontFamily:"Urbanist" ,fontWeight: FontWeight.w600),).marginOnly(left: 4.w),
                     ],
                   ),
 

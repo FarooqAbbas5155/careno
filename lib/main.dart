@@ -1,3 +1,4 @@
+import 'package:careno/constant/helpers.dart';
 import 'package:careno/widgets/custom_error.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -19,6 +20,7 @@ void main() async {
   await Future.delayed(Duration(seconds: 1));
   Stripe.publishableKey = PaymentsController2.stripePublishableKey;
   colorConfig();
+  currencyUnit=getCurrency();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );

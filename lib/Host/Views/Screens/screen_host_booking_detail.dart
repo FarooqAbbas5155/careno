@@ -1,5 +1,9 @@
+import 'dart:developer';
+
 import 'package:careno/User/views/screens/screen_user_chat.dart';
+import 'package:careno/controllers/controller_host_home.dart';
 import 'package:careno/models/categories.dart';
+import 'package:careno/models/rating.dart';
 import 'package:careno/widgets/custom_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -7,9 +11,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../../constant/colors.dart';
+import '../../../constant/fcm.dart';
+import '../../../constant/firebase_utils.dart';
 import '../../../constant/helpers.dart';
+import '../../../controllers/home_controller.dart';
 import '../../../models/add_host_vehicle.dart';
 import '../../../models/booking.dart';
+import '../../../models/notification_model.dart';
 import '../../../models/user.dart';
 
 class ScreenHostBookingDetail extends StatelessWidget {
@@ -32,29 +40,27 @@ class ScreenHostBookingDetail extends StatelessWidget {
           ),
         ),
         body: FutureBuilder<Category>(
-          future: getCategory(vehicle.vehicleCategory),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState==ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
-
-            }
-            var category=snapshot.data;
-            return SingleChildScrollView(
-              child: Column(
-                children: <Widget>[
-                  buildBookedServiceContainer(),
-                  buildVehicleContainer(category!.name),
-                  buildSummaryContainer(percentageValue,totalRent)
-                ],
-              ),
-            );
-          }
-        ),
+            future: getCategory(vehicle.vehicleCategory),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(child: CircularProgressIndicator());
+              }
+              var category = snapshot.data;
+              return SingleChildScrollView(
+                child: Column(
+                  children: <Widget>[
+                    buildBookedServiceContainer(),
+                    buildVehicleContainer(category!.name),
+                    buildSummaryContainer(percentageValue, totalRent)
+                  ],
+                ),
+              );
+            }),
       ),
     );
   }
 
-  Container buildSummaryContainer(percentageValue,totalRent) {
+  Container buildSummaryContainer(percentageValue, totalRent) {
     return Container(
       padding: EdgeInsets.all(10.r),
       margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
@@ -223,18 +229,160 @@ class ScreenHostBookingDetail extends StatelessWidget {
             ],
           ).marginSymmetric(vertical: 4.h),
           if (booking.bookingStatus == "Request Pending") buildPendingButton(),
-          if (booking.bookingStatus == "Payment Pending") buildPendingPaymentButton().marginOnly(top: 10.h),
+          if (booking.bookingStatus=="Pending Approval") buildMarkedCompletedButton(),
+          if (booking.bookingStatus == "Payment Pending")
+            buildPendingPaymentButton().marginOnly(top: 10.h),
           if (booking.bookingStatus == "In progress") buildInprogressButton(),
           if (booking.bookingStatus == "Completed" ||
               booking.bookingStatus == "Canceled")
             buildCompletedButton(),
-          if (booking.bookingStatus == "Completed") buildReview(),
+          if (booking.isRated == true) buildReview(),
           if (booking.bookingStatus == "Canceled") buildCanceledReason(),
         ],
       ),
     );
   }
+RxBool loading=false.obs;
+  Widget buildMarkedCompletedButton() {
+    return Column(
+      children: [
+        Row(
+          children: [
+            // Expanded(
+            //   child: CustomButton(
+            //     title: "Later",
+            //     onPressed: () async {
+            //       loading.value=true;
+            //       var host = Get
+            //           .find<ControllerHostHome>()
+            //           .user
+            //           .value;
+            //       await bookingsRef
+            //           .doc(booking.bookingId)
+            //           .update({"bookingStatus": "Pending Approval"}).then((value) async {
+            //         await FCM.sendMessageSingle(
+            //           "Your Booking Not Completed",
+            //           "${host!.name} Not Marked Completed booking",
+            //           user.notificationToken,
+            //           {},
+            //         );
+            //
+            //         var notification = NotificationModel(
+            //           id: FirebaseUtils.newId.toString(),
+            //           title: "${host.name}  Not Marked Completed booking",
+            //           read: false,
+            //           data: {
+            //             "bookingId": booking.bookingId,
+            //             "vehicleId": vehicle.vehicleId
+            //           },
+            //           timestamp: FirebaseUtils.newId,
+            //           senderId: FirebaseUtils.myId,
+            //           receiverId: user.uid,
+            //           type: 'Booking Not Completed',
+            //           subtitle: '',
+            //         );
+            //         await notificationRef
+            //             .doc(notification.id)
+            //             .set(notification.toMap());
+            //         loading.value=false;
+            //         Get.back();
+            //       });
+            //     },
+            //     textStyle: TextStyle(
+            //         fontSize: 15.sp,
+            //         fontWeight: FontWeight.w700,
+            //         color: Colors.white),
+            //     color: Color(0xFFFF2021),
+            //   ),
+            // ),
+            Expanded(
+              child: CustomButton(
+                  width: 217.w,
+                  textStyle: TextStyle(
+                      fontSize: 15.sp,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white),
+                  title: "Message",
+                  onPressed: () {
+                    Get.to(ScreenUserChat(
+                      user: user,
+                    ));
+                  }),
+            ),
+            SizedBox(
+              width: 15.w,
+            ),
+            Expanded(
+              child: CustomButton(
+                title: "Mark Completed",
+                onPressed: () async {
+                  loading.value=true;
+                  var host = Get
+                      .find<ControllerHostHome>()
+                      .user
+                      .value;
+                  log(host.toString());
+                  await bookingsRef.doc(booking.bookingId).update(
+                      {"bookingStatus": "Completed",
+                      "completed":true
+                      }).then((value) async {
+                        await usersRef.doc(host!.uid).update({"currentBalance": host.currentBalance+booking.price});
+                    await FCM.sendMessageSingle(
+                      "Your Booking Completed",
+                      "${host!.name} has marked booking completed",
+                      user.notificationToken,
+                      {},
+                    );
 
+                    var notification = NotificationModel(
+                      id: FirebaseUtils.newId.toString(),
+                      title: "${host.name} has marked booking completed",
+                      read: false,
+                      data: {
+                        "bookingId": booking.bookingId,
+                        "vehicleId": vehicle.vehicleId
+                      },
+                      timestamp: FirebaseUtils.newId,
+                      senderId: FirebaseUtils.myId,
+                      receiverId: user.uid,
+                      type: 'Booking Request',
+                      subtitle: '',
+                    );
+                    await notificationRef
+                        .doc(notification.id)
+                        .set(notification.toMap());
+                    loading.value=false;
+
+                    Get.back();
+                  });
+                },
+                color: Color(0xFF0F9D58),
+                textStyle: TextStyle(
+                    fontSize: 15.sp,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white),
+              ),
+            )
+          ],
+        ).marginSymmetric(vertical: 15.h),
+        // Align(
+        //   alignment: Alignment.center,
+        //   child: CustomButton(
+        //       width: 217.w,
+        //       textStyle: TextStyle(
+        //           fontSize: 15.sp,
+        //           fontWeight: FontWeight.w700,
+        //           color: Colors.white),
+        //       title: "Message",
+        //       onPressed: () {
+        //         Get.to(ScreenUserChat(
+        //           user: user,
+        //         ));
+        //       }),
+        // )
+      ],
+    );
+  }
   Widget buildPendingButton() {
     return Column(
       children: [
@@ -244,9 +392,39 @@ class ScreenHostBookingDetail extends StatelessWidget {
               child: CustomButton(
                 title: "Decline",
                 onPressed: () async {
+                  loading.value=true;
+                  var host = Get
+                      .find<ControllerHostHome>()
+                      .user
+                      .value;
                   await bookingsRef
                       .doc(booking.bookingId)
-                      .update({"bookingStatus": "Rejected"}).then((value) {
+                      .update({"bookingStatus": "Rejected"}).then((value) async {
+                    await FCM.sendMessageSingle(
+                      "Your Booking Request Rejected",
+                      "${host!.name} has Rejected your booking request",
+                      user.notificationToken,
+                      {},
+                    );
+
+                    var notification = NotificationModel(
+                      id: FirebaseUtils.newId.toString(),
+                      title: "${host.name} has Rejected your booking request",
+                      read: false,
+                      data: {
+                        "bookingId": booking.bookingId,
+                        "vehicleId": vehicle.vehicleId
+                      },
+                      timestamp: FirebaseUtils.newId,
+                      senderId: FirebaseUtils.myId,
+                      receiverId: user.uid,
+                      type: 'Booking Request',
+                      subtitle: '',
+                    );
+                    await notificationRef
+                        .doc(notification.id)
+                        .set(notification.toMap());
+                    loading.value=false;
                     Get.back();
                   });
                 },
@@ -264,8 +442,40 @@ class ScreenHostBookingDetail extends StatelessWidget {
               child: CustomButton(
                 title: "Accept",
                 onPressed: () async {
+                  loading.value=true;
+                  var host = Get
+                      .find<ControllerHostHome>()
+                      .user
+                      .value;
+                  log(host.toString());
                   await bookingsRef.doc(booking.bookingId).update(
-                      {"bookingStatus": "Payment Pending"}).then((value) {
+                      {"bookingStatus": "Payment Pending"}).then((value) async {
+                    await FCM.sendMessageSingle(
+                      "Your Booking Request Accepted",
+                      "${host!.name} has sent you a request for Booking Payment Request",
+                      user.notificationToken,
+                      {},
+                    );
+
+                    var notification = NotificationModel(
+                      id: FirebaseUtils.newId.toString(),
+                      title: "${host.name} has sent you a request for Booking Payment Request",
+                      read: false,
+                      data: {
+                        "bookingId": booking.bookingId,
+                        "vehicleId": vehicle.vehicleId
+                      },
+                      timestamp: FirebaseUtils.newId,
+                      senderId: FirebaseUtils.myId,
+                      receiverId: user.uid,
+                      type: 'Booking Request',
+                      subtitle: '',
+                    );
+                    await notificationRef
+                        .doc(notification.id)
+                        .set(notification.toMap());
+                    loading.value=false;
+
                     Get.back();
                   });
                 },
@@ -386,7 +596,7 @@ class ScreenHostBookingDetail extends StatelessWidget {
                             color: Color(0xFF616161)),
                         children: [
                       TextSpan(
-                          text:vehicle.vehicleYear.toString(),
+                          text: vehicle.vehicleYear.toString(),
                           style: TextStyle(
                               fontWeight: FontWeight.w600,
                               fontSize: 14.sp,
@@ -535,8 +745,7 @@ class ScreenHostBookingDetail extends StatelessWidget {
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5.r),
                   image: DecorationImage(
-                      image: NetworkImage(user.imageUrl),
-                      fit: BoxFit.fill)),
+                      image: NetworkImage(user.imageUrl), fit: BoxFit.fill)),
             ),
             Expanded(
               child: Row(
@@ -607,7 +816,8 @@ class ScreenHostBookingDetail extends StatelessWidget {
       ),
     );
   }
- Widget buildPendingPaymentButton() {
+
+  Widget buildPendingPaymentButton() {
     return Row(
       children: [
         Expanded(
@@ -619,13 +829,16 @@ class ScreenHostBookingDetail extends StatelessWidget {
                 color: Colors.white),
             color: AppColors.appPrimaryColor,
             onPressed: () {
-              Get.to(ScreenUserChat(user: user,));
+              Get.to(ScreenUserChat(
+                user: user,
+              ));
             },
           ),
         ),
       ],
     );
   }
+
   buildInprogressButton() {
     return Row(
       children: [
@@ -718,7 +931,9 @@ class ScreenHostBookingDetail extends StatelessWidget {
     return CustomButton(
       title: "Message",
       onPressed: () {
-        Get.to(ScreenUserChat(user: user,));
+        Get.to(ScreenUserChat(
+          user: user,
+        ));
       },
       textStyle: TextStyle(
           fontSize: 15.sp, fontWeight: FontWeight.w700, color: Colors.white),
@@ -726,58 +941,77 @@ class ScreenHostBookingDetail extends StatelessWidget {
   }
 
   buildReview() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Divider(
-          color: Colors.black.withOpacity(.1),
-          thickness: .5,
-        ),
-        Text(
-          "Customer Review",
-          style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18.sp),
-        ),
-        ListTile(
-          leading: CircleAvatar(
-            backgroundImage: AssetImage("assets/images/user-image.png"),
-          ),
-          title: Text(
-            "Kristin Watson",
-            style: TextStyle(
-                fontSize: 15.sp,
-                fontWeight: FontWeight.w600,
-                color: Color(0xFF1B1B1B)),
-          ),
-          subtitle: Text(
-            "21 June, 2021",
-            style: TextStyle(
-                fontWeight: FontWeight.w400,
-                fontSize: 8.sp,
-                color: Color(0xFF999999)),
-          ),
-          trailing: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Icon(
-                Icons.star,
-                color: Color(0xFFFBC017),
-              ),
-              Text(
-                "4.5",
-                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 13.sp),
-              )
-            ],
-          ),
-        ),
-        Text(
-          'Review text popular belief, Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsu...',
-          style: TextStyle(
-              fontSize: 12.sp,
-              fontWeight: FontWeight.w500,
-              color: Color(0xFF414141)),
-        )
-      ],
-    ).marginSymmetric(vertical: 10.h);
+    return FutureBuilder<DocumentSnapshot>(
+      future: reviewRef.doc(booking.bookingId).get(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState==ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+
+        }
+        var rating = Rating.fromMap(snapshot.data!.data() as Map<String,dynamic>);
+        return FutureBuilder<User?>(
+          future: getUser(rating.userId),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState==ConnectionState.waiting) {
+              return CircularProgressIndicator();
+            }
+            var user=snapshot.data;
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Divider(
+                  color: Colors.black.withOpacity(.1),
+                  thickness: .5,
+                ),
+                Text(
+                  "Customer Review",
+                  style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18.sp),
+                ),
+                ListTile(
+                  leading: CircleAvatar(
+                    backgroundImage: NetworkImage(user!.imageUrl,),
+                  ),
+                  title: Text(
+                    user.name,
+                    style: TextStyle(
+                        fontSize: 15.sp,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xFF1B1B1B)),
+                  ),
+                  subtitle: Text(
+                    "${dateFormat(DateTime.fromMillisecondsSinceEpoch(rating.timeStamp))}",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 8.sp,
+                        color: Color(0xFF999999)),
+                  ),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Icon(
+                        Icons.star,
+                        color: Color(0xFFFBC017),
+                      ),
+                      Text(
+                        rating.avgRating.toString(),
+                        style: TextStyle(fontWeight: FontWeight.w600, fontSize: 13.sp),
+                      )
+                    ],
+                  ),
+                ),
+                Text(
+                  rating.description,
+                  style: TextStyle(
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w500,
+                      color: Color(0xFF414141)),
+                )
+              ],
+            ).marginSymmetric(vertical: 10.h);
+          }
+        );
+      }
+    );
   }
 
   buildCanceledReason() {

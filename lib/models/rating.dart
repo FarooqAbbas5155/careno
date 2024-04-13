@@ -1,15 +1,17 @@
 class Rating {
-  String serviceId,vehicleId,userId;
+  String bookingId,vehicleId,userId,id,description,type;
   double avgRating;
-  int num,timeStamp;
+  int timeStamp;
 
 //<editor-fold desc="Data Methods">
   Rating({
-    required this.serviceId,
+    required this.bookingId,
     required this.vehicleId,
     required this.userId,
+    required this.id,
+    required this.description,
+    required this.type,
     required this.avgRating,
-    required this.num,
     required this.timeStamp,
   });
 
@@ -18,70 +20,84 @@ class Rating {
       identical(this, other) ||
       (other is Rating &&
           runtimeType == other.runtimeType &&
-          serviceId == other.serviceId &&
+          bookingId == other.bookingId &&
           vehicleId == other.vehicleId &&
           userId == other.userId &&
+          id == other.id &&
+          description == other.description &&
+          type == other.type &&
           avgRating == other.avgRating &&
-          num == other.num &&
           timeStamp == other.timeStamp);
 
   @override
   int get hashCode =>
-      serviceId.hashCode ^
+      bookingId.hashCode ^
       vehicleId.hashCode ^
       userId.hashCode ^
+      id.hashCode ^
+      description.hashCode ^
+      type.hashCode ^
       avgRating.hashCode ^
-      num.hashCode ^
       timeStamp.hashCode;
 
   @override
   String toString() {
     return 'Rating{' +
-        ' serviceId: $serviceId,' +
+        ' bookingId: $bookingId,' +
         ' vehicleId: $vehicleId,' +
         ' userId: $userId,' +
+        ' id: $id,' +
+        ' description: $description,' +
+        ' type: $type,' +
         ' avgRating: $avgRating,' +
-        ' num: $num,' +
         ' timeStamp: $timeStamp,' +
         '}';
   }
 
   Rating copyWith({
-    String? serviceId,
+    String? bookingId,
     String? vehicleId,
     String? userId,
+    String? id,
+    String? description,
+    String? type,
     double? avgRating,
-    int? num,
     int? timeStamp,
   }) {
     return Rating(
-      serviceId: serviceId ?? this.serviceId,
+      bookingId: bookingId ?? this.bookingId,
       vehicleId: vehicleId ?? this.vehicleId,
       userId: userId ?? this.userId,
+      id: id ?? this.id,
+      description: description ?? this.description,
+      type: type ?? this.type,
       avgRating: avgRating ?? this.avgRating,
-      num: num ?? this.num,
       timeStamp: timeStamp ?? this.timeStamp,
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
-      'serviceId': this.serviceId,
+      'bookingId': this.bookingId,
       'vehicleId': this.vehicleId,
       'userId': this.userId,
+      'id': this.id,
+      'description': this.description,
+      'type': this.type,
       'avgRating': this.avgRating,
-      'num': this.num,
       'timeStamp': this.timeStamp,
     };
   }
 
   factory Rating.fromMap(Map<String, dynamic> map) {
     return Rating(
-      serviceId: map['serviceId'] as String,
+      bookingId: map['bookingId'] as String,
       vehicleId: map['vehicleId'] as String,
       userId: map['userId'] as String,
+      id: map['id'] as String,
+      description: map['description'] as String,
+      type: map['type'] as String,
       avgRating: map['avgRating'] as double,
-      num: map['num'] as int,
       timeStamp: map['timeStamp'] as int,
     );
   }

@@ -5,6 +5,7 @@ import 'package:careno/Host/Views/Screens/screen_host_edit_profile.dart';
 import 'package:careno/Host/Views/Screens/screen_host_setting.dart';
 import 'package:careno/Host/Views/Screens/screen_host_vehicle.dart';
 import 'package:careno/constant/helpers.dart';
+import 'package:careno/controllers/controller_host_home.dart';
 import 'package:careno/controllers/home_controller.dart';
 import 'package:careno/widgets/custom_svg.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -16,7 +17,7 @@ import '../../../constant/colors.dart';
 import '../../../widgets/custom_button.dart';
 
 class LayoutHostProfile extends StatelessWidget {
-  HomeController controller = Get.put(HomeController());
+  ControllerHostHome controller = Get.put(ControllerHostHome());
 
   @override
   Widget build(BuildContext context) {

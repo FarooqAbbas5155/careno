@@ -11,6 +11,7 @@ import '../../../User/views/layouts/layout_user_messages.dart';
 import '../../../User/views/screens/screen_user_home.dart';
 import '../../../constant/firebase_utils.dart';
 import '../../../constant/helpers.dart';
+import '../../../controllers/controller_host_home.dart';
 
 class ScreenHostHomePage extends StatefulWidget {
   @override
@@ -46,10 +47,11 @@ void didChangeAppLifecycleState(AppLifecycleState state) {
   setStatus("Online");
   super.initState();
   }
-HomeController controller=Get.put(HomeController());
+ControllerHostHome controller=Get.put(ControllerHostHome());
 
   @override
   Widget build(BuildContext context) {
+    // controller.getHostBookingList();
     return SafeArea(
         child: Scaffold(
           backgroundColor: Colors.white,

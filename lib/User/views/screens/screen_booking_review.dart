@@ -199,8 +199,7 @@ class ScreenBookingReview extends StatelessWidget {
                             children: [
                               // controller.bookingType.value == "Per hour" ?
                               Text(
-                                "${controller.startTime.value.toStringAsFixed(
-                                    0)}:00 ",
+                                "${controller.startTime.value.toStringAsFixed(0)}:00 ",
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 16.sp,
@@ -253,8 +252,7 @@ class ScreenBookingReview extends StatelessWidget {
                             children: [
                               // controller.bookingType.value == "Per hour" ?
                               Text(
-                                "${controller.endTime.value.toStringAsFixed(
-                                    0)}:00 ",
+                                "${controller.endTime.value.toStringAsFixed(0)}:00 ",
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 16.sp,
@@ -311,7 +309,8 @@ class ScreenBookingReview extends StatelessWidget {
                     ),
                     BookingSummary("Subtotal",
                         "${currencyUnit}${controller.price.value.toStringAsFixed(0)}"),
-                    BookingSummary("Service Fee", "${currencyUnit}${percentageValue}"),
+                    BookingSummary(
+                        "Service Fee", "${currencyUnit}${percentageValue}"),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -333,27 +332,25 @@ class ScreenBookingReview extends StatelessWidget {
                         ),
                       ],
                     ).marginSymmetric(horizontal: 12.w, vertical: 4.h),
-                    Center(
-                        child: Obx(() {
-                          return CustomButton(
-                            isLoading: loading.value,
-                              title: "Add Payment Method",
-                              onPressed: () async {
-                                await setBooking(context, user);
+                    Center(child: Obx(() {
+                      return CustomButton(
+                          isLoading: loading.value,
+                          title: "Add Payment Method",
+                          onPressed: () async {
+                            await setBooking(context, user);
 
-                                // Get.to(ScreenAddCard());
-                              });
-                        }))
-                        .marginSymmetric(horizontal: 24.w, vertical: 30.h),
+                            // Get.to(ScreenAddCard());
+                          });
+                    })).marginSymmetric(horizontal: 24.w, vertical: 30.h),
                     Center(
                         child: Text(
-                          "Your payment information is secure",
-                          style: TextStyle(
-                            color: Color(0xff484848),
-                            fontSize: 15.sp,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        )),
+                      "Your payment information is secure",
+                      style: TextStyle(
+                        color: Color(0xff484848),
+                        fontSize: 15.sp,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    )),
                   ],
                 ),
               );
@@ -363,15 +360,10 @@ class ScreenBookingReview extends StatelessWidget {
   }
 
   Future<void> setBooking(BuildContext context, User host) async {
-    loading.value=true;
-    var user = Get
-        .find<HomeController>()
-        .user
-        .value;
+    loading.value = true;
+    var user = Get.find<HomeController>().user.value;
 
-    int id = DateTime
-        .now()
-        .millisecondsSinceEpoch;
+    int id = DateTime.now().millisecondsSinceEpoch;
     DateTime startTimeDate = DateTime(
         controller.bookingStartDate.value!.year,
         controller.bookingStartDate.value!.month,
@@ -387,17 +379,15 @@ class ScreenBookingReview extends StatelessWidget {
         bookingStartDate: startTimeDate.millisecondsSinceEpoch,
         bookingEndDate: controller.bookingType == "Per Day"
             ? (controller.bookingEndDate.value!.millisecondsSinceEpoch)
-            : controller.selectDates[0]!
-            .add(Duration(
-            hours: controller.endTime.toInt() -
-                controller.startTime.value.toInt()))
-            .millisecondsSinceEpoch,
+            : controller.bookingEndDate.value!
+                .millisecondsSinceEpoch,
         completed: false,
         startTime: controller.startTime.value.toInt(),
         EndTime: controller.endTime.value.toInt(),
         price: controller.price.value,
         cancelBY: '',
-        cancelDetail: '');
+        cancelDetail: '',
+        isRated: false);
     await bookingsRef
         .doc(id.toString())
         .set(booking.toMap())
@@ -423,16 +413,21 @@ class ScreenBookingReview extends StatelessWidget {
         type: 'Booking Request',
         subtitle: '',
       );
-      await notificationRef.doc(notification.id).set(notification.toMap()).catchError((error){
-        loading.value=false;
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(error.toString())));
+      await notificationRef
+          .doc(notification.id)
+          .set(notification.toMap())
+          .catchError((error) {
+        loading.value = false;
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(error.toString())));
       });
-      loading.value=false;
+      loading.value = false;
 
       showBottomSheet(context);
-    }).catchError((error){
-      loading.value=false;
-   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(error.toString())));
+    }).catchError((error) {
+      loading.value = false;
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(error.toString())));
     });
     // await PaymentsController2().makePayment(
     //     controller.TotalVehicleRent.value.round()
@@ -485,7 +480,7 @@ Future<void> showBottomSheet(BuildContext context) {
                 child: CustomButton(
                     title: "Back Home",
                     onPressed: () {
-                      Get.to(ScreenUserHome());
+                      Get.offAll(ScreenUserHome());
                     }),
               )
             ],
