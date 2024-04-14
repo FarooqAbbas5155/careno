@@ -96,10 +96,8 @@ class _ScreenSearchFilterState extends State<ScreenSearchFilter> {
                       },
                       onSelected: (Category choice) {
                         // Update selected category when an option is chosen
-                          controller.selectCategory.value =
-                              choice.id.toString();
-                          controller.selectCategoryName.value =
-                              choice.name.toString();
+                          controller.selectCategory.value = choice.id.toString();
+                          controller.selectCategoryName.value = choice.name.toString();
                       },
                     ),
                   ])
@@ -132,27 +130,33 @@ class _ScreenSearchFilterState extends State<ScreenSearchFilter> {
                     ),
                     PopupMenuButton(
                       icon: Icon(Icons.expand_more),
-                      color: Theme
-                          .of(context)
-                          .primaryColor,
+                      color: Theme.of(context).primaryColor,
                       itemBuilder: (BuildContext context) {
-                        return CarModel.map((String choice) {
-                          return PopupMenuItem<String>(
-                            value: choice,
+                        Set<String> uniqueYear = Set();
+                        Get.find<HomeController>().addhostvehicle.value.forEach((choice) {
+                          uniqueYear.add(choice.vehicleYear.toString());
+                        });
+                        return uniqueYear.map((yearType) {
+                          return PopupMenuItem<AddHostVehicle>(
+                            value: Get.find<HomeController>()
+                                .addhostvehicle
+                                .value
+                                .firstWhere((choice) => choice.vehicleYear.toString() == yearType),
                             child: Text(
-                              choice,
+                              yearType,
                               style: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: "Urbanist"),
+                                color: Colors.white,
+                                fontFamily: "Urbanist",
+                              ),
                             ),
                           );
                         }).toList();
                       },
-                      onSelected: (String choice) {
-                        // Update selected gender when an option is chosen
-                        controller.carModel.value = choice;
+                      onSelected: (AddHostVehicle choice) {
+                        // Update selected fuel type when an option is chosen
+                        controller.carModel.value = choice.vehicleYear!.toString();
                         setState(() {
-
+                          // Update state if necessary
                         });
                       },
                     ),
@@ -187,27 +191,33 @@ class _ScreenSearchFilterState extends State<ScreenSearchFilter> {
                     ),
                     PopupMenuButton(
                       icon: Icon(Icons.expand_more),
-                      color: Theme
-                          .of(context)
-                          .primaryColor,
+                      color: Theme.of(context).primaryColor,
                       itemBuilder: (BuildContext context) {
-                        return CarTransmission.map((String choice) {
-                          return PopupMenuItem<String>(
-                            value: choice,
+                        Set<String> uniqueTransmission = Set();
+                        Get.find<HomeController>().addhostvehicle.value.forEach((choice) {
+                          uniqueTransmission.add(choice.vehicleTransmission.toString());
+                        });
+                        return uniqueTransmission.map((fuelType) {
+                          return PopupMenuItem<AddHostVehicle>(
+                            value: Get.find<HomeController>()
+                                .addhostvehicle
+                                .value
+                                .firstWhere((choice) => choice.vehicleTransmission.toString() == fuelType),
                             child: Text(
-                              choice,
+                              fuelType,
                               style: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: "Urbanist"),
+                                color: Colors.white,
+                                fontFamily: "Urbanist",
+                              ),
                             ),
                           );
                         }).toList();
                       },
-                      onSelected: (String choice) {
-                        // Update selected gender when an option is chosen
-                        controller.carTransmission.value = choice;
+                      onSelected: (AddHostVehicle choice) {
+                        // Update selected fuel type when an option is chosen
+                        controller.carTransmission.value = choice.vehicleTransmission!.toString();
                         setState(() {
-
+                          // Update state if necessary
                         });
                       },
                     ),
@@ -242,30 +252,37 @@ class _ScreenSearchFilterState extends State<ScreenSearchFilter> {
                     ),
                     PopupMenuButton(
                       icon: Icon(Icons.expand_more),
-                      color: Theme
-                          .of(context)
-                          .primaryColor,
+                      color: Theme.of(context).primaryColor,
                       itemBuilder: (BuildContext context) {
-                        return CarFuelType.map((String choice) {
-                          return PopupMenuItem<String>(
-                            value: choice,
+                        Set<String> uniqueFuelTypes = Set();
+                        Get.find<HomeController>().addhostvehicle.value.forEach((choice) {
+                          uniqueFuelTypes.add(choice.vehicleFuelType.toString());
+                        });
+                        return uniqueFuelTypes.map((fuelType) {
+                          return PopupMenuItem<AddHostVehicle>(
+                            value: Get.find<HomeController>()
+                                .addhostvehicle
+                                .value
+                                .firstWhere((choice) => choice.vehicleFuelType.toString() == fuelType),
                             child: Text(
-                              choice,
+                              fuelType,
                               style: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: "Urbanist"),
+                                color: Colors.white,
+                                fontFamily: "Urbanist",
+                              ),
                             ),
                           );
                         }).toList();
                       },
-                      onSelected: (String choice) {
-                        // Update selected gender when an option is chosen
-                        controller.carFuelType.value = choice;
+                      onSelected: (AddHostVehicle choice) {
+                        // Update selected fuel type when an option is chosen
+                        controller.carFuelType.value = choice.vehicleFuelType!.toString();
                         setState(() {
-
+                          // Update state if necessary
                         });
                       },
                     ),
+
                   ])
                 ],
               ),
@@ -297,27 +314,33 @@ class _ScreenSearchFilterState extends State<ScreenSearchFilter> {
                     ),
                     PopupMenuButton(
                       icon: Icon(Icons.expand_more),
-                      color: Theme
-                          .of(context)
-                          .primaryColor,
+                      color: Theme.of(context).primaryColor,
                       itemBuilder: (BuildContext context) {
-                        return CarSeatsCapacity.map((String choice) {
-                          return PopupMenuItem<String>(
-                            value: choice,
+                        Set<String> uniqueSeats = Set();
+                        Get.find<HomeController>().addhostvehicle.value.forEach((choice) {
+                          uniqueSeats.add(choice.vehicleSeats.toString());
+                        });
+                        return uniqueSeats.map((fuelType) {
+                          return PopupMenuItem<AddHostVehicle>(
+                            value: Get.find<HomeController>()
+                                .addhostvehicle
+                                .value
+                                .firstWhere((choice) => choice.vehicleSeats.toString() == fuelType),
                             child: Text(
-                              choice,
+                              fuelType,
                               style: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: "Urbanist"),
+                                color: Colors.white,
+                                fontFamily: "Urbanist",
+                              ),
                             ),
                           );
                         }).toList();
                       },
-                      onSelected: (String choice) {
-                        // Update selected gender when an option is chosen
-                        controller.carSeatsCapacity.value = choice;
+                      onSelected: (AddHostVehicle choice) {
+                        // Update selected fuel type when an option is chosen
+                        controller.carSeatsCapacity.value = choice.vehicleSeats!.toString();
                         setState(() {
-
+                          // Update state if necessary
                         });
                       },
                     ),

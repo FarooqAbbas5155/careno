@@ -57,7 +57,7 @@ class ItemUserList extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                  Text(user.name,style: TextStyle(
+                  Text(user.name.isEmpty ?"No Name":user.name,style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 18.sp
                   ),),
@@ -68,7 +68,8 @@ class ItemUserList extends StatelessWidget {
                   Text(lastMessage,style: TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 15.sp,
-                    color: Color(0xFF373132)
+                    color: Color(0xFF373132),
+                    overflow: TextOverflow.ellipsis
                   ),),
                 ],).marginSymmetric(horizontal: 8.h),
               ),
