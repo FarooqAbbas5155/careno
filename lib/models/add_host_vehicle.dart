@@ -6,6 +6,7 @@ class AddHostVehicle{
   double rating;
   double latitude,longitude;
   List<String> imagesUrl;
+  bool isVerified;
 
 //<editor-fold desc="Data Methods">
   AddHostVehicle({
@@ -35,6 +36,7 @@ class AddHostVehicle{
     required this.latitude,
     required this.longitude,
     required this.imagesUrl,
+    required this.isVerified,
   });
 
   @override
@@ -67,7 +69,8 @@ class AddHostVehicle{
           rating == other.rating &&
           latitude == other.latitude &&
           longitude == other.longitude &&
-          imagesUrl == other.imagesUrl);
+          imagesUrl == other.imagesUrl &&
+          isVerified == other.isVerified);
 
   @override
   int get hashCode =>
@@ -96,7 +99,8 @@ class AddHostVehicle{
       rating.hashCode ^
       latitude.hashCode ^
       longitude.hashCode ^
-      imagesUrl.hashCode;
+      imagesUrl.hashCode ^
+      isVerified.hashCode;
 
   @override
   String toString() {
@@ -127,6 +131,7 @@ class AddHostVehicle{
         ' latitude: $latitude,' +
         ' longitude: $longitude,' +
         ' imagesUrl: $imagesUrl,' +
+        ' isVerified: $isVerified,' +
         '}';
   }
 
@@ -157,6 +162,7 @@ class AddHostVehicle{
     double? latitude,
     double? longitude,
     List<String>? imagesUrl,
+    bool? isVerified,
   }) {
     return AddHostVehicle(
       hostId: hostId ?? this.hostId,
@@ -189,6 +195,7 @@ class AddHostVehicle{
       latitude: latitude ?? this.latitude,
       longitude: longitude ?? this.longitude,
       imagesUrl: imagesUrl ?? this.imagesUrl,
+      isVerified: isVerified ?? this.isVerified,
     );
   }
 
@@ -220,6 +227,7 @@ class AddHostVehicle{
       'latitude': this.latitude,
       'longitude': this.longitude,
       'imagesUrl': this.imagesUrl,
+      'isVerified': this.isVerified,
     };
   }
 
@@ -251,6 +259,7 @@ class AddHostVehicle{
       latitude: map['latitude'] as double,
       longitude: map['longitude'] as double,
       imagesUrl: (map['imagesUrl']as List<dynamic>).cast<String>(),
+      isVerified: map['isVerified'] as bool,
     );
   }
 

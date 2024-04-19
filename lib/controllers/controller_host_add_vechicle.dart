@@ -122,7 +122,7 @@ class ControllerHostAddVechicle extends GetxController {
         longitude: longitude.value,
         vehicleFuelType: selectFuelType.value,
         imagesUrl: imagesUrl.value,
-        vehicleDescription: vehicleDescription.value.text.trim(),
+        vehicleDescription: vehicleDescription.value.text.trim(), isVerified: false,
       );
       await addVehicleRef
           .doc(id.toString())
@@ -255,7 +255,7 @@ class ControllerHostAddVechicle extends GetxController {
         rating: _addHostVehicle.rating,
         latitude: latitude.value,
         longitude: longitude.value,
-        imagesUrl: imagesUrl);
+        imagesUrl: imagesUrl, isVerified: false);
     log(addHostVehicle.toString());
     await addVehicleRef.doc(addHostVehicle.vehicleId).update(addHostVehicle.toMap());
     // await _updateCommonData(addHostVehicle);

@@ -23,8 +23,7 @@ import '../interfaces/like_listener.dart';
 import '../models/user.dart';
 
 var uid = auth.FirebaseAuth.instance.currentUser!.uid;
-String image_url =
-    "https://phito.be/wp-content/uploads/2020/01/placeholder.png";
+String image_url = "https://phito.be/wp-content/uploads/2020/01/placeholder.png";
 String googleApiKey = 'AIzaSyCjxRhtdw74nJ9YdYaGjvY5IZUEA5Ux0JA';
 
 var dbInstance = FirebaseFirestore.instance;
