@@ -567,7 +567,7 @@ class _ScreenSearchFilterState extends State<ScreenSearchFilter> {
                       List<AddHostVehicle> applyFiltersAndSort(List<AddHostVehicle> vehicles) {
                         return vehicles.where((vehicle) {
                           // Apply filtering based on controller values
-                          final matchesCategory = vehicle.vehicleCategory == controller.selectCategory.value;
+                          final matchesCategory = vehicle.vehicleCategory ==   controller.selectCategory.value;
                           log(matchesCategory.toString());
                           final matchesModelYear = vehicle.vehicleYear == controller.carModel.value;
                           log(matchesModelYear.toString());
@@ -576,7 +576,7 @@ class _ScreenSearchFilterState extends State<ScreenSearchFilter> {
                           final matchesFuelType = vehicle.vehicleFuelType == controller.carFuelType.value;
                           final matchesSeatsCapacity = vehicle.vehicleSeats == controller.carSeatsCapacity.value;
                           // final matchesLocation = vehicle.address.toLowerCase().contains(controller.carLocation.value.toLowerCase());
-                          final matchesBrand = vehicle.vehicleModel.toLowerCase().contains(controller.carBrand.value.toLowerCase());
+                          // final matchesBrand = vehicle.vehicleModel.toLowerCase().contains(controller.carBrand.value.toLowerCase());
 
                           // Add more filter conditions as needed...
 
@@ -584,9 +584,9 @@ class _ScreenSearchFilterState extends State<ScreenSearchFilter> {
                               matchesModelYear &&
                               matchesTransmission &&
                               matchesFuelType &&
-                              matchesSeatsCapacity &&
+                              matchesSeatsCapacity ;
                               // matchesLocation &&
-                              matchesBrand;
+                              // matchesBrand;
                         }).toList()
                           ..sort((a, b) {
                             // Sorting logic based on price (vehiclePerHourRent or vehiclePerDayRent)
