@@ -275,7 +275,8 @@ super.onInit();
                     }),
               ),
               10.0);
-        } else if (now.isAfter(fifteenMinutesBefore) ||
+        }
+        else if (now.isAfter(fifteenMinutesBefore) ||
             now.isAtSameMomentAs(fifteenMinutesBefore)) {
           shownPopups.add(booking.bookingId);
           ScaffoldMessenger.of(Get.context!)

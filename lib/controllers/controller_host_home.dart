@@ -147,7 +147,7 @@ class ControllerHostHome extends GetxController {
 
   @override
   void onClose() {
-    shownPopups = {};
+    // shownPopups = {};
   }
   Stream<List<Rating>> fetchRatingLists() {
     return reviewRef.snapshots().map((querySnapshot) {
@@ -165,6 +165,7 @@ class ControllerHostHome extends GetxController {
       log(shownPopups.toString());
 
       if (!shownPopups.contains(booking.bookingId)) {
+        shownPopups.add(booking.bookingId);
         final bookingEndDate =
             DateTime.fromMillisecondsSinceEpoch(booking.bookingEndDate);
         final bookingEndTime =
@@ -184,8 +185,8 @@ class ControllerHostHome extends GetxController {
         log(fifteenMinutesBefore.toString());
 
         if (now.isAfter(endTime)) {
+
           await updateBookingStatus(booking.bookingId, "Pending Approval");
-          shownPopups.add(booking.bookingId);
           CustomDialog.showCustomDialog(
               Get.context!,
               Container(
@@ -301,7 +302,6 @@ class ControllerHostHome extends GetxController {
               10.0);
         } else if (now.isAfter(fifteenMinutesBefore) ||
             now.isAtSameMomentAs(fifteenMinutesBefore)) {
-          shownPopups.add(booking.bookingId);
           ScaffoldMessenger.of(Get.context!)
               .showSnackBar(SnackBar(content: Text("End")));
 

@@ -18,6 +18,7 @@ import 'package:intl/intl.dart';
 import 'dart:developer' as dev;
 
 
+import '../AuthSection/screen_complete_profile.dart';
 import '../Host/Views/Screens/screen_host_add_ident_identity_proof.dart';
 import '../interfaces/like_listener.dart';
 import '../models/user.dart';
@@ -101,6 +102,7 @@ Future<User> getUser(String id) async {
 
   return user;
 }
+
 String getUid() {
   var uid = (auth.FirebaseAuth.instance.currentUser?.uid ?? "").trim();
   dev.log("uid: $uid");
@@ -124,7 +126,9 @@ User defaultUser = User(
   timeStamp: DateTime.now().millisecondsSinceEpoch,
   isVerified: false,
   isBlocked: false,
-  status: '', address: '', currentBalance: 0.0,
+  status: '',
+  address: '',
+  currentBalance: 0.0,
 );
 
 Color primaryColor = Color(0xff4C0AE1);
@@ -137,13 +141,21 @@ Future<Widget> getHomeScreen() async {
     if (user.userType == "") {
       screen = ScreenWelcome();
     } else if (user.userType == "host") {
-      if (user.hostIdentity == null) {
+      if (user.email == "") {
+        screen=ScreenCompleteProfile();
+      }
+      else if (user.hostIdentity == null) {
         screen = ScreenHostAddIdentIdentityProof();
       } else {
         screen = ScreenHostHomePage();
       }
     } else {
-      screen = ScreenUserHome();
+      if (user.email == "") {
+        screen=ScreenCompleteProfile();
+      }
+      else{
+        screen = ScreenUserHome();
+      }
     }
   }
 
