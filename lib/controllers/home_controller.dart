@@ -109,7 +109,7 @@ super.onInit();
           startedBookingsList.assignAll(bookings);
           isFetchingStartedBookings.value = false;
           log(bookings.toString());
-          checkAndShowBookingPopup(startedBookingsList);
+          // checkAndShowBookingPopup(startedBookingsList);
         });
 
     completedBookingsSubscription =
@@ -181,8 +181,9 @@ super.onInit();
     log(now.toString());
     bookings.forEach((booking) async {
       log(shownPopups.toString());
-
-      if (!shownPopups.contains(booking.bookingId)) {
+            bool show=shownPopups.contains(booking.bookingId);
+            log("Sho$show");
+      if (show==false) {
         final bookingEndDate =
         DateTime.fromMillisecondsSinceEpoch(booking.bookingEndDate);
         final bookingEndTime =

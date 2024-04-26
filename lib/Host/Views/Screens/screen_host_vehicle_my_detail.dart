@@ -228,7 +228,9 @@ class ScreenHostVehicleMyDetail extends StatelessWidget {
         ),
       ),
     );
-  }Future<void> deleteDirectory(String path) async {
+  }
+
+  Future<void> deleteDirectory(String path) async {
    try {
      // Get reference to the directory
      Reference directoryRef = FirebaseStorage.instance.ref().child(path);
