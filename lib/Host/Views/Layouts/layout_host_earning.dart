@@ -1,5 +1,8 @@
 import 'package:careno/Host/Views/Layouts/item_payment_history.dart';
 import 'package:careno/controllers/controller_host_home.dart';
+import 'package:careno/models/payment_history.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -121,12 +124,22 @@ class LayoutHostEarning extends StatelessWidget {
                             color: AppColors.appPrimaryColor
                         ),).marginSymmetric(horizontal: 13.w, vertical: 5.h),
                         Expanded(
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: 6,
-                            itemBuilder: (BuildContext context, int index) {
-                              return ItemPaymentHistory();
-                            },),
+                          child: StreamBuilder<QuerySnapshot>(
+                            stream: paymentHistoryRef.where("userId",isEqualTo: FirebaseAuth.instance.currentUser?.uid).snapshots(),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState==ConnectionState.waiting) {
+                                return Center(child: CircularProgressIndicator());
+
+                              }
+                              var paymentHistory = snapshot.data!.docs.map((e) => PaymentHistory.fromMap(e.data() as Map<String, dynamic>)).toList();
+                              return paymentHistory.isEmpty?Center(child: Text("No History Found")):ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: paymentHistory.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return ItemPaymentHistory(paymentHistory: paymentHistory[index],);
+                                },);
+                            }
+                          ),
                         )
 
                       ],

@@ -18,6 +18,8 @@ import 'firebase_options.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Future.delayed(Duration(seconds: 1));
+  MpesaFlutterPlugin.setConsumerKey("FShPA81k8RU85IF9nzrJGzUng2l9J5vS0ZrA18ylfBgnAvfp");
+  MpesaFlutterPlugin.setConsumerSecret("amNlvSwRQ5yvFDo6D8O8c2AKYOMGA2lGzELYuXWmr9rwHWU7scXQ4bDNbr0jJE1w");
   Stripe.publishableKey = PaymentsController2.stripePublishableKey;
   colorConfig();
   currencyUnit=getCurrency();

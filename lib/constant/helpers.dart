@@ -36,6 +36,7 @@ CollectionReference viewsRef = dbInstance.collection("views");
 CollectionReference bookingsRef = dbInstance.collection("bookings");
 CollectionReference reviewRef = dbInstance.collection("reviews");
 CollectionReference notificationRef = dbInstance.collection("notifications");
+CollectionReference paymentHistoryRef = dbInstance.collection("notifications");
 
 Map<String, User> _allUsersMap = {};
 Map<String, Category> _allCategoryMap = {};

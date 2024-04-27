@@ -1,4 +1,5 @@
 import 'package:careno/constant/colors.dart';
+import 'package:careno/models/payment_history.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -6,8 +7,7 @@ import 'package:get/get.dart';
 import '../../../constant/helpers.dart';
 
 class ItemPaymentHistory extends StatelessWidget {
-  const ItemPaymentHistory({Key? key}) : super(key: key);
-
+PaymentHistory paymentHistory;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -21,7 +21,7 @@ class ItemPaymentHistory extends StatelessWidget {
             Text("2023-01-10 . 08:45 PM",style: TextStyle(fontWeight: FontWeight.w500,fontSize: 12.sp,color: Color(0xFF969696)),),
 
           ],)),
-            Text("${currencyUnit}40",style: TextStyle(fontSize: 18.sp,fontWeight: FontWeight.w700,color: AppColors.appPrimaryColor),)
+            Text("${currencyUnit}${paymentHistory.paymentAmount}",style: TextStyle(fontSize: 18.sp,fontWeight: FontWeight.w700,color: AppColors.appPrimaryColor),)
            ],
         ).marginOnly(bottom: 6.h),
         Divider(color: Color(0xFFBBBBBB).withOpacity(.5),thickness: .5
@@ -29,4 +29,8 @@ class ItemPaymentHistory extends StatelessWidget {
       ],
     ).marginSymmetric(horizontal: 13.w,vertical: 4.h);
   }
+
+ItemPaymentHistory({
+    required this.paymentHistory,
+  });
 }

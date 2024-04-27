@@ -65,7 +65,7 @@ dependencies:
   percent_indicator: ^4.2.3
   dotted_border: ^2.0.0+2
   custom_rating_bar: ^2.0.5
-  custom_date_range_picker: ^1.0.10
+#  custom_date_range_picker: ^1.0.10
   tuna_flutter_range_slider: ^1.0.0
   calendar_date_picker2: ^0.5.5
   intl: any
@@ -79,6 +79,7 @@ dependencies:
   google_maps_webservice: ^0.0.20-nullsafety.5
   google_api_headers: ^1.6.0
   flutter_stripe: ^5.1.0
+  mpesa_flutter_plugin: ^1.6.1
 #  multi_image_picker: ^4.8.01
 #  flutter_gif: ^0.0.4
 #  gif: ^2.2.0
