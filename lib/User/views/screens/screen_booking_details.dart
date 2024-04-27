@@ -421,9 +421,7 @@ class ScreenBookingDetails extends StatelessWidget {
                                           booking.bookingId,
                                           onSuccess: (infoData) async {
                                             print(infoData);
-                                            await bookingsRef
-                                                .doc(booking.bookingId)
-                                                .update(
+                                            await bookingsRef.doc(booking.bookingId).update(
                                                 {
                                                   "bookingStatus": "In progress"
                                                 }).catchError((error){
@@ -467,11 +465,8 @@ class ScreenBookingDetails extends StatelessWidget {
                                             loading.value = false;
                                             Get.back();
 
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(
-                                                SnackBar(
-                                                    content: Text(
-                                                        "Payment Successfully Send")));
+                                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Payment Successfully Send")));
+
                                           }, onError: (error) {
                                         loading.value = false;
 
